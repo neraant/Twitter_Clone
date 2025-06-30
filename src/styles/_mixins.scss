@@ -1,0 +1,26 @@
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin button-reset {
+  background: none;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+@mixin link-reset {
+  background: none;
+  text-decoration: none;
+  color: inherit;
+}
+
+@mixin input-reset {
+  background: none;
+  outline: none;
+  border: none;
+}

@@ -1,0 +1,87 @@
+.form {
+  max-width: 690px;
+  padding: var(--spacing-xl) var(--spacing-2xl);
+  margin: auto 0;
+  overflow-y: auto;
+
+  @media (max-width: 620px) {
+    padding: var(--spacing-lg);
+    padding-top: var(--spacing-2xl);
+  }
+
+  .logo {
+    margin-bottom: var(--spacing-2xl);
+
+    @media (max-width: 620px) {
+      margin-bottom: var(--spacing-xl);
+    }
+  }
+
+  .title {
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-black);
+    margin-bottom: var(--spacing-2xl);
+
+    @media (max-width: 1280px) {
+      font-size: var(--font-size-3xl);
+      margin-bottom: var(--spacing-lg);
+    }
+
+    @media (max-width: 620px) {
+      font-size: var(--font-size-xl);
+      margin-bottom: var(--spacing-ms);
+    }
+  }
+  .subtitle {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-black);
+    margin-bottom: var(--spacing-3xl);
+
+    @media (max-width: 1280px) {
+      font-size: var(--font-size-xl);
+    }
+
+    @media (max-width: 620px) {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-xl);
+    }
+  }
+
+  .buttonsWrapper {
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+
+    @media (max-width: 1280px) {
+      gap: var(--spacing-md);
+    }
+
+    @media (max-width: 620px) {
+      margin-bottom: var(--spacing-xl);
+    }
+  }
+
+  .infoText {
+    margin-bottom: var(--spacing-lg);
+    font-size: var(--font-size-md);
+    max-width: 370px;
+
+    @media (max-width: 1280px) {
+      font-size: var(--font-size-ms);
+      margin-bottom: var(--spacing-sm);
+    }
+  }
+  .link {
+    color: var(--primary-color);
+  }
+
+  .haveAccountText {
+    font-size: var(--font-size-md);
+
+    @media (max-width: 1280px) {
+      font-size: var(--font-size-ms);
+    }
+  }
+}

@@ -1,13 +1,24 @@
+@use '@styles/_mixins.scss' as *;
+
 :root {
-  // general
   --color-bg: #fff;
   --dark-text-color: #000;
   --light-text-color: #fff;
   --primary-color: #1da1f2;
+
   --border-input-color: #0003;
   --border-sign-type-color: #e4eaed;
-  --border-width: 1px;
-  --border-radius: 6px;
+  --border-sign-type-hover-color: #909090;
+
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 12px;
+  --radius-xl: 42px;
+  --radius-2xl: 60px;
+  --radius-3xl: 76px;
+  --radius-full: 100%;
+
   --toast-bg: #f5fff866;
   --toast-title-color: #27303a;
   --toast-description-color: #2f3f53;
@@ -16,18 +27,29 @@
   --search-input-bg: #1c9bf01a;
   --logout-btn-bg: #b3b8bb;
   --error-color: #ef1c5c;
+
+  --sign-button-color: #ffffff;
+  --sign-button-bg: #1ca0f299;
+
   --active-like-color: #ef1c5c;
   --non-active-like-color: #536471;
 
-  // spacings
-  --spacing-xs: 4px;
-  --spacing-sm: 8px;
-  --spacing-md: 16px;
-  --spacing-lg: 24px;
-  --spacing-xl: 32px;
+  --login-form-bg: #ffffffac;
+  --login-shadow-color: #00000027;
 
-  // font sizes
-  --font-size-xxs: 10px;
+  --spacing-xxs: 4px;
+  --spacing-xs: 6px;
+  --spacing-sm: 8px;
+  --spacing-ms: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 20px; 
+  --spacing-lg-plus: 28px; 
+  --spacing-xl: 32px;
+  --spacing-2xl: 50px; 
+  --spacing-3xl: 65px; 
+  --spacing-5xl: 90px; 
+
+  --font-size-xxs: 12px;
   --font-size-xs: 13px;
   --font-size-sm: 14px;
   --font-size-ms: 15px;
@@ -40,7 +62,6 @@
   --font-size-3xl: 44px;
   --font-size-4xl: 74px;
 
-  // font weights
   --font-weight-thin: 300;
   --font-weight-regular: 400;
   --font-weight-medium: 500;
@@ -57,9 +78,27 @@
   padding: 0;
 }
 
+button {
+  @include button-reset;
+}
+
+a {
+  @include link-reset;
+}
+
+input {
+  @include input-reset;
+}
+
+body,
+html {
+  height: 100%;
+}
+
 body {
   background: var(--color-bg);
   font-family: var(--font-inter);
+  color: var(--dark-text-color);
 
   .dark-theme {
     --color-bg: #000;
