@@ -1,0 +1,18 @@
+@use '@styles/_mixins.scss' as *;
+
+.wrapper {
+  @include flex-center;
+
+  position: relative;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.main {
+  width: 100%;
+  margin: auto 0;
+
+  @media (max-width: 620px) {
+    margin: 0;
+  }
+}
