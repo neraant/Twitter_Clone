@@ -1,0 +1,13 @@
+@keyframes skeleton-loading {
+  0% {
+    background-color: var(--skeleton-base-color);
+  }
+  100% {
+    background-color: var(--skeleton-shine-color);
+  }
+}
+
+.skeleton {
+  animation: skeleton-loading var(--skeleton-animation-duration) linear infinite
+    alternate;
+}

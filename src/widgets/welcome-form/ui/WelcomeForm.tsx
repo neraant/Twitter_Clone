@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 
-import { SignTypeButton, useAuth } from '@/features/auth';
+import { SignTypeButton, useAuthStore } from '@/features/auth';
 import { routes } from '@/shared/config/routes';
 import { GoogleLogoIcon, TwitterLogoIcon } from '@/shared/ui/icon';
 
@@ -16,7 +16,7 @@ import {
 import styles from './WelcomeForm.module.scss';
 
 export const WelcomeForm = () => {
-  const loginWithGoogle = useAuth((state) => state.loginWithGoogle);
+  const loginWithGoogle = useAuthStore((state) => state.loginWithGoogle);
 
   return (
     <div className={styles.form}>

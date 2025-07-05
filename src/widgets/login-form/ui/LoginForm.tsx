@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
-import { SignButton, useAuth } from '@/features/auth';
+import { SignButton, useAuthStore } from '@/features/auth';
 import { routes } from '@/shared/config/routes';
 import { useToast } from '@/shared/lib/toast/useToast';
 import { TwitterLogoIcon } from '@/shared/ui/icon';
@@ -38,8 +38,8 @@ export const LoginForm = () => {
 
   const { showToast } = useToast();
 
-  const loginWithPassword = useAuth((state) => state.loginWithPassword);
-  const isLoading = useAuth((state) => state.isLoading);
+  const loginWithPassword = useAuthStore((state) => state.loginWithPassword);
+  const isLoading = useAuthStore((state) => state.isLoadingLogin);
 
   const onSubmit = async (data: loginFormData) => {
     try {

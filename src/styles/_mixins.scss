@@ -24,3 +24,7 @@
   outline: none;
   border: none;
 }
+
+@mixin ul-reset {
+  list-style: none;
+}

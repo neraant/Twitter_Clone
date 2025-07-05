@@ -1,0 +1,39 @@
+.header {
+  height: 0;
+  width: 0;
+  overflow: hidden;
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--border-color);
+
+  @media (max-width: 768px) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-md) var(--spacing-lg);
+    height: 60px;
+    width: 100%;
+    pointer-events: all;
+  }
+
+  .wrapper {
+    width: 100%;
+  }
+
+  .headerIconLink {
+    .headerIcon {
+      max-height: 28px;
+    }
+  }
+
+  .headerList {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+  }
+}

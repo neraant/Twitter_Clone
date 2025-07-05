@@ -5,7 +5,9 @@
   --dark-text-color: #000;
   --light-text-color: #fff;
   --primary-color: #1da1f2;
+  --primary-color-hover: #1985c8;
 
+  --border-color: #d8d8d8;
   --border-input-color: #0003;
   --border-sign-type-color: #e4eaed;
   --border-sign-type-hover-color: #909090;
@@ -14,6 +16,7 @@
   --radius-sm: 4px;
   --radius-md: 6px;
   --radius-lg: 12px;
+  --radius-lg-plus: 24px;
   --radius-xl: 42px;
   --radius-2xl: 60px;
   --radius-3xl: 76px;
@@ -24,12 +27,13 @@
   --toast-description-color: #2f3f53;
   --border-error-color: #ff000069;
   --border-success-color: #17a100;
-  --search-input-bg: #1c9bf01a;
-  --logout-btn-bg: #b3b8bb;
   --error-color: #ef1c5c;
 
-  --sign-button-color: #ffffff;
-  --sign-button-bg: #1ca0f299;
+  --search-input-bg: #1c9bf01a;
+  --search-placeholder-color: #5c6c79;
+
+  --logout-btn-bg: #b3b8bb;
+  --logout-btn-bg-hover: #9b9ea0;
 
   --active-like-color: #ef1c5c;
   --non-active-like-color: #536471;
@@ -37,17 +41,27 @@
   --login-form-bg: #ffffffac;
   --login-shadow-color: #00000027;
 
+  --you-might-like-bg: #f7f9f9bf;
+  --empty-text-color: #00000093;
+
+  --post-hover-bg: #73bff220;
+
+  --skeleton-base-color: #ddd;
+  --skeleton-shine-color: #e8e8e8;
+  --skeleton-animation-duration: 1.2s;
+
   --spacing-xxs: 4px;
   --spacing-xs: 6px;
   --spacing-sm: 8px;
   --spacing-ms: 12px;
   --spacing-md: 16px;
-  --spacing-lg: 20px; 
-  --spacing-lg-plus: 28px; 
+  --spacing-lg: 20px;
+  --spacing-lg-plus: 28px;
   --spacing-xl: 32px;
-  --spacing-2xl: 50px; 
-  --spacing-3xl: 65px; 
-  --spacing-5xl: 90px; 
+  --spacing-xl-plus: 40px;
+  --spacing-2xl: 50px;
+  --spacing-3xl: 65px;
+  --spacing-5xl: 90px;
 
   --font-size-xxs: 12px;
   --font-size-xs: 13px;
@@ -60,6 +74,7 @@
   --font-size-xl: 30px;
   --font-size-2xl: 42px;
   --font-size-3xl: 44px;
+  --font-size-3xl-plus: 60px;
   --font-size-4xl: 74px;
 
   --font-weight-thin: 300;
@@ -90,6 +105,11 @@ input {
   @include input-reset;
 }
 
+ul,
+ol {
+  @include ul-reset;
+}
+
 body,
 html {
   height: 100%;
@@ -99,6 +119,7 @@ body {
   background: var(--color-bg);
   font-family: var(--font-inter);
   color: var(--dark-text-color);
+  position: relative;
 
   .dark-theme {
     --color-bg: #000;

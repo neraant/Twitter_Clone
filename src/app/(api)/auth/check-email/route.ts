@@ -1,6 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 
+import { Database } from '@/shared/lib/database';
+
 const NO_ROW_FOUND = 'PGRST116';
 
 export async function POST(request: Request) {
@@ -11,7 +13,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Invalid email' }, { status: 400 });
     }
 
-    const supabaseAdmin = createClient(
+    const supabaseAdmin = createClient<Database>(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.SUPABASE_SERVICE_ROLE_KEY!,
     );

@@ -17,6 +17,9 @@ const nextConfig: NextConfig = {
 
     return config;
   },
+  images: {
+    domains: ['lh3.googleusercontent.com', 'i.pravatar.cc'],
+  },
 };
 
 export default nextConfig;

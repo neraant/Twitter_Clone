@@ -1,0 +1,30 @@
+@use '@styles/_mixins.scss' as *;
+
+.button {
+  @include flex-center;
+
+  position: relative;
+  gap: var(--spacing-sm);
+  width: 100%;
+  background: var(--primary-color);
+  padding: var(--spacing-md) 0;
+  border-radius: var(--radius-lg-plus);
+  text-align: center;
+  font-size: var(--font-size-md-plus);
+  font-weight: var(--font-weight-bold);
+  color: var(--light-text-color);
+  transition: background 0.3s ease-in-out;
+
+  &:hover {
+    background: var(--primary-color-hover);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  @media (max-width: 768px) {
+    font-size: var(--font-size-md-plus);
+  }
+}

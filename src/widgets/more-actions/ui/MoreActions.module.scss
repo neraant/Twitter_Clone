@@ -1,0 +1,59 @@
+.actionsWrapper {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 10px);
+  z-index: 100;
+  background: var(--color-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: 0px 0px 5px 0px var(--login-shadow-color);
+  width: 300px;
+
+  @media (max-width: 1280px) {
+    left: calc(100% + 10px);
+    bottom: 0;
+  }
+  @media (max-width: 768px) {
+    left: auto;
+    right: 0;
+    bottom: calc(100% + 10px);
+    width: 200px;
+  }
+
+  svg {
+    path {
+      fill: var(--dark-text-color);
+    }
+  }
+  .actionsList {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .actionListItem {
+    padding: var(--spacing-xs);
+    &:not(:last-child) {
+      border-bottom: 1px solid var(--border-color);
+    }
+  }
+  .actionButton {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-lg);
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border-radius: var(--radius-md);
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+      background: var(--post-hover-bg);
+    }
+
+    @media (max-width: 768px) {
+      padding: var(--spacing-md);
+    }
+  }
+}

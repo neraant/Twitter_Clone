@@ -3,4 +3,4 @@ export {
   loginSchema,
 } from './login.schema';
 export * from './loginForm.constants';
-export { type LoginUser as loginUser } from './loginUser.types';
+export { type LoginUser } from './loginUser.types';

@@ -1,0 +1,22 @@
+.wrapper {
+  background: var(--search-input-bg);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-ms);
+  padding: var(--spacing-ms) var(--spacing-lg);
+  width: 100%;
+  border-radius: var(--spacing-xl);
+
+  .icon {
+    flex-shrink: 0;
+  }
+  .input {
+    font-size: var(--font-size-md-plus);
+    color: var(--dark-text-color);
+    width: 100%;
+
+    &::placeholder {
+      color: var(--search-placeholder-color);
+    }
+  }
+}
