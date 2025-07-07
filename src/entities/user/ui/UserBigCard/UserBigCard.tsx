@@ -32,10 +32,12 @@ export const UserBigCard = ({ user, className }: UserBigCardProps) => {
         <span className={styles.name} title={name!}>
           {name}
         </span>
-        <span className={styles.telegram}>{user_telegram}</span>
+        {user_telegram && (
+          <span className={styles.telegram}>{user_telegram}</span>
+        )}
       </div>
 
-      <p className={styles.bio}>{bio}</p>
+      {bio && <p className={styles.bio}>{bio}</p>}
     </div>
   );
 };

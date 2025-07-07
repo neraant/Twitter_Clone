@@ -1,15 +1,119 @@
 .modalWrapper {
+  position: relative;
   padding: var(--spacing-xl);
+  padding-bottom: var(--spacing-5xl);
   background: var(--color-bg);
   border-radius: var(--radius-lg);
   width: 100%;
   max-width: 600px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+
+  animation: modalFadeIn 0.2s ease-in-out;
+
+  &.closing {
+    animation: modalFadeOut 0.2s ease-in-out;
+  }
+
+  @media (max-width: 768px) {
+    width: calc(100% - var(--spacing-md) * 2);
+    max-width: none;
+    padding: var(--spacing-lg);
+    padding-bottom: var(--spacing-4xl);
+  }
+
+  .closeButton {
+    position: absolute;
+    top: var(--spacing-xl);
+    right: var(--spacing-xl);
+  }
+
+  .modalContent {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-right: var(--spacing-xxs);
+    scrollbar-width: thin;
+  }
+
+  .title {
+    display: inline-block;
+    font-size: var(--font-size-lg-plus);
+    font-weight: var(--font-weight-medium);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .subtitle {
+    display: inline-block;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-medium);
+    margin-bottom: var(--spacing-md);
+    margin-top: var(--spacing-md);
+  }
+
+  .input {
+    margin-bottom: var(--spacing-md);
+  }
 
   .genderWrapper {
+    margin-bottom: var(--spacing-xl);
     .genderLabel {
       font-size: var(--font-size-ms);
       color: var(--dark-text-color);
       opacity: 0.6;
     }
+    .error {
+      position: absolute;
+      bottom: -18px;
+      left: 0;
+      font-weight: var(--font-weight-semibold);
+      font-size: var(--font-size-xs);
+      color: var(--error-color);
+      padding: 0px 6px;
+      pointer-events: none;
+
+      @media (max-width: 480px) {
+        font-size: var(--font-size-xxs);
+      }
+    }
+  }
+
+  .submitButtonWrapper {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: var(--color-bg);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-lg);
+    z-index: 10;
+
+    .submitButton {
+      .loader {
+        height: fit-content;
+      }
+    }
+  }
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes modalFadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.9);
   }
 }

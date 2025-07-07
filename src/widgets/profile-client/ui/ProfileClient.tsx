@@ -53,7 +53,7 @@ export const ProfileClient = ({ userId }: { userId?: string }) => {
         user={user}
         isLoading={isUserLoading}
         isOwner={isOwner}
-        onEditProfileClick={handleCloseModal}
+        onEditProfileClick={handleOpenModal}
       />
 
       {isEditModalOpen && <EditProfileModal onClose={handleCloseModal} />}

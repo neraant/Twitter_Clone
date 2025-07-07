@@ -7,6 +7,7 @@ import { loginWithPassword as loginWithPasswordRequest } from '../api';
 import { signInWithGoogle } from '../api/googleAuth';
 import { logout as logoutApi } from '../api/logout';
 import { signUpWithPassword } from '../api/signUpWithPassword';
+import { buildUserFromAuth } from '../lib';
 import {
   LoginCredentials,
   RegisterCredentials,
@@ -52,23 +53,7 @@ export const useAuthStore = create<UseAuthState>((set, get) => ({
         throw profileError;
       }
 
-      const user: User = {
-        id: authUser.id,
-        email: authUser.email!,
-        name: profile.name ?? authUser.email!,
-        avatar_url:
-          profile.avatar_url ?? authUser.user_metadata?.avatar_url ?? null,
-        banner_url:
-          profile.banner_url ?? authUser.user_metadata?.banner_url ?? null,
-        phone_number: profile.phone_number ?? null,
-        date_of_birth: profile.date_of_birth ?? null,
-        created_at: profile.created_at ?? new Date().toISOString(),
-        updated_at: profile.updated_at ?? null,
-        followers_count: profile.followers_count ?? 0,
-        following_count: profile.following_count ?? 0,
-        user_telegram: profile.user_telegram ?? null,
-        bio: profile.bio ?? null,
-      };
+      const user = buildUserFromAuth(authUser, profile);
 
       set({ user, isAuth: true });
     } catch (err) {
@@ -107,6 +92,7 @@ export const useAuthStore = create<UseAuthState>((set, get) => ({
         following_count: profile.following_count ?? 0,
         user_telegram: profile.user_telegram ?? null,
         bio: profile.bio ?? null,
+        gender: profile.gender || null,
       };
 
       set({ user: updatedUser });
@@ -130,23 +116,7 @@ export const useAuthStore = create<UseAuthState>((set, get) => ({
 
         if (profileError) throw profileError;
 
-        const user: User = {
-          id: authUser.id,
-          email: authUser.email!,
-          name: profile.name ?? authUser.email!,
-          avatar_url:
-            profile.avatar_url ?? authUser.user_metadata?.avatar_url ?? null,
-          banner_url:
-            profile.banner_url ?? authUser.user_metadata?.banner_url ?? null,
-          phone_number: profile.phone_number ?? null,
-          date_of_birth: profile.date_of_birth ?? null,
-          created_at: profile.created_at ?? new Date().toISOString(),
-          updated_at: profile.updated_at ?? null,
-          followers_count: profile.followers_count ?? 0,
-          following_count: profile.following_count ?? 0,
-          user_telegram: profile.user_telegram ?? null,
-          bio: profile.bio ?? null,
-        };
+        const user = buildUserFromAuth(authUser, profile);
 
         set({ user, isAuth: true });
       }
@@ -194,23 +164,7 @@ export const useAuthStore = create<UseAuthState>((set, get) => ({
           .eq('id', authUser.id)
           .single();
 
-        const user: User = {
-          id: authUser.id,
-          email: authUser.email!,
-          name: profile?.name ?? authUser.email!,
-          avatar_url:
-            profile?.avatar_url ?? authUser.user_metadata?.avatar_url ?? null,
-          banner_url:
-            profile?.banner_url ?? authUser.user_metadata?.banner_url ?? null,
-          phone_number: profile?.phone_number ?? null,
-          date_of_birth: profile?.date_of_birth ?? null,
-          created_at: profile?.created_at ?? new Date().toISOString(),
-          updated_at: profile?.updated_at ?? null,
-          followers_count: profile?.followers_count ?? 0,
-          following_count: profile?.following_count ?? 0,
-          user_telegram: profile?.user_telegram ?? null,
-          bio: profile?.bio ?? null,
-        };
+        const user = buildUserFromAuth(authUser, profile);
 
         set({ user, isAuth: true });
       }

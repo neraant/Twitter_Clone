@@ -2,10 +2,12 @@ import { RefObject, useCallback, useState } from 'react';
 
 import { useClickOutside } from './useClickOutside';
 
+const DEFAULT_DELAY = 200;
+
 export const useModalCloseHandler = (
   ref: RefObject<HTMLElement | null>,
   onClose: () => void,
-  delay: number = 200,
+  delay: number = DEFAULT_DELAY,
 ) => {
   const [isClosing, setIsClosing] = useState(false);
 

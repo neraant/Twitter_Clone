@@ -10,3 +10,20 @@ export const LABELS = {
 };
 
 export const GENDER_OPTIONS = ['Male', 'Female'];
+
+export const EDIT_SCHEMA = {
+  NAME: {
+    REQUIRED: 'Name is required',
+    MIN_LEN: 'Name must be at least 3 characters',
+    MAX_LEN: 'Name cannot exceed 20 characters',
+  },
+  TELEGRAM: {
+    INVALID: 'Telegram username is invalid',
+  },
+  BIO: {
+    LENGTH: 'Maximum length is 200 symbold',
+  },
+  GENDER: {
+    INVALID: 'Gender is invalid',
+  },
+};

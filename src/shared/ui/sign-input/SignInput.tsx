@@ -1,5 +1,6 @@
 'use client';
 
+import clsx from 'clsx';
 import { forwardRef, InputHTMLAttributes, useState } from 'react';
 import { FieldError } from 'react-hook-form';
 
@@ -14,6 +15,7 @@ type SignInputProps = {
   isPassword?: boolean;
   isPhone?: boolean;
   error?: FieldError;
+  className?: string;
 } & InputHTMLAttributes<HTMLInputElement>;
 
 const SHOW_PASSWROD = 'Show password';
@@ -30,6 +32,7 @@ export const SignInput = forwardRef<HTMLInputElement, SignInputProps>(
       error,
       onChange,
       value,
+      className,
       ...props
     },
     ref,
@@ -67,7 +70,7 @@ export const SignInput = forwardRef<HTMLInputElement, SignInputProps>(
         };
 
     return (
-      <div className={styles.inputWrapper}>
+      <div className={clsx(styles.inputWrapper, className)}>
         {label && (
           <label htmlFor={label} className={styles.label}>
             {label}

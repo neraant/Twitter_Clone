@@ -7,6 +7,9 @@ export type Json =
   | Json[];
 
 export type Database = {
+  __InternalSupabase: {
+    PostgrestVersion: '12.2.3 (519615d)';
+  };
   graphql_public: {
     Tables: {
       [_ in never]: never;
@@ -187,6 +190,7 @@ export type Database = {
           email: string | null;
           followers_count: number;
           following_count: number;
+          gender: string | null;
           id: string;
           name: string | null;
           phone_number: string | null;
@@ -202,6 +206,7 @@ export type Database = {
           email?: string | null;
           followers_count?: number;
           following_count?: number;
+          gender?: string | null;
           id?: string;
           name?: string | null;
           phone_number?: string | null;
@@ -217,6 +222,7 @@ export type Database = {
           email?: string | null;
           followers_count?: number;
           following_count?: number;
+          gender?: string | null;
           id?: string;
           name?: string | null;
           phone_number?: string | null;

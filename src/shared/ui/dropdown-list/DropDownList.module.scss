@@ -1,5 +1,6 @@
 .wrapper {
   position: relative;
+  z-index: 100;
   width: 100%;
   border: 1px solid var(--border-input-color);
   border-radius: var(--radius-md);
@@ -18,7 +19,7 @@
 
     @media (max-width: 768px) {
       font-size: var(--font-size-ms);
-      padding: var(--spacing-md);
+      padding: var(--spacing-ms) var(--spacing-md);
     }
 
     .icon {

@@ -16,6 +16,7 @@ export const useLogout = () => {
   const handleLogout = useCallback(async () => {
     try {
       await logout();
+      showToast('Succes', 'Logout success!', 'success');
       router.replace(routes.auth.signUpMain);
     } catch (error) {
       console.error('Error while logout: ', error);
