@@ -5,6 +5,7 @@ import { UsersState } from './user.types';
 
 export const useUsersStore = create<UsersState>((set) => ({
   users: [],
+  user: null,
   isLoading: true,
   error: null,
 

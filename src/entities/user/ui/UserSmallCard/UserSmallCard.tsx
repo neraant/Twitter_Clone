@@ -10,7 +10,7 @@ import { routes } from '@/shared/config/routes';
 import { User } from '../../model';
 import styles from './UserSmallCard.module.scss';
 
-type UserForProps = Pick<User, 'id' | 'name' | 'avatar_url'>;
+type UserForProps = Pick<User, 'id' | 'name' | 'avatar_url' | 'user_telegram'>;
 
 export type UserSmallCardProps = {
   className?: string;
@@ -25,14 +25,14 @@ export const UserSmallCard = ({
 }: UserSmallCardProps) => {
   if (!user) return null;
 
-  const { avatar_url, name, id } = user;
+  const { avatar_url, name, id, user_telegram } = user;
   const url = isOwnProfile ? routes.app.profile : `${routes.app.profile}/${id}`;
 
   return (
     <div className={clsx(styles.wrapper, className)}>
       <Link href={url} className={styles.wrapper}>
         <Image
-          src={avatar_url ?? UserIcon}
+          src={avatar_url || UserIcon}
           alt='avatar'
           width={50}
           height={50}
@@ -44,9 +44,7 @@ export const UserSmallCard = ({
           <span className={styles.name} title={name!}>
             {name}
           </span>
-          <span className={styles.subname} title={name!}>
-            @{name}
-          </span>
+          <span className={styles.subname}>{user_telegram}</span>
         </div>
       </Link>
 

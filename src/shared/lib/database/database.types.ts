@@ -180,6 +180,8 @@ export type Database = {
       users: {
         Row: {
           avatar_url: string | null;
+          banner_url: string | null;
+          bio: string | null;
           created_at: string;
           date_of_birth: string | null;
           email: string | null;
@@ -189,9 +191,12 @@ export type Database = {
           name: string | null;
           phone_number: string | null;
           updated_at: string | null;
+          user_telegram: string | null;
         };
         Insert: {
           avatar_url?: string | null;
+          banner_url?: string | null;
+          bio?: string | null;
           created_at?: string;
           date_of_birth?: string | null;
           email?: string | null;
@@ -201,9 +206,12 @@ export type Database = {
           name?: string | null;
           phone_number?: string | null;
           updated_at?: string | null;
+          user_telegram?: string | null;
         };
         Update: {
           avatar_url?: string | null;
+          banner_url?: string | null;
+          bio?: string | null;
           created_at?: string;
           date_of_birth?: string | null;
           email?: string | null;
@@ -213,6 +221,7 @@ export type Database = {
           name?: string | null;
           phone_number?: string | null;
           updated_at?: string | null;
+          user_telegram?: string | null;
         };
         Relationships: [];
       };

@@ -4,6 +4,12 @@
   width: 100%;
   position: relative;
 
+  .label {
+    font-size: var(--font-size-ms);
+    color: var(--dark-text-color);
+    opacity: 0.6;
+  }
+
   .input {
     font-size: var(--font-size-md-plus);
     font-weight: var(--font-weight-regular);

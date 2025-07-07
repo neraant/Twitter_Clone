@@ -8,7 +8,7 @@ export const searchPosts = async (searchTerm: string) => {
   const { data, error } = await supabase
     .from('posts')
     .select('*')
-    .ilike('content', `%${searchTerm}%`)
+    .or(`content.ilike.%${searchTerm}%,author_name.ilike.%${searchTerm}%`)
     .order('created_at', { ascending: false })
     .limit(10);
 

@@ -1,0 +1,14 @@
+.wrapper {
+  padding: 0 var(--spacing-md);
+}
+
+.top {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    justify-content: start;
+  }
+}

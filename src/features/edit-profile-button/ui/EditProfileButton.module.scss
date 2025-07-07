@@ -1,0 +1,15 @@
+.button {
+  padding: var(--spacing-ms);
+  border-radius: var(--radius-2xl);
+  border: 1px solid var(--border-color);
+  font-size: var(--font-size-md-plus);
+  transition: border 0.3s ease-in-out;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  color: var(--dark-text-color);
+
+  &:hover {
+    border: 1px solid var(--border-color-hover);
+  }
+}

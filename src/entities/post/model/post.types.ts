@@ -7,3 +7,16 @@ export type Post = {
   id: string;
   image_url: string | null;
 };
+
+export type GetUserTweetsOptions = {
+  userId: string;
+  limit?: number;
+  cursor?: string;
+};
+
+export type PostsState = {
+  posts: Post[];
+  isLoading: boolean;
+  error: string | null;
+  fetchUserPosts: ({ userId, limit, cursor }: GetUserTweetsOptions) => void;
+};

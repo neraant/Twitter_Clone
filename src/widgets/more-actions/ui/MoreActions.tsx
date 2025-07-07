@@ -40,10 +40,14 @@ export const MoreActions = ({ onClose }: MoreActionsProps) => {
     }
   };
 
-  useClickOutside(ref, onClose);
+  useClickOutside(ref, (e: MouseEvent | TouchEvent) => {
+    const target = e.target as HTMLElement;
+    if (target.closest('.confirmLogout')) return;
+    onClose();
+  });
 
   return (
-    <>
+    <div ref={ref}>
       {isModalOpen && (
         <ConfirmModal
           title='Confirm logout'
@@ -51,10 +55,11 @@ export const MoreActions = ({ onClose }: MoreActionsProps) => {
           actionButtonLabel='Logout'
           onClose={handleCloseModal}
           onConfirm={handleLogout}
+          className='confirmLogout'
         />
       )}
 
-      <div className={styles.actionsWrapper} ref={ref}>
+      <div className={styles.actionsWrapper}>
         <ul className={styles.actionsList}>
           {ACTIONS.map(({ label, action, icon }) => (
             <li key={`action_${action}`} className={styles.actionListItem}>
@@ -71,6 +76,6 @@ export const MoreActions = ({ onClose }: MoreActionsProps) => {
           ))}
         </ul>
       </div>
-    </>
+    </div>
   );
 };

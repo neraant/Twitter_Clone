@@ -1,0 +1,1 @@
+export { UserBigCard } from './UserBigCard';

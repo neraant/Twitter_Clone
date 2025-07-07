@@ -7,8 +7,8 @@ import styles from './Overlay.module.scss';
 
 type OverlayProps = {
   children: ReactNode;
-  onClickOutside?: () => void;
-  isClosing?: boolean;
+  onClickOutside: () => void;
+  isClosing: boolean;
 };
 
 export const Overlay = ({

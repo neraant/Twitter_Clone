@@ -1,0 +1,46 @@
+.wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  top: -90px;
+
+  @media (max-width: 768px) {
+    top: -60px;
+  }
+
+  .icon {
+    object-fit: cover;
+    object-position: center;
+    max-width: 180px;
+    max-height: 180px;
+    min-width: 180px;
+    min-height: 180px;
+    border-radius: 50%;
+
+    @media (max-width: 768px) {
+      max-width: 120px;
+      max-height: 120px;
+      min-width: 120px;
+      min-height: 120px;
+    }
+  }
+  .userInfo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xxs);
+
+    .name {
+      font-size: var(--font-size-lg-plus);
+      font-weight: var(--font-weight-bold);
+    }
+    .telegram {
+      font-size: var(--font-size-md);
+      opacity: 0.7;
+    }
+  }
+
+  .bio {
+    font-size: var(--font-size-md-plus);
+  }
+}

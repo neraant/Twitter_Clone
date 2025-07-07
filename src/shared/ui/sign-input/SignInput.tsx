@@ -1,18 +1,15 @@
 'use client';
 
-import {
-  ChangeEvent,
-  forwardRef,
-  InputHTMLAttributes,
-  useEffect,
-  useState,
-} from 'react';
+import { forwardRef, InputHTMLAttributes, useState } from 'react';
 import { FieldError } from 'react-hook-form';
+
+import { usePhoneInput } from '@/shared/lib/hooks/usePhoneInput';
 
 import { EyeCrossedIcon } from '../../../shared/ui/icon';
 import styles from './SignInput.module.scss';
 
 type SignInputProps = {
+  label?: string;
   placeholder?: string;
   isPassword?: boolean;
   isPhone?: boolean;
@@ -26,6 +23,7 @@ const HIDE_PASSWROD = 'Hide password';
 export const SignInput = forwardRef<HTMLInputElement, SignInputProps>(
   (
     {
+      label,
       placeholder,
       isPassword = false,
       isPhone = false,
@@ -37,116 +35,17 @@ export const SignInput = forwardRef<HTMLInputElement, SignInputProps>(
     ref,
   ) => {
     const [showPassword, setShowPassword] = useState(false);
-    const [displayValue, setDisplayValue] = useState(value?.toString() || '');
-
-    useEffect(() => {
-      if (value !== undefined) {
-        setDisplayValue(value.toString());
-      }
-    }, [value]);
 
     const handleShowPassword = () => {
       setShowPassword((prev) => !prev);
     };
 
-    const formatPhoneNumber = (input: string) => {
-      const digits = input.replace(/\D/g, '');
-
-      let formatted = '+375';
-
-      if (digits.length > 3) {
-        const operatorCode = digits.substring(3, 5);
-        formatted += `(${operatorCode}`;
-
-        if (digits.length > 5) {
-          formatted += ')';
-
-          const firstPart = digits.substring(5, 8);
-          formatted += `-${firstPart}`;
-
-          if (digits.length > 8) {
-            const secondPart = digits.substring(8, 10);
-            formatted += `-${secondPart}`;
-
-            if (digits.length > 10) {
-              const finalPart = digits.substring(10, 12);
-              formatted += `-${finalPart}`;
-            }
-          }
-        }
-      }
-
-      return formatted;
-    };
-
-    const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const input = e.target.value;
-
-      if (input.length < 4) {
-        const formatted = '+375';
-        setDisplayValue(formatted);
-
-        const syntheticEvent = {
-          ...e,
-          target: {
-            ...e.target,
-            value: formatted,
-          },
-        };
-        onChange?.(syntheticEvent as React.ChangeEvent<HTMLInputElement>);
-        return;
-      }
-
-      const formatted = formatPhoneNumber(input);
-
-      if (formatted.length <= 19) {
-        setDisplayValue(formatted);
-
-        const syntheticEvent = {
-          ...e,
-          target: {
-            ...e.target,
-            value: formatted,
-          },
-        };
-        onChange?.(syntheticEvent as ChangeEvent<HTMLInputElement>);
-      }
-    };
-
-    const handlePhoneKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-      const target = e.target as HTMLInputElement;
-      const cursorPosition = target.selectionStart || 0;
-
-      if (
-        (e.key === 'Backspace' || e.key === 'Delete') &&
-        cursorPosition <= 4
-      ) {
-        e.preventDefault();
-      }
-    };
-
-    const handlePhoneFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-      if (!displayValue) {
-        const formatted = '+375';
-        setDisplayValue(formatted);
-
-        const syntheticEvent = {
-          ...e,
-          target: {
-            ...e.target,
-            value: formatted,
-          },
-        };
-        onChange?.(syntheticEvent);
-      }
-
-      setTimeout(() => {
-        const target = e.target as HTMLInputElement;
-        if (target.selectionStart && target.selectionStart < 4) {
-          target.setSelectionRange(4, 4);
-        }
-      }, 0);
-    };
+    const {
+      displayValue,
+      handlePhoneChange,
+      handlePhoneKeyDown,
+      handlePhoneFocus,
+    } = usePhoneInput(value, onChange);
 
     const inputType = isPassword
       ? showPassword
@@ -169,11 +68,18 @@ export const SignInput = forwardRef<HTMLInputElement, SignInputProps>(
 
     return (
       <div className={styles.inputWrapper}>
+        {label && (
+          <label htmlFor={label} className={styles.label}>
+            {label}
+          </label>
+        )}
+
         <input
           ref={ref}
           className={styles.input}
           type={inputType}
           placeholder={placeholder}
+          id={label}
           {...phoneHandlers}
           {...props}
         />

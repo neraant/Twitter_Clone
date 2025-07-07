@@ -88,7 +88,7 @@ export const LeftSidebar = () => {
           <PlusIcon className={styles.plusIcon} width={14} height={14} />
         </Button>
 
-        {isLoading ? (
+        {isLoading || !user ? (
           <UserSmallCardSkeleton
             className={clsx(styles.userSkeleton, 'hideUserInfoBelow1280')}
           />
