@@ -35,6 +35,10 @@
     &.active {
       max-height: 680px;
     }
+
+    @media (max-width: 1280px) {
+      max-height: 160px;
+    }
   }
 
   .emptyStateText {

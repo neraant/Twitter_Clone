@@ -4,6 +4,7 @@ import { useToast } from '@/shared/lib/toast';
 import { useProfileStore } from '@/widgets/profile-client/model';
 
 import { followUser, unfollowUser } from '../api/clientFollowApi';
+import { useFollowStore } from '../model';
 
 export const useFollow = ({
   targetUserId,
@@ -14,7 +15,8 @@ export const useFollow = ({
   currentUserId: string;
   isInitialFollow: boolean;
 }) => {
-  const [isFollowed, setIsFollowed] = useState(isInitialFollow);
+  const { setFollowStatus, getFollowStatus } = useFollowStore();
+  const isFollowed = getFollowStatus(targetUserId, isInitialFollow);
   const [loading, setLoading] = useState(false);
 
   const { showToast } = useToast();
@@ -24,6 +26,9 @@ export const useFollow = ({
   const updateFollowingCount = useProfileStore(
     (state) => state.updateFollowingCount,
   );
+  const setIsInitialFollow = useProfileStore(
+    (state) => state.setIsInitialFollow,
+  );
   const profileUserId = useProfileStore((state) => state.user?.id);
   const isOwner = useProfileStore((state) => state.isOwner);
 
@@ -31,10 +36,11 @@ export const useFollow = ({
     if (loading) return;
 
     const newFollowState = !isFollowed;
-    setIsFollowed(newFollowState);
+    setFollowStatus(targetUserId, newFollowState);
 
     if (targetUserId === profileUserId) {
       updateFollowersCount(newFollowState ? +1 : -1);
+      setIsInitialFollow(newFollowState);
     }
 
     if (isOwner) {
@@ -51,10 +57,11 @@ export const useFollow = ({
       }
     } catch (error) {
       console.error(error);
-      setIsFollowed(!newFollowState);
+      setFollowStatus(targetUserId, !newFollowState);
 
       if (targetUserId === profileUserId) {
         updateFollowersCount(newFollowState ? -1 : +1);
+        setIsInitialFollow(!newFollowState);
       }
 
       if (isOwner) {

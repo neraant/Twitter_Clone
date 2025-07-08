@@ -1,4 +1,4 @@
-import UserIcon from '@assets/images/user-avatar.png';
+import DefaultAvatar from '@assets/images/user-avatar.png';
 import clsx from 'clsx';
 import Image from 'next/image';
 
@@ -20,7 +20,7 @@ export const UserBigCard = ({ user, className }: UserBigCardProps) => {
   return (
     <div className={clsx(styles.wrapper, className)}>
       <Image
-        src={avatar_url || UserIcon}
+        src={avatar_url || DefaultAvatar}
         alt='avatar'
         width={180}
         height={180}

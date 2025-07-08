@@ -9,7 +9,7 @@ export const getUserTweets = async ({
   const supabase = await createClient();
 
   let query = supabase
-    .from('posts')
+    .from('post_with_author')
     .select('*')
     .eq('author_id', userId)
     .order('created_at', { ascending: false });
@@ -25,6 +25,7 @@ export const getUserTweets = async ({
   const { data, error } = await query;
 
   if (error) throw error;
+  if (!data) return [];
 
   return data;
 };

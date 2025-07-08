@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
 import { getUserTweets } from '@/entities/post/api';
-import { getCurrentUser, getUserById } from '@/entities/user/api';
+import { getCurrentUserAction, getUserByIdAction } from '@/entities/user/api';
 import { isFollowing } from '@/features/follow-button/api/serverFollowApi';
 import { isValidUUID } from '@/shared/lib/isValidUUID';
 import { ProfileClient, ProfileClientSkeleton } from '@/widgets/profile-client';
@@ -16,28 +16,31 @@ export const metadata: Metadata = {
 };
 
 async function ProfileData({ userId }: { userId: string }) {
-  const [user, currentUser, tweets] = await Promise.all([
-    getUserById(userId),
-    getCurrentUser(),
-    getUserTweets({ userId }),
-  ]);
+  try {
+    const [user, currentUser, tweets] = await Promise.all([
+      getUserByIdAction(userId),
+      getCurrentUserAction(),
+      getUserTweets({ userId }),
+    ]);
 
-  if (!user || !currentUser) return null;
-  const isInitialFollow = await isFollowing(user.id, currentUser?.id);
+    if (!user || !currentUser) return notFound();
 
-  if (!user || !currentUser) return notFound();
+    const isInitialFollow = await isFollowing(user.id, currentUser.id);
+    const isOwner = currentUser.id === userId;
 
-  const isOwner = currentUser.id === userId;
-
-  return (
-    <ProfileClient
-      user={user}
-      tweets={tweets}
-      currentUserId={currentUser.id}
-      isOwner={isOwner}
-      isInitialFollow={isInitialFollow}
-    />
-  );
+    return (
+      <ProfileClient
+        user={user}
+        tweets={tweets}
+        currentUserId={currentUser.id}
+        isOwner={isOwner}
+        isInitialFollow={isInitialFollow}
+      />
+    );
+  } catch (error) {
+    console.error('ProfileData error:', error);
+    return notFound();
+  }
 }
 
 export default async function Profile({

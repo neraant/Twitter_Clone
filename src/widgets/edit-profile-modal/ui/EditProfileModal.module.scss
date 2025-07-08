@@ -20,10 +20,33 @@
     padding-bottom: var(--spacing-4xl);
   }
 
+  .uploadersWrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-md);
+    .avatar {
+      border-radius: 50%;
+      max-width: 120px;
+      object-fit: cover;
+    }
+    .banner {
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: none;
+      object-fit: cover;
+    }
+  }
+
   .closeButton {
     position: absolute;
     top: var(--spacing-xl);
-    right: var(--spacing-xl);
+    right: var(--spacing-2xl);
+
+    @media (max-width: 768px) {
+      top: calc(var(--spacing-lg) + 3px);
+      right: calc(var(--spacing-lg) + 5px);
+    }
   }
 
   .modalContent {
@@ -96,16 +119,5 @@
         height: fit-content;
       }
     }
-  }
-}
-
-@keyframes modalFadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
   }
 }

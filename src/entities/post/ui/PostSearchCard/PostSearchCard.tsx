@@ -1,9 +1,8 @@
-import UserIcon from '@assets/images/user-avatar.png';
+import DefaultAvatar from '@assets/images/user-avatar.png';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import styles from './PostSearchCard.module.scss';
-
 type PostSearchCardProps = {
   avatar: string | null;
   name: string;
@@ -21,7 +20,7 @@ export const PostSearchCard = ({
     <Link href={href} className={styles.postLink}>
       <Image
         className={styles.avatar}
-        src={avatar || UserIcon}
+        src={avatar || DefaultAvatar}
         alt='avatar'
         width={50}
         height={50}

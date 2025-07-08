@@ -9,6 +9,8 @@ import { EditFormData } from '../lib';
 export const editProfileAction = async (
   userId: string,
   formData: EditFormData,
+  avatar_url?: string | null,
+  banner_url?: string | null,
 ) => {
   const { name, telegram, bio, gender } = formData;
   const supabase = await createClient();
@@ -20,6 +22,8 @@ export const editProfileAction = async (
       user_telegram: telegram,
       bio,
       gender,
+      avatar_url,
+      banner_url,
     })
     .eq('id', userId)
     .select()
@@ -27,6 +31,8 @@ export const editProfileAction = async (
 
   if (error) throw error;
 
+  revalidateTag('user-profile');
   revalidateTag(`user-${userId}`);
+
   return data;
 };

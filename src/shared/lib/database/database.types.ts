@@ -71,6 +71,13 @@ export type Database = {
             foreignKeyName: 'comments_post_id_fkey';
             columns: ['post_id'];
             isOneToOne: false;
+            referencedRelation: 'post_with_author';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'comments_post_id_fkey';
+            columns: ['post_id'];
+            isOneToOne: false;
             referencedRelation: 'posts';
             referencedColumns: ['id'];
           },
@@ -130,6 +137,13 @@ export type Database = {
             foreignKeyName: 'likes_post_id_fkey';
             columns: ['post_id'];
             isOneToOne: false;
+            referencedRelation: 'post_with_author';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'likes_post_id_fkey';
+            columns: ['post_id'];
+            isOneToOne: false;
             referencedRelation: 'posts';
             referencedColumns: ['id'];
           },
@@ -144,27 +158,21 @@ export type Database = {
       };
       posts: {
         Row: {
-          author_avatar: string | null;
           author_id: string | null;
-          author_name: string | null;
           content: string | null;
           created_at: string;
           id: string;
           image_url: string | null;
         };
         Insert: {
-          author_avatar?: string | null;
           author_id?: string | null;
-          author_name?: string | null;
           content?: string | null;
           created_at?: string;
           id?: string;
           image_url?: string | null;
         };
         Update: {
-          author_avatar?: string | null;
           author_id?: string | null;
-          author_name?: string | null;
           content?: string | null;
           created_at?: string;
           id?: string;
@@ -233,7 +241,26 @@ export type Database = {
       };
     };
     Views: {
-      [_ in never]: never;
+      post_with_author: {
+        Row: {
+          author_avatar: string | null;
+          author_id: string | null;
+          author_name: string | null;
+          content: string | null;
+          created_at: string | null;
+          id: string | null;
+          image_url: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'posts_author_id_fkey';
+            columns: ['author_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
     };
     Functions: {
       decrement_followers_count: {

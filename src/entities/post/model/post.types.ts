@@ -3,8 +3,8 @@ export type Post = {
   author_id: string | null;
   author_name: string | null;
   content: string | null;
-  created_at: string;
-  id: string;
+  created_at: string | null;
+  id: string | null;
   image_url: string | null;
 };
 

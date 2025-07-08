@@ -4,13 +4,16 @@
   gap: var(--spacing-lg);
 
   .icon {
-    width: 100%;
-    height: 100%;
-    max-width: 50px;
-    max-height: 50px;
+    width: 50px;
+    height: 50px;
     object-fit: cover;
     border-radius: 50%;
     box-shadow: 0px 0px 5px 0px var(--login-shadow-color);
+
+    @media (max-width: 1280px) {
+      width: 40px;
+      height: 40px;
+    }
   }
 
   .userInfo {
@@ -25,7 +28,7 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 110px;
+      max-width: 90px;
     }
     .subname {
       font-weight: var(--font-weight-light);
@@ -34,7 +37,7 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 110px;
+      max-width: 90px;
     }
   }
 }

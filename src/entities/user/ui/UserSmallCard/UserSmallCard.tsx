@@ -1,9 +1,12 @@
-import UserIcon from '@assets/images/user-avatar.png';
+'use client';
+
+import DefaultAvatar from '@assets/images/user-avatar.png';
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
+import { useFollowStore } from '@/features/follow-button/model';
 import { FollowButton } from '@/features/follow-button/ui';
 import { routes } from '@/shared/config/routes';
 
@@ -27,6 +30,8 @@ export const UserSmallCard = ({
   isFollowed,
   currentUserId,
 }: UserSmallCardProps) => {
+  const { getFollowStatus } = useFollowStore();
+
   if (!user) return null;
 
   const { avatar_url, name, id, user_telegram } = user;
@@ -34,11 +39,13 @@ export const UserSmallCard = ({
   const showFollowButton =
     !isOwnProfile && currentUserId && currentUserId !== user.id;
 
+  const actualFollowStatus = getFollowStatus(user.id, isFollowed ?? false);
+
   return (
     <div className={clsx(styles.wrapper, className)}>
       <Link href={url} className={styles.wrapper}>
         <Image
-          src={avatar_url || UserIcon}
+          src={avatar_url || DefaultAvatar}
           alt='avatar'
           width={50}
           height={50}
@@ -57,7 +64,7 @@ export const UserSmallCard = ({
       {showFollowButton && (
         <FollowButton
           targetUserId={user.id}
-          isInitialFollow={isFollowed ?? false}
+          isInitialFollow={actualFollowStatus}
           currentUserId={currentUserId!}
         />
       )}

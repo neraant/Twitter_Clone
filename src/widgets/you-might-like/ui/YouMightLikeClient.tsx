@@ -1,11 +1,11 @@
-// YouMightLikeClient.tsx (клиентский)
 'use client';
 
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { UserSmallCard } from '@/entities/user';
 import { User } from '@/entities/user/model/user.types';
+import { useFollowStore } from '@/features/follow-button/model';
 
 import {
   EMPTY_USERS_TEXT,
@@ -31,9 +31,17 @@ export const YouMightLikeClient = ({
 }: YouMightLikeClientProps) => {
   const [isMore, setIsMore] = useState(false);
 
+  const { initializeFollowStatus } = useFollowStore();
+
   const handleSeeMore = () => {
     setIsMore((prev) => !prev);
   };
+
+  useEffect(() => {
+    initialUsers?.forEach((user) => {
+      initializeFollowStatus(user.id, user.isFollowed);
+    });
+  }, [initialUsers, initializeFollowStatus]);
 
   return (
     <div className={styles.wrapper}>

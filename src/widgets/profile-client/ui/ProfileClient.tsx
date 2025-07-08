@@ -24,7 +24,7 @@ export const ProfileClient = ({
   user,
   tweets,
   currentUserId,
-  isInitialFollow = false,
+  isInitialFollow,
   isOwner,
 }: ProfileClientProps) => {
   const storeUser = useProfileStore((state) => state.user);
@@ -43,7 +43,7 @@ export const ProfileClient = ({
     setTweets(tweets);
     setCurrentUserId(currentUserId);
     setIsOwner(isOwner);
-    setIsInitialFollow(isInitialFollow);
+    setIsInitialFollow(isInitialFollow ?? false);
   }, [
     user,
     tweets,
