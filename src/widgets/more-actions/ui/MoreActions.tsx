@@ -1,6 +1,7 @@
+import clsx from 'clsx';
 import { useRef, useState } from 'react';
 
-import { useClickOutside, useLogout } from '@/shared/lib/hooks';
+import { useLogout, useModalCloseHandler } from '@/shared/lib/hooks';
 import { ConfirmModal } from '@/shared/ui/confirm-modal';
 
 import { ACTIONS, LOGOUT_ACTION, THEME_ACTION } from '../lib';
@@ -13,7 +14,9 @@ type MoreActionsProps = {
 export const MoreActions = ({ onClose }: MoreActionsProps) => {
   const ref = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const { handleLogout } = useLogout();
+  const { isClosing, handleClose } = useModalCloseHandler(ref, onClose);
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -31,7 +34,7 @@ export const MoreActions = ({ onClose }: MoreActionsProps) => {
       }
       case THEME_ACTION: {
         // toggle theme logic
-        onClose();
+        handleClose();
         break;
       }
       default: {
@@ -39,12 +42,6 @@ export const MoreActions = ({ onClose }: MoreActionsProps) => {
       }
     }
   };
-
-  useClickOutside(ref, (e: MouseEvent | TouchEvent) => {
-    const target = e.target as HTMLElement;
-    if (target.closest('.confirmLogout')) return;
-    onClose();
-  });
 
   return (
     <div ref={ref}>
@@ -59,7 +56,7 @@ export const MoreActions = ({ onClose }: MoreActionsProps) => {
         />
       )}
 
-      <div className={styles.actionsWrapper}>
+      <div className={clsx(styles.actionsWrapper, isClosing && styles.closing)}>
         <ul className={styles.actionsList}>
           {ACTIONS.map(({ label, action, icon }) => (
             <li key={`action_${action}`} className={styles.actionListItem}>

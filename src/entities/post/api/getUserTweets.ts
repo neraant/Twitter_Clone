@@ -1,12 +1,12 @@
 import { GetUserTweetsOptions, Post } from '@/entities/post';
-import { createClient } from '@/shared/api/supabase/client';
+import { createClient } from '@/shared/api/supabase/server';
 
 export const getUserTweets = async ({
   userId,
   limit,
   cursor,
 }: GetUserTweetsOptions): Promise<Post[]> => {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   let query = supabase
     .from('posts')

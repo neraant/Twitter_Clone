@@ -30,6 +30,7 @@ export default async function ProtectedLayout({
         <LeftSidebar />
 
         <div className={styles.content}>{children}</div>
+
         <RightSidebar />
       </main>
     </>

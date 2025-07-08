@@ -20,7 +20,7 @@ export const UserBigCardSkeleton = ({ className }: UserBigCardProps) => {
         <Skeleton width='90px' height='20px' />
       </div>
 
-      <Skeleton width='350px' height='21px' />
+      <Skeleton width='300px' height='40px' />
     </div>
   );
 };

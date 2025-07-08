@@ -1,4 +1,7 @@
+@use '@styles/_mixins.scss' as *;
+
 .confirmModal {
+  @include modal-animation-with-translate;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -13,12 +16,6 @@
   gap: var(--spacing-xl);
   flex-direction: column;
   align-items: center;
-
-  animation: modalFadeIn 0.2s ease-in-out;
-
-  &.closing {
-    animation: modalFadeOut 0.2s ease-in-out;
-  }
 
   @media (max-width: 580px) {
     max-width: calc(100dvw - 40px);
@@ -94,27 +91,5 @@
         outline: 1px solid var(--border-input-color);
       }
     }
-  }
-}
-
-@keyframes modalFadeIn {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-}
-
-@keyframes modalFadeOut {
-  from {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.9);
   }
 }

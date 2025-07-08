@@ -16,17 +16,23 @@ export type UserSmallCardProps = {
   className?: string;
   user?: UserForProps | null;
   isOwnProfile?: boolean;
+  isFollowed?: boolean;
+  currentUserId?: string;
 };
 
 export const UserSmallCard = ({
   user,
   className,
   isOwnProfile = false,
+  isFollowed,
+  currentUserId,
 }: UserSmallCardProps) => {
   if (!user) return null;
 
   const { avatar_url, name, id, user_telegram } = user;
   const url = isOwnProfile ? routes.app.profile : `${routes.app.profile}/${id}`;
+  const showFollowButton =
+    !isOwnProfile && currentUserId && currentUserId !== user.id;
 
   return (
     <div className={clsx(styles.wrapper, className)}>
@@ -48,7 +54,13 @@ export const UserSmallCard = ({
         </div>
       </Link>
 
-      <FollowButton targetUserId={user.id} />
+      {showFollowButton && (
+        <FollowButton
+          targetUserId={user.id}
+          isInitialFollow={isFollowed ?? false}
+          currentUserId={currentUserId!}
+        />
+      )}
     </div>
   );
 };

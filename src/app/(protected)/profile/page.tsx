@@ -1,6 +1,9 @@
 import { Metadata } from 'next';
+import { Suspense } from 'react';
 
-import { ProfileClient } from '@/widgets/profile-client';
+import { getUserTweets } from '@/entities/post/api';
+import { getCurrentUser } from '@/entities/user/api';
+import { ProfileClient, ProfileClientSkeleton } from '@/widgets/profile-client';
 
 import styles from './profile.module.scss';
 
@@ -9,10 +12,28 @@ export const metadata: Metadata = {
   description: 'This is the profile page',
 };
 
-export default async function Profile() {
+async function ProfileData() {
+  const user = await getCurrentUser();
+  if (!user) return null;
+
+  const tweets = await getUserTweets({ userId: user.id });
+
+  return (
+    <ProfileClient
+      user={user}
+      tweets={tweets}
+      currentUserId={user.id}
+      isOwner={true}
+    />
+  );
+}
+
+export default function Profile() {
   return (
     <div className={styles.page}>
-      <ProfileClient />
+      <Suspense fallback={<ProfileClientSkeleton />}>
+        <ProfileData />
+      </Suspense>
     </div>
   );
 }

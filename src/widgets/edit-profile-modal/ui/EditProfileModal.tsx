@@ -16,7 +16,7 @@ import { Loader } from '@/shared/ui/loader';
 import { Overlay } from '@/shared/ui/overlay';
 import { SignInput } from '@/shared/ui/sign-input';
 
-import { editProfile } from '../api';
+import { editProfileAction } from '../api';
 import {
   ADDITIONAL_INFO_TITLE,
   EDIT_TITLE,
@@ -59,11 +59,14 @@ export const EditProfileModal = ({ onClose }: EditProfileModalProps) => {
 
   const onSubmit = async (data: EditFormData) => {
     try {
-      if (!user) return;
+      if (!user?.id) {
+        console.error('No user id available!');
+        return;
+      }
 
       setIsLoading(true);
 
-      const updatedProfile = await editProfile(user.id, data);
+      const updatedProfile = await editProfileAction(user.id, data);
 
       if (!updatedProfile) {
         throw new Error('Failed to update profile');
@@ -99,6 +102,8 @@ export const EditProfileModal = ({ onClose }: EditProfileModalProps) => {
   const handleGender = (value: string) => {
     setValue('gender', value);
   };
+
+  if (!user) return null;
 
   return (
     <Overlay isClosing={isClosing} onClickOutside={handleClose}>

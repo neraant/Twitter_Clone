@@ -1,66 +1,35 @@
-'use client';
+import { isFollowing } from '@/features/follow-button/api/serverFollowApi';
+import { createClient } from '@/shared/api/supabase/server';
 
-import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import { getYouMightLikeUsers } from '../api';
+import { YouMightLikeClient } from './YouMightLikeClient';
 
-import { UserSmallCard } from '@/entities/user';
-import { useUsersStore } from '@/entities/user/model';
-import { UserSmallCardSkeleton } from '@/entities/user/ui/UserSmallCard/UserSmallCardSkeleton';
-import { useAuthStore } from '@/features/auth/model';
+export const YouMightLike = async () => {
+  const supabase = await createClient();
 
-import {
-  EMPTY_USERS_TEXT,
-  SHOW_LESS_BUTTON,
-  SHOW_MORE_BUTTON,
-  SKELETON_COUNT,
-  TITLE,
-} from '../lib';
-import styles from './YouMightLike.module.scss';
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return null;
 
-export const YouMightLike = () => {
-  const currentUser = useAuthStore((state) => state.user);
+  try {
+    const initialUsers = await getYouMightLikeUsers(user.id);
 
-  const users = useUsersStore((state) => state.users);
-  const isLoading = useUsersStore((state) => state.isLoading);
-  const fetchUsers = useUsersStore((state) => state.fetchUsers);
+    const usersWithFollowStatus = await Promise.all(
+      initialUsers.map(async (targetUser) => {
+        const isFollowed = await isFollowing(targetUser.id, user.id);
+        return { ...targetUser, isFollowed };
+      }),
+    );
 
-  const [isMore, setIsMore] = useState(false);
-
-  useEffect(() => {
-    if (currentUser?.id) fetchUsers(currentUser.id);
-  }, [currentUser?.id, fetchUsers]);
-
-  const handleSeeMore = () => {
-    setIsMore((prev) => !prev);
-  };
-
-  return (
-    <div className={styles.wrapper}>
-      <p className={styles.title}>{TITLE}</p>
-
-      <div className={clsx(styles.users, isMore ? styles.active : '')}>
-        {isLoading &&
-          users.length === 0 &&
-          Array.from({ length: SKELETON_COUNT }, (_, i) => (
-            <UserSmallCardSkeleton key={i} />
-          ))}
-
-        {!isLoading && users.length === 0 && (
-          <span className={styles.emptyStateText}>{EMPTY_USERS_TEXT}</span>
-        )}
-
-        {users.map((user) => (
-          <UserSmallCard key={user.id} user={user} />
-        ))}
-      </div>
-
-      <button
-        type='button'
-        className={styles.showButton}
-        onClick={handleSeeMore}
-      >
-        {isMore ? SHOW_LESS_BUTTON : SHOW_MORE_BUTTON}
-      </button>
-    </div>
-  );
+    return (
+      <YouMightLikeClient
+        initialUsers={usersWithFollowStatus}
+        currentUserId={user.id}
+      />
+    );
+  } catch (error) {
+    console.error('Failed to fetch users:', error);
+    return <YouMightLikeClient isError={true} />;
+  }
 };

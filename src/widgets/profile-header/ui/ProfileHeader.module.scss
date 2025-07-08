@@ -1,5 +1,16 @@
 .wrapper {
   padding: 0 var(--spacing-md);
+
+  .hideUnder768 {
+    display: inline-block;
+    margin-top: var(--spacing-md);
+
+    @media (max-width: 768px) {
+      margin: 0;
+      text-align: center;
+      display: none;
+    }
+  }
 }
 
 .top {

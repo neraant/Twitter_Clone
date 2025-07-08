@@ -1,10 +1,17 @@
-import { createClient } from '@/shared/api/supabase/client';
+'use server';
+
+import { revalidateTag } from 'next/cache';
+
+import { createClient } from '@/shared/api/supabase/server';
 
 import { EditFormData } from '../lib';
 
-export const editProfile = async (userId: string, formData: EditFormData) => {
+export const editProfileAction = async (
+  userId: string,
+  formData: EditFormData,
+) => {
   const { name, telegram, bio, gender } = formData;
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data, error } = await supabase
     .from('users')
@@ -20,5 +27,6 @@ export const editProfile = async (userId: string, formData: EditFormData) => {
 
   if (error) throw error;
 
+  revalidateTag(`user-${userId}`);
   return data;
 };

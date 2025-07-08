@@ -1,4 +1,7 @@
+@use '@styles/_mixins.scss' as *;
+
 .modalWrapper {
+  @include modal-animation;
   position: relative;
   padding: var(--spacing-xl);
   padding-bottom: var(--spacing-5xl);
@@ -9,12 +12,6 @@
   max-height: 80vh;
   display: flex;
   flex-direction: column;
-
-  animation: modalFadeIn 0.2s ease-in-out;
-
-  &.closing {
-    animation: modalFadeOut 0.2s ease-in-out;
-  }
 
   @media (max-width: 768px) {
     width: calc(100% - var(--spacing-md) * 2);
@@ -53,12 +50,18 @@
 
   .input {
     margin-bottom: var(--spacing-md);
+    input {
+      padding-right: var(--spacing-lg);
+      @media (max-width: 768px) {
+        padding-right: var(--spacing-md);
+      }
+    }
   }
 
   .genderWrapper {
     margin-bottom: var(--spacing-xl);
     .genderLabel {
-      font-size: var(--font-size-ms);
+      font-size: var(--font-size-md);
       color: var(--dark-text-color);
       opacity: 0.6;
     }
@@ -104,16 +107,5 @@
   to {
     opacity: 1;
     transform: scale(1);
-  }
-}
-
-@keyframes modalFadeOut {
-  from {
-    opacity: 1;
-    transform: scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: scale(0.9);
   }
 }

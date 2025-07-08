@@ -8,14 +8,23 @@
     display: none;
     margin: 0 auto;
     max-width: calc(100% - 32px);
+
+    @media (max-width: 768px) {
+      display: flex;
+    }
+  }
+
+  .skeletonButton {
+    display: none;
+    @media (max-width: 768px) {
+      display: inline-block;
+      margin-left: var(--spacing-md);
+      width: calc(100% - var(--spacing-md) * 2) !important;
+    }
   }
 
   @media (max-width: 768px) {
     padding-bottom: var(--spacing-xl-plus);
-
-    button {
-      display: flex;
-    }
   }
 }
 

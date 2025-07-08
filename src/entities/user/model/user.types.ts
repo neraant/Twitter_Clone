@@ -14,22 +14,3 @@ export interface User {
   updated_at: string | null;
   user_telegram: string | null;
 }
-
-export type UsersState = {
-  users: User[];
-  isLoading: boolean;
-  error: string | null;
-  fetchUsers: (currentUserId: string) => void;
-};
-
-export type ProfileState = {
-  profileUser: User | null;
-  isLoading: boolean;
-  error: string | null;
-  fetchProfileUser: (id: string) => Promise<void>;
-  incrementFollowing: () => void;
-  decrementFollowing: () => void;
-  incrementFollowers: () => void;
-  decrementFollowers: () => void;
-  resetProfile: () => void;
-};

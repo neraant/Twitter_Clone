@@ -1,62 +1,75 @@
 'use client';
 
-import { useAuthStore } from '@features/auth/model';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
-import { useProfileStore, useProfileUser } from '@/entities/user';
+import { Post } from '@/entities/post';
+import { User } from '@/entities/user';
 import { EditProfileModal } from '@/widgets/edit-profile-modal';
 import { ProfileBanner } from '@/widgets/profile-banner';
 import { ProfileHeader } from '@/widgets/profile-header';
 import { ProfileStats } from '@/widgets/profile-stats';
 
-export const ProfileClient = ({ userId }: { userId?: string }) => {
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+import { useProfileStore } from '../model';
+import { ProfileClientSkeleton } from './ProfileClientSkeleton';
 
-  const currentUser = useAuthStore((state) => state.user);
-  const fetchUserById = useProfileStore((state) => state.fetchProfileUser);
-  const resetProfile = useProfileStore((state) => state.resetProfile);
+type ProfileClientProps = {
+  user: User;
+  tweets: Post[];
+  currentUserId: string;
+  isOwner: boolean;
+  isInitialFollow?: boolean;
+};
+
+export const ProfileClient = ({
+  user,
+  tweets,
+  currentUserId,
+  isInitialFollow = false,
+  isOwner,
+}: ProfileClientProps) => {
+  const storeUser = useProfileStore((state) => state.user);
+  const setUser = useProfileStore((state) => state.setUser);
+  const setTweets = useProfileStore((state) => state.setTweets);
+  const setCurrentUserId = useProfileStore((state) => state.setCurrentUserId);
+  const setIsOwner = useProfileStore((state) => state.setIsOwner);
+  const setIsInitialFollow = useProfileStore(
+    (state) => state.setIsInitialFollow,
+  );
+  const isEditModalOpen = useProfileStore((state) => state.isEditModalOpen);
+  const closeEditModal = useProfileStore((state) => state.closeEditModal);
 
   useEffect(() => {
-    if (userId && userId !== currentUser?.id) {
-      fetchUserById(userId);
-    } else {
-      resetProfile();
-    }
-  }, [userId, currentUser?.id, fetchUserById, resetProfile]);
-
-  const handleCloseModal = () => {
-    setIsEditModalOpen(false);
-  };
-
-  const handleOpenModal = () => {
-    setIsEditModalOpen(true);
-  };
-
-  const {
+    setUser(user);
+    setTweets(tweets);
+    setCurrentUserId(currentUserId);
+    setIsOwner(isOwner);
+    setIsInitialFollow(isInitialFollow);
+  }, [
     user,
-    isLoading: isUserLoading,
+    tweets,
+    currentUserId,
     isOwner,
-  } = useProfileUser(userId ?? undefined);
+    isInitialFollow,
+    setUser,
+    setTweets,
+    setCurrentUserId,
+    setIsOwner,
+    setIsInitialFollow,
+  ]);
 
-  if (!user) return null;
+  if (!storeUser) return <ProfileClientSkeleton />;
 
   return (
     <>
-      <ProfileBanner user={user} isLoading={isUserLoading} />
-      <ProfileHeader
-        user={user}
-        isLoading={isUserLoading}
-        isOwner={isOwner}
-        onEditProfileClick={handleOpenModal}
+      <ProfileBanner
+        userName={user.name}
+        userBanner={user.banner_url}
+        tweetsLength={tweets.length}
       />
-      <ProfileStats
-        user={user}
-        isLoading={isUserLoading}
-        isOwner={isOwner}
-        onEditProfileClick={handleOpenModal}
-      />
+      <ProfileHeader />
+      <ProfileStats />
 
-      {isEditModalOpen && <EditProfileModal onClose={handleCloseModal} />}
+      {isEditModalOpen && <EditProfileModal onClose={closeEditModal} />}
     </>
   );
 };

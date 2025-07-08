@@ -1,2 +1,2 @@
+export { getCurrentUser } from './getCurrentUser';
 export { getUserById } from './getUserById';
-export { getYouMightLikeUsers } from './getYouMightLikeUsers';

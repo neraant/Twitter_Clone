@@ -1,4 +1,8 @@
+@use '@styles/_mixins.scss' as *;
+
 .actionsWrapper {
+  @include modal-animation;
+
   position: absolute;
   left: 0;
   bottom: calc(100% + 10px);
