@@ -5,6 +5,10 @@
   z-index: 2000;
   width: 100%;
   max-width: 345px;
+
+  @media (max-width: 768px) {
+    bottom: var(--spacing-3xl);
+  }
 }
 
 .toast {

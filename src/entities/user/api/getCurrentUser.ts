@@ -1,25 +1,23 @@
 'use server';
 
-import { createClient } from '@/shared/api/supabase/server';
+import { cookies } from 'next/headers';
 
 export const getCurrentUser = async () => {
-  const supabase = await createClient();
+  const cookieStore = await cookies();
+  const cookieHeader = cookieStore.toString();
 
-  const {
-    data: { user: authUser },
-    error: authError,
-  } = await supabase.auth.getUser();
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/users`, {
+    method: 'GET',
+    headers: {
+      Cookie: cookieHeader,
+    },
+    next: { tags: ['user-profile'] },
+  });
 
-  if (authError) throw authError;
-  if (!authUser) return null;
+  if (!res.ok) {
+    return null;
+  }
 
-  const { data: user, error: userError } = await supabase
-    .from('users')
-    .select('*')
-    .eq('id', authUser.id)
-    .single();
-
-  if (userError) throw userError;
-
+  const { user } = await res.json();
   return user;
 };

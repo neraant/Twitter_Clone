@@ -31,10 +31,6 @@ export async function updateSession(request: NextRequest) {
     },
   );
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
   const pathname = request.nextUrl.pathname;
 
   const publicRoutes = [
@@ -47,15 +43,47 @@ export async function updateSession(request: NextRequest) {
     pathname.startsWith(route),
   );
 
-  if (!user && !isPublicRoute) {
-    const redirectUrl = new URL(routes.auth.signUpMain, request.url);
-    return NextResponse.redirect(redirectUrl);
-  }
+  try {
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser();
 
-  if (user && isPublicRoute) {
-    const redirectUrl = new URL(routes.app.home, request.url);
-    return NextResponse.redirect(redirectUrl);
-  }
+    if (error) {
+      console.error('Auth error:', error);
+      supabaseResponse.cookies.delete('sb-access-token');
+      supabaseResponse.cookies.delete('sb-refresh-token');
 
-  return supabaseResponse;
+      if (!isPublicRoute) {
+        const redirectUrl = new URL(routes.auth.signUpMain, request.url);
+        return NextResponse.redirect(redirectUrl);
+      }
+
+      return supabaseResponse;
+    }
+
+    if (!user && !isPublicRoute) {
+      const redirectUrl = new URL(routes.auth.signUpMain, request.url);
+      return NextResponse.redirect(redirectUrl);
+    }
+
+    if (user && isPublicRoute) {
+      const redirectUrl = new URL(routes.app.home, request.url);
+      return NextResponse.redirect(redirectUrl);
+    }
+
+    return supabaseResponse;
+  } catch (error) {
+    console.error('Middleware error:', error);
+
+    supabaseResponse.cookies.delete('sb-access-token');
+    supabaseResponse.cookies.delete('sb-refresh-token');
+
+    if (!isPublicRoute) {
+      const redirectUrl = new URL(routes.auth.signUpMain, request.url);
+      return NextResponse.redirect(redirectUrl);
+    }
+
+    return supabaseResponse;
+  }
 }

@@ -13,10 +13,8 @@ export const buildUserFromAuth = (
     id: authUser.id,
     email: authUser.email!,
     name: profile?.name ?? authUser.email!,
-    avatar_url:
-      profile?.avatar_url ?? authUser.user_metadata?.avatar_url ?? null,
-    banner_url:
-      profile?.banner_url ?? authUser.user_metadata?.banner_url ?? null,
+    avatar_url: profile?.avatar_url ?? null,
+    banner_url: profile?.banner_url ?? null,
     phone_number: profile?.phone_number ?? null,
     date_of_birth: profile?.date_of_birth ?? null,
     created_at: profile?.created_at ?? new Date().toISOString(),

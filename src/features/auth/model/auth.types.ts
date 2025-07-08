@@ -25,7 +25,6 @@ export interface UseAuthState {
   isLoadingLogout: boolean;
 
   initialize: () => Promise<void>;
-  refreshUserProfile: () => Promise<void>;
   loginWithPassword: (credentials: LoginCredentials) => Promise<void>;
   loginWithGoogle: () => Promise<void>;
   signUpWithPassword: (credentials: RegisterCredentials) => Promise<void>;

@@ -1,4 +1,3 @@
-// YouMightLikeClient.tsx (клиентский)
 'use client';
 
 import clsx from 'clsx';

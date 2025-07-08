@@ -1,4 +1,4 @@
-import DefautlBanner from '@assets/images/default-banner.png';
+import DefaultBanner from '@assets/images/default-banner.png';
 import Image from 'next/image';
 
 import { BackButton } from '@/shared/ui/back-button';
@@ -31,7 +31,7 @@ export const ProfileBanner = ({
       </div>
 
       <Image
-        src={userBanner || DefautlBanner}
+        src={userBanner || DefaultBanner}
         className={styles.bannerImage}
         alt='banner'
         width={650}

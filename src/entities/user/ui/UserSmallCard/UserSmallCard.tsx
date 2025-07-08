@@ -1,4 +1,4 @@
-import UserIcon from '@assets/images/user-avatar.png';
+import DefaultAvatar from '@assets/images/user-avatar.png';
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -38,7 +38,7 @@ export const UserSmallCard = ({
     <div className={clsx(styles.wrapper, className)}>
       <Link href={url} className={styles.wrapper}>
         <Image
-          src={avatar_url || UserIcon}
+          src={avatar_url || DefaultAvatar}
           alt='avatar'
           width={50}
           height={50}

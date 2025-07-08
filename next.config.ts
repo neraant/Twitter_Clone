@@ -18,7 +18,26 @@ const nextConfig: NextConfig = {
     return config;
   },
   images: {
-    domains: ['lh3.googleusercontent.com', 'i.pravatar.cc', 'picsum.photos'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.pravatar.cc',
+      },
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
+      },
+      {
+        protocol: 'https',
+        hostname: 'tyijrtgqykgvxzlwllbg.supabase.co',
+        pathname: '/storage/v1/object/public/**',
+      },
+    ],
+    domains: ['tyijrtgqykgvxzlwllbg.supabase.co'],
   },
 };
 

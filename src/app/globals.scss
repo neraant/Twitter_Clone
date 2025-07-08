@@ -1,6 +1,7 @@
 @use '@styles/_mixins.scss' as *;
 
 :root {
+  --white-color: #fff;
   --color-bg: #fff;
   --dark-text-color: #000;
   --light-text-color: #fff;
@@ -46,6 +47,10 @@
   --empty-text-color: #00000093;
 
   --post-hover-bg: #73bff220;
+
+  --uploader-icon-color: #0000008c;
+  --uploader-border-color: #0004;
+  --uploader-border-color-hover: #0007;
 
   --skeleton-base-color: #ddd;
   --skeleton-shine-color: #e8e8e8;

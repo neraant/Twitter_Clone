@@ -1,14 +1,10 @@
 'use client';
 
-import { yupResolver } from '@hookform/resolvers/yup';
 import clsx from 'clsx';
-import { useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useRef } from 'react';
 
-import { User } from '@/entities/user';
-import { useAuthStore } from '@/features/auth';
-import { useModalCloseHandler } from '@/shared/lib/hooks';
-import { useToast } from '@/shared/lib/toast';
+import { ImageUploader } from '@/features/image-uploader';
+import { useImageUpload, useModalCloseHandler } from '@/shared/lib/hooks';
 import { Button } from '@/shared/ui/button/Button';
 import { DropDownList } from '@/shared/ui/dropdown-list/DropDownList';
 import { CrossIcon } from '@/shared/ui/icon';
@@ -16,15 +12,13 @@ import { Loader } from '@/shared/ui/loader';
 import { Overlay } from '@/shared/ui/overlay';
 import { SignInput } from '@/shared/ui/sign-input';
 
-import { editProfileAction } from '../api';
 import {
   ADDITIONAL_INFO_TITLE,
   EDIT_TITLE,
-  EditFormData,
-  editModalSchema,
   GENDER_OPTIONS,
   LABELS,
   SAVE_BUTTON_LABEL,
+  useEditProfileForm,
 } from '../lib';
 import styles from './EditProfileModal.module.scss';
 
@@ -34,12 +28,18 @@ type EditProfileModalProps = {
 
 export const EditProfileModal = ({ onClose }: EditProfileModalProps) => {
   const modalRef = useRef<HTMLFormElement | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-
   const { isClosing, handleClose } = useModalCloseHandler(modalRef, onClose);
 
-  const user = useAuthStore((state) => state.user);
-  const { showToast } = useToast();
+  const {
+    form,
+    onSubmit,
+    isLoading,
+    user,
+    avatarPreview,
+    bannerPreview,
+    handleAvatarChange,
+    handleBannerChange,
+  } = useEditProfileForm(handleClose);
 
   const {
     register,
@@ -47,57 +47,15 @@ export const EditProfileModal = ({ onClose }: EditProfileModalProps) => {
     setValue,
     watch,
     formState: { errors },
-  } = useForm({
-    resolver: yupResolver(editModalSchema),
-    defaultValues: {
-      name: user?.name ?? '',
-      telegram: user?.user_telegram ?? '',
-      bio: user?.bio ?? '',
-      gender: user?.gender ?? '',
-    },
+  } = form;
+
+  const { handleChange: handleChangeAvatar } = useImageUpload({
+    onFileChange: handleAvatarChange,
   });
 
-  const onSubmit = async (data: EditFormData) => {
-    try {
-      if (!user?.id) {
-        console.error('No user id available!');
-        return;
-      }
-
-      setIsLoading(true);
-
-      const updatedProfile = await editProfileAction(user.id, data);
-
-      if (!updatedProfile) {
-        throw new Error('Failed to update profile');
-      }
-
-      const updatedUser: User = {
-        ...user,
-        name: updatedProfile.name ?? user.name,
-        avatar_url: updatedProfile.avatar_url ?? user.avatar_url,
-        banner_url: updatedProfile.banner_url ?? user.banner_url,
-        phone_number: updatedProfile.phone_number ?? user.phone_number,
-        date_of_birth: updatedProfile.date_of_birth ?? user.date_of_birth,
-        updated_at: updatedProfile.updated_at ?? user.updated_at,
-        followers_count: updatedProfile.followers_count ?? user.followers_count,
-        following_count: updatedProfile.following_count ?? user.following_count,
-        user_telegram: updatedProfile.user_telegram ?? user.user_telegram,
-        bio: updatedProfile.bio ?? user.bio,
-        gender: updatedProfile.gender ?? user.gender,
-      };
-
-      useAuthStore.getState().updateCurrentUser(updatedUser);
-
-      showToast('Success', 'Profile updated!', 'success');
-      handleClose();
-    } catch (error) {
-      console.error(error);
-      showToast('Error', 'Edit failure!', 'error');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { handleChange: handleChangeBanner } = useImageUpload({
+    onFileChange: handleBannerChange,
+  });
 
   const handleGender = (value: string) => {
     setValue('gender', value);
@@ -126,6 +84,21 @@ export const EditProfileModal = ({ onClose }: EditProfileModalProps) => {
             error={errors.name}
             className={styles.input}
           />
+
+          <div className={styles.uploadersWrapper}>
+            <ImageUploader
+              label='avatar'
+              imagePreview={avatarPreview ?? '/images/user-avatar.png'}
+              handleChange={handleChangeAvatar}
+              className={styles.avatar}
+            />
+            <ImageUploader
+              label='banner'
+              imagePreview={bannerPreview ?? '/images/default-banner.png'}
+              handleChange={handleChangeBanner}
+              className={styles.banner}
+            />
+          </div>
 
           <h4 className={styles.subtitle}>{ADDITIONAL_INFO_TITLE}</h4>
 
