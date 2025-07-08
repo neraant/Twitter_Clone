@@ -21,7 +21,7 @@ export const PostSearchCard = ({
     <Link href={href} className={styles.postLink}>
       <Image
         className={styles.avatar}
-        src={avatar ?? UserIcon}
+        src={avatar || UserIcon}
         alt='avatar'
         width={50}
         height={50}

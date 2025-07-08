@@ -1,27 +1,30 @@
-import { useAuthStore } from '@x/follow';
-import { useEffect, useState } from 'react';
+'use client';
+
+import { useState } from 'react';
 
 import { useToast } from '@/shared/lib/toast';
 
-import { followUser, isFollowing, unfollowUser } from '../api';
+import { followUser, unfollowUser } from '../api/clientFollowApi';
 import { FOLLOW_TEXT, UNFOLLOW_TEXT } from '../lib';
 import styles from './FollowButton.module.scss';
 
-export const FollowButton = ({ targetUserId }: { targetUserId: string }) => {
-  const currentUser = useAuthStore((state) => state.user);
-  const [isFollowed, setIsFollowed] = useState(false);
-  const [loading, setLoading] = useState(false);
+type FollowButtonProps = {
+  isInitialFollow: boolean;
+  targetUserId: string;
+  currentUserId: string;
+};
 
+export const FollowButton = ({
+  isInitialFollow,
+  targetUserId,
+  currentUserId,
+}: FollowButtonProps) => {
+  const [isFollowed, setIsFollowed] = useState(isInitialFollow);
+  const [loading, setLoading] = useState(false);
   const { showToast } = useToast();
 
-  useEffect(() => {
-    if (!currentUser) return;
-
-    isFollowing(targetUserId, currentUser.id).then(setIsFollowed);
-  }, [targetUserId, currentUser]);
-
   const handleClick = async () => {
-    if (!currentUser || loading) return;
+    if (loading) return;
 
     const newFollowState = !isFollowed;
     setIsFollowed(newFollowState);
@@ -29,21 +32,21 @@ export const FollowButton = ({ targetUserId }: { targetUserId: string }) => {
 
     try {
       if (isFollowed) {
-        await unfollowUser(targetUserId, currentUser.id);
+        await unfollowUser(targetUserId, currentUserId);
       } else {
-        await followUser(targetUserId, currentUser.id);
+        await followUser(targetUserId, currentUserId);
       }
     } catch (error) {
       setIsFollowed(!newFollowState);
-      if (typeof error === 'string') {
-        showToast('Error', error, 'error');
-      }
+      showToast(
+        'Error',
+        error instanceof Error ? error.message : 'Ошибка',
+        'error',
+      );
     } finally {
       setLoading(false);
     }
   };
-
-  if (!currentUser || currentUser.id === targetUserId) return null;
 
   return (
     <button

@@ -29,6 +29,7 @@ export default async function ProtectedLayout({
       <main className={styles.main}>
         <LeftSidebar />
         {children}
+
         <RightSidebar />
       </main>
     </>

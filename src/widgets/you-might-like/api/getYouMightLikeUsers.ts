@@ -1,7 +1,7 @@
-import { createClient } from '@/shared/api/supabase/client';
+import { createClient } from '@/shared/api/supabase/server';
 
 export const getYouMightLikeUsers = async (currentUserId: string) => {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data, error } = await supabase
     .from('users')
