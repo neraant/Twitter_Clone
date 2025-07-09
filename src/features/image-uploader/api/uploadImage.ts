@@ -3,7 +3,7 @@ import { IMAGE_TYPES, MAX_IMAGE_SIZE } from '@/shared/lib/image';
 
 export const uploadImage = async (
   file: File,
-  folder: 'avatars' | 'banners',
+  folder: 'avatars' | 'banners' | 'posts',
   userId: string,
 ): Promise<string> => {
   const supabase = createClient();

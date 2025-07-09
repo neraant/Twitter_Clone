@@ -1,11 +1,11 @@
 export type Post = {
-  author_avatar: string | null;
+  id?: string | null;
+  author_avatar?: string | null;
+  author_name?: string | null;
   author_id: string | null;
-  author_name: string | null;
   content: string | null;
   created_at: string | null;
-  id: string | null;
-  image_url: string | null;
+  image_urls: string[] | null;
 };
 
 export type GetUserTweetsOptions = {

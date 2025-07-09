@@ -4,11 +4,14 @@ import { routes } from '@/shared/config/routes';
 import { RegisterCredentials } from '../model/';
 
 const checkEmailExists = async (email: string) => {
-  const res = await fetch(routes.auth.checkEmail, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email }),
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_SITE_URL}${routes.api.checkEmail}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    },
+  );
   const data = await res.json();
   return data.exists === true;
 };

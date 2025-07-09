@@ -8,7 +8,7 @@
   width: 100%;
   background: var(--primary-color);
   padding: var(--spacing-md) 0;
-  border-radius: var(--radius-lg-plus);
+  border-radius: var(--radius-xl);
   text-align: center;
   font-size: var(--font-size-md-plus);
   font-weight: var(--font-weight-bold);
@@ -26,5 +26,9 @@
 
   @media (max-width: 768px) {
     font-size: var(--font-size-md-plus);
+  }
+  @media (max-width: 768px) {
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-ms) 0;
   }
 }

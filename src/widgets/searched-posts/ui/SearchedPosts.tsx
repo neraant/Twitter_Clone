@@ -1,5 +1,7 @@
 'use client';
 
+import DefaultAvatar from '@assets/images/user-avatar.png';
+
 import { PostSearchCard } from '@/entities/post/ui/PostSearchCard';
 import { UserSmallCardSkeleton } from '@/entities/user/ui/UserSmallCard/UserSmallCardSkeleton';
 import { PostSearchInput } from '@/features/search-posts';
@@ -41,7 +43,7 @@ export const SearchedPosts = () => {
                     key={id}
                     content={content!}
                     name={author_name!}
-                    avatar={author_avatar}
+                    avatar={author_avatar ?? DefaultAvatar}
                     href={`post/${id}`}
                   />
                 ))

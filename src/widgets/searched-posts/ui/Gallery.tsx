@@ -8,27 +8,30 @@ import Image from 'next/image';
 
 import styles from './SearchedPosts.module.scss';
 
+const images = [
+  { src: gallery1, alt: 'Mountains in winter' },
+  { src: gallery2, alt: 'Coastal view at sunset' },
+  { src: gallery3, alt: 'Modern city skyline' },
+  { src: gallery4, alt: 'Nature forest path' },
+  { src: gallery5, alt: 'Lake with reflections' },
+  { src: gallery6, alt: 'Snowy village rooftops' },
+];
+
 export const Gallery = () => {
   return (
     <div className={styles.gallery}>
-      <div className={styles.imageWrapper}>
-        <Image className={styles.image} src={gallery1} alt='gallery' />
-      </div>
-      <div className={styles.imageWrapper}>
-        <Image className={styles.image} src={gallery2} alt='gallery' />
-      </div>
-      <div className={styles.imageWrapper}>
-        <Image className={styles.image} src={gallery3} alt='gallery' />
-      </div>
-      <div className={styles.imageWrapper}>
-        <Image className={styles.image} src={gallery4} alt='gallery' />
-      </div>
-      <div className={styles.imageWrapper}>
-        <Image className={styles.image} src={gallery5} alt='gallery' />
-      </div>
-      <div className={styles.imageWrapper}>
-        <Image className={styles.image} src={gallery6} alt='gallery' />
-      </div>
+      {images.map((img, index) => (
+        <div key={index} className={styles.imageWrapper}>
+          <Image
+            className={styles.image}
+            src={img.src}
+            alt={img.alt}
+            width={100}
+            height={100}
+            placeholder='blur'
+          />
+        </div>
+      ))}
     </div>
   );
 };

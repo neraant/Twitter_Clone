@@ -3,7 +3,7 @@
 import clsx from 'clsx';
 import { useRef } from 'react';
 
-import { ImageUploader } from '@/features/image-uploader';
+import { ProfileImageUploader } from '@/features/image-uploader';
 import { useImageUpload, useModalCloseHandler } from '@/shared/lib/hooks';
 import { Button } from '@/shared/ui/button/Button';
 import { DropDownList } from '@/shared/ui/dropdown-list/DropDownList';
@@ -50,11 +50,17 @@ export const EditProfileModal = ({ onClose }: EditProfileModalProps) => {
   } = form;
 
   const { handleChange: handleChangeAvatar } = useImageUpload({
-    onFileChange: handleAvatarChange,
+    onFileChange: (files) => {
+      const filesArray = Array.isArray(files) ? files : [files];
+      handleAvatarChange(filesArray[0]);
+    },
   });
 
   const { handleChange: handleChangeBanner } = useImageUpload({
-    onFileChange: handleBannerChange,
+    onFileChange: (files) => {
+      const filesArray = Array.isArray(files) ? files : [files];
+      handleBannerChange(filesArray[0]);
+    },
   });
 
   const handleGender = (value: string) => {
@@ -86,13 +92,13 @@ export const EditProfileModal = ({ onClose }: EditProfileModalProps) => {
           />
 
           <div className={styles.uploadersWrapper}>
-            <ImageUploader
+            <ProfileImageUploader
               label='avatar'
               imagePreview={avatarPreview ?? '/images/user-avatar.png'}
               handleChange={handleChangeAvatar}
               className={styles.avatar}
             />
-            <ImageUploader
+            <ProfileImageUploader
               label='banner'
               imagePreview={bannerPreview ?? '/images/default-banner.png'}
               handleChange={handleChangeBanner}

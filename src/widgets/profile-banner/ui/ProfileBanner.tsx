@@ -36,6 +36,7 @@ export const ProfileBanner = ({
         alt='banner'
         width={650}
         height={300}
+        fetchPriority='high'
         priority
       />
     </div>

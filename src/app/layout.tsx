@@ -3,13 +3,12 @@ import './globals.scss';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
-import { AuthProvider } from '@/features/auth';
-import { ToastProvider } from '@/shared/lib/toast/ToastContext';
-import { ToastContainer } from '@/shared/ui/toast';
+import { ClientLayout } from './ClientLayout';
 
 const inter = Inter({
   subsets: ['latin', 'cyrillic'],
   variable: '--font-inter',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -24,13 +23,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={`${inter.variable} `}>
-        <AuthProvider>
-          <ToastProvider>
-            <ToastContainer />
-            {children}
-          </ToastProvider>
-        </AuthProvider>
+      <body className={inter.variable}>
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );

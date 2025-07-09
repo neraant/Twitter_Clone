@@ -1,1 +1,2 @@
-export { ImageUploader } from './ImageUploader';
+export { PostImageUploader } from './PostImageUploader';
+export { ProfileImageUploader } from './ProfileImageUploader';

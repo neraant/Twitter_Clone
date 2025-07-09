@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 
 import { Post } from '@/entities/post';
 import { User } from '@/entities/user';
+import { AddPostForm } from '@/widgets/add-post-form/ui/AddPostForm';
 import { EditProfileModal } from '@/widgets/edit-profile-modal';
 import { ProfileBanner } from '@/widgets/profile-banner';
 import { ProfileHeader } from '@/widgets/profile-header';
@@ -69,6 +70,7 @@ export const ProfileClient = ({
       <ProfileHeader />
       <ProfileStats />
 
+      {isOwner && <AddPostForm />}
       {isEditModalOpen && <EditProfileModal onClose={closeEditModal} />}
     </>
   );

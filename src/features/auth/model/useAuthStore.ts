@@ -57,7 +57,6 @@ export const useAuthStore = create<UseAuthState>((set) => ({
 
       set({ user, isAuth: true });
     } catch (err) {
-      console.error('Auth initialization error:', err);
       set({
         error: err instanceof Error ? err.message : 'Ошибка инициализации',
       });

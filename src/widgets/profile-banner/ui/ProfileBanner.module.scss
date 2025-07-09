@@ -43,10 +43,9 @@
   }
 
   .bannerImage {
-    width: calc(100% + 32px) !important;
-    position: relative;
-    left: -16px;
-    height: 100%;
+    width: 100%;
+    display: block;
+    height: auto;
     max-height: 280px;
     min-height: 280px;
     object-fit: cover;

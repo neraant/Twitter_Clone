@@ -5,8 +5,12 @@ export const routes = {
     signUp: '/register',
     login: '/login',
     error: '/error',
+  },
+  api: {
     callback: '/auth/callback',
     checkEmail: '/auth/check-email',
+    createPost: '/posts/create',
+    getUser: '/users',
   },
   app: {
     home: '/home',

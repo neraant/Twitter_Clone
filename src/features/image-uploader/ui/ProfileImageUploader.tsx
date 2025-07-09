@@ -4,21 +4,21 @@ import { ChangeEvent } from 'react';
 
 import { ImageIcon } from '@/shared/ui/icon';
 
-import styles from './ImageUploader.module.scss';
+import styles from './ProfileImageUploader.module.scss';
 
-type ImageUploaderProps = {
+type ProfileImageUploaderProps = {
   label: string;
   imagePreview: string | StaticImageData | null;
   className?: string;
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
-export const ImageUploader = ({
+export const ProfileImageUploader = ({
   label,
   imagePreview,
   className,
   handleChange,
-}: ImageUploaderProps) => {
+}: ProfileImageUploaderProps) => {
   return (
     <div className={clsx(styles.uploaderWrapper, className)}>
       <label htmlFor={label} className={styles.labelWrapper}>

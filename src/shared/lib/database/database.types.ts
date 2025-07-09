@@ -10,31 +10,6 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: '12.2.3 (519615d)';
   };
-  graphql_public: {
-    Tables: {
-      [_ in never]: never;
-    };
-    Views: {
-      [_ in never]: never;
-    };
-    Functions: {
-      graphql: {
-        Args: {
-          operationName?: string;
-          query?: string;
-          variables?: Json;
-          extensions?: Json;
-        };
-        Returns: Json;
-      };
-    };
-    Enums: {
-      [_ in never]: never;
-    };
-    CompositeTypes: {
-      [_ in never]: never;
-    };
-  };
   public: {
     Tables: {
       comments: {
@@ -162,21 +137,21 @@ export type Database = {
           content: string | null;
           created_at: string;
           id: string;
-          image_url: string | null;
+          image_urls: string[] | null;
         };
         Insert: {
           author_id?: string | null;
           content?: string | null;
           created_at?: string;
           id?: string;
-          image_url?: string | null;
+          image_urls?: string[] | null;
         };
         Update: {
           author_id?: string | null;
           content?: string | null;
           created_at?: string;
           id?: string;
-          image_url?: string | null;
+          image_urls?: string[] | null;
         };
         Relationships: [
           {
@@ -249,7 +224,7 @@ export type Database = {
           content: string | null;
           created_at: string | null;
           id: string | null;
-          image_url: string | null;
+          image_urls: string[] | null;
         };
         Relationships: [
           {
