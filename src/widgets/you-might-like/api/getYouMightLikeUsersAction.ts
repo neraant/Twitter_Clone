@@ -1,6 +1,8 @@
+'use server';
+
 import { createClient } from '@/shared/api/supabase/server';
 
-export const getYouMightLikeUsers = async (currentUserId: string) => {
+export const getYouMightLikeUsersAction = async (currentUserId: string) => {
   const supabase = await createClient();
 
   const { data, error } = await supabase

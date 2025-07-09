@@ -1,7 +1,5 @@
 'use client';
 
-import DefaultAvatar from '@assets/images/user-avatar.png';
-
 import { PostSearchCard } from '@/entities/post/ui/PostSearchCard';
 import { UserSmallCardSkeleton } from '@/entities/user/ui/UserSmallCard/UserSmallCardSkeleton';
 import { PostSearchInput } from '@/features/search-posts';
@@ -10,6 +8,8 @@ import { useSearchPostsStore } from '@/features/search-posts/model';
 import { NO_RESULTS_TITLE, SKELETON_COUNT } from '../lib';
 import { Gallery } from './Gallery';
 import styles from './SearchedPosts.module.scss';
+
+const DefaultAvatar = '/images/user-avatar.png';
 
 export const SearchedPosts = () => {
   const isLoading = useSearchPostsStore((state) => state.isLoading);

@@ -1,6 +1,5 @@
 'use client';
 
-import DefaultAvatar from '@assets/images/user-avatar.png';
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -22,6 +21,8 @@ export type UserSmallCardProps = {
   isFollowed?: boolean;
   currentUserId?: string;
 };
+
+const DefaultAvatar = '/images/user-avatar.png';
 
 export const UserSmallCard = ({
   user,

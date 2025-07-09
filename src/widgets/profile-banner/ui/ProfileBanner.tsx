@@ -1,4 +1,3 @@
-import DefaultBanner from '@assets/images/default-banner.png';
 import Image from 'next/image';
 
 import { BackButton } from '@/shared/ui/back-button';
@@ -11,6 +10,8 @@ interface ProfileBannerClientProps {
   userBanner: string | null;
   tweetsLength: string | number;
 }
+
+const DefaultBanner = '/images/default-banner.png';
 
 export const ProfileBanner = ({
   userName,

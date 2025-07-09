@@ -1,4 +1,3 @@
-import DefaultAvatar from '@assets/images/user-avatar.png';
 import Image from 'next/image';
 
 import { AddTweetButton } from '@/features/add-tweet-button';
@@ -7,6 +6,8 @@ import { PostImageUploader } from '@/features/image-uploader';
 
 import { TEXTAREA_PLACEHOLDER, usePostForm } from '../lib';
 import styles from './AddPostForm.module.scss';
+
+const DefaultAvatar = '/images/user-avatar.png';
 
 export const AddPostForm = () => {
   const user = useAuthStore((state) => state.user);

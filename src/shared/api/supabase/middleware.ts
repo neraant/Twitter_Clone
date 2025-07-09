@@ -33,13 +33,18 @@ export async function updateSession(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname;
 
-  const publicRoutes = [
-    routes.auth.signUpMain,
-    routes.auth.signUp,
-    routes.auth.login,
+  const protectedRoutes = [
+    routes.app.bookmarks,
+    routes.app.explore,
+    routes.app.home,
+    routes.app.lists,
+    routes.app.messages,
+    routes.app.more,
+    routes.app.notifications,
+    routes.app.profile,
   ];
 
-  const isPublicRoute = publicRoutes.some((route) =>
+  const isProtectedRoute = protectedRoutes.some((route) =>
     pathname.startsWith(route),
   );
 
@@ -51,23 +56,26 @@ export async function updateSession(request: NextRequest) {
 
     if (error) {
       console.error('Auth error:', error);
-      supabaseResponse.cookies.delete('sb-access-token');
-      supabaseResponse.cookies.delete('sb-refresh-token');
 
-      if (!isPublicRoute) {
-        const redirectUrl = new URL(routes.auth.signUpMain, request.url);
-        return NextResponse.redirect(redirectUrl);
+      if (error.message?.includes('refresh_token_not_found')) {
+        supabaseResponse.cookies.delete('sb-access-token');
+        supabaseResponse.cookies.delete('sb-refresh-token');
+
+        if (isProtectedRoute) {
+          const redirectUrl = new URL(routes.auth.signUpMain, request.url);
+          return NextResponse.redirect(redirectUrl);
+        }
       }
 
       return supabaseResponse;
     }
 
-    if (!user && !isPublicRoute) {
+    if (!user && isProtectedRoute) {
       const redirectUrl = new URL(routes.auth.signUpMain, request.url);
       return NextResponse.redirect(redirectUrl);
     }
 
-    if (user && isPublicRoute) {
+    if (user && isProtectedRoute) {
       const redirectUrl = new URL(routes.app.home, request.url);
       return NextResponse.redirect(redirectUrl);
     }
@@ -79,7 +87,7 @@ export async function updateSession(request: NextRequest) {
     supabaseResponse.cookies.delete('sb-access-token');
     supabaseResponse.cookies.delete('sb-refresh-token');
 
-    if (!isPublicRoute) {
+    if (isProtectedRoute) {
       const redirectUrl = new URL(routes.auth.signUpMain, request.url);
       return NextResponse.redirect(redirectUrl);
     }

@@ -1,4 +1,3 @@
-import DefaultAvatar from '@assets/images/user-avatar.png';
 import clsx from 'clsx';
 import Image from 'next/image';
 
@@ -11,6 +10,8 @@ export type UserBigCardProps = {
   className?: string;
   user?: UserForProps | null;
 };
+
+const DefaultAvatar = '/images/user-avatar.png';
 
 export const UserBigCard = ({ user, className }: UserBigCardProps) => {
   if (!user) return null;

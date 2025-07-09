@@ -35,6 +35,11 @@ export const useAuthStore = create<UseAuthState>((set) => ({
         error: authError,
       } = await supabase.auth.getUser();
 
+      if (authError && authError.message?.includes('refresh_token_not_found')) {
+        set({ isLoadingInitialize: false });
+        return;
+      }
+
       if (authError) throw authError;
 
       if (!authUser) {
@@ -57,9 +62,12 @@ export const useAuthStore = create<UseAuthState>((set) => ({
 
       set({ user, isAuth: true });
     } catch (err) {
-      set({
-        error: err instanceof Error ? err.message : 'Ошибка инициализации',
-      });
+      const error = err as Error;
+      if (!error.message?.includes('refresh_token_not_found')) {
+        set({
+          error: error.message || 'Initialization error',
+        });
+      }
     } finally {
       set({ isLoadingInitialize: false });
     }

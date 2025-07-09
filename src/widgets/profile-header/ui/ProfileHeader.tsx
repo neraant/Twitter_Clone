@@ -1,20 +1,35 @@
 'use client';
 
+import { User } from '@/entities/user';
 import { UserBigCard } from '@/entities/user';
 import { ProfileAction } from '@/widgets/profile-action';
-import { useProfileStore } from '@/widgets/profile-client/model';
 
 import styles from './ProfileHeader.module.scss';
 
-export const ProfileHeader = () => {
-  const user = useProfileStore((state) => state.user);
+type ProfileHeaderProps = {
+  user: User;
+  isOwner: boolean;
+  currentUserId: string;
+  onEditClick: () => void;
+};
 
+export const ProfileHeader = ({
+  user,
+  isOwner,
+  currentUserId,
+  onEditClick,
+}: ProfileHeaderProps) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.top}>
         <UserBigCard user={user} className={styles.userCard} />
-
-        <ProfileAction className={styles.hideUnder768} />
+        <ProfileAction
+          className={styles.hideUnder768}
+          isOwner={isOwner}
+          onEditClick={onEditClick}
+          currentUserId={currentUserId}
+          targetUserId={user.id}
+        />
       </div>
     </div>
   );

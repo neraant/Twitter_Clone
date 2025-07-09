@@ -1,5 +1,3 @@
-import desktopBanner from '@assets/images/welcome-page-banner-desktop.png';
-import mobileBanner from '@assets/images/welcome-page-banner-mobile.png';
 import { Metadata } from 'next';
 import Image from 'next/image';
 
@@ -12,15 +10,20 @@ export const metadata: Metadata = {
   description: 'This is the welcome page',
 };
 
+const desktopBanner = '/images/welcome-page-banner-desktop.png';
+const mobileBanner = '/images/welcome-page-banner-mobile.png';
+
 export default function Welcome() {
   return (
     <div className={styles.wrapper}>
       <picture className={styles.picture}>
-        <source srcSet={mobileBanner.src} media='(max-width: 620px)' />
+        <source srcSet={mobileBanner} media='(max-width: 620px)' />
         <Image
           src={desktopBanner}
           alt='banner'
           className={styles.banner}
+          width={650}
+          height={650}
           priority
         />
       </picture>

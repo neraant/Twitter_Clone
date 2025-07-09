@@ -1,14 +1,16 @@
-import DefaultAvatar from '@assets/images/user-avatar.png';
 import Image, { StaticImageData } from 'next/image';
 import Link from 'next/link';
 
 import styles from './PostSearchCard.module.scss';
+
 type PostSearchCardProps = {
   avatar: string | null | StaticImageData;
   name: string;
   content: string;
   href: string;
 };
+
+const DefaultAvatar = '/images/user-avatar.png';
 
 export const PostSearchCard = ({
   avatar,

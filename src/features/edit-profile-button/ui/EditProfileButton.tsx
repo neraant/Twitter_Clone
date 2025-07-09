@@ -2,7 +2,7 @@ import { EDIT_BUTTON } from '../lib';
 import styles from './EditProfileButton.module.scss';
 
 type EditProfileButtonProps = {
-  onClick: () => void;
+  onClick?: () => void;
 };
 
 export const EditProfileButton = ({ onClick }: EditProfileButtonProps) => {

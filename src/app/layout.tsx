@@ -2,8 +2,12 @@ import './globals.scss';
 
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { Suspense } from 'react';
 
-import { ClientLayout } from './ClientLayout';
+import { AuthProvider } from '@/features/auth';
+import { ToastProvider } from '@/shared/lib/toast';
+import { GlobalLoader } from '@/shared/ui/global-loader';
+import { ToastContainer } from '@/shared/ui/toast';
 
 const inter = Inter({
   subsets: ['latin', 'cyrillic'],
@@ -24,7 +28,14 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className={inter.variable}>
-        <ClientLayout>{children}</ClientLayout>
+        <Suspense fallback={<GlobalLoader />}>
+          <AuthProvider>
+            <ToastProvider>
+              <ToastContainer />
+              {children}
+            </ToastProvider>
+          </AuthProvider>
+        </Suspense>
       </body>
     </html>
   );
