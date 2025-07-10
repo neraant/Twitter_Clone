@@ -13,3 +13,9 @@ export type GetUserTweetsOptions = {
   limit?: number;
   cursor?: string;
 };
+
+export type CreatePostPayload = {
+  author_id: string;
+  content: string;
+  image_urls?: string[] | null;
+};

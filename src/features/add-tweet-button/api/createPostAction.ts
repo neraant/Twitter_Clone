@@ -1,30 +1,26 @@
 'use server';
 
-import { cookies } from 'next/headers';
+import { revalidateTag } from 'next/cache';
 
-import { Post } from '@/entities/post';
-import { routes } from '@/shared/config/routes';
+import { CreatePostPayload } from '@/entities/post';
+import { createClient } from '@/shared/api/supabase/server';
 
-export const createPostAction = async (payload: Post) => {
+export const createPostAction = async (payload: CreatePostPayload) => {
   try {
-    const cookie = await cookies();
-    const cookieHeader = cookie.toString();
+    const supabase = await createClient();
 
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_SITE_URL}${routes.api.createPost}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Cookie: cookieHeader },
-        body: JSON.stringify(payload),
-      },
-    );
+    const { error } = await supabase.from('posts').insert(payload);
 
-    if (!res.ok) {
-      const data = await res.json();
-      throw new Error(data.error?.message || 'Error while sending post');
+    if (error) {
+      console.error('Supabase error:', error);
+      throw new Error(error.message);
     }
+
+    revalidateTag('user-profile');
+
+    return { success: true };
   } catch (error) {
-    console.error(error);
+    console.error('createPostAction error:', error);
     throw error;
   }
 };

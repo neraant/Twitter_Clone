@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 
-import { Post } from '@/entities/post';
+import { CreatePostPayload } from '@/entities/post';
 import { createPostAction } from '@/features/add-tweet-button';
 import { uploadPost } from '@/features/image-uploader';
 import { useToast } from '@/shared/lib/toast';
@@ -51,11 +51,10 @@ export const usePostForm = ({ userId, onPostCreated }: usePostFormProps) => {
         uploadedUrls.push(publicUrl);
       }
 
-      const payload: Post = {
+      const payload: CreatePostPayload = {
         author_id: userId,
         content: data.content,
         image_urls: uploadedUrls,
-        created_at: new Date().toISOString(),
       };
 
       await createPostAction(payload);

@@ -3,10 +3,12 @@ import { routes } from '@/shared/config/routes';
 
 export async function signInWithGoogle() {
   const supabase = createClient();
+  const redirectUrl = `${window.location.origin}${routes.api.callback}`;
+
   await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}${routes.api.callback}`,
+      redirectTo: redirectUrl,
       queryParams: {
         access_type: 'offline',
         prompt: 'consent',

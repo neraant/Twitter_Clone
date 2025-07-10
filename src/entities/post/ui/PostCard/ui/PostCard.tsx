@@ -48,10 +48,11 @@ export const PostCard = (post: PostCardProps) => {
           <div className={styles.postImages} data-count={imageCount}>
             {image_urls.map((src, index) => (
               <Image
-                key={src}
+                key={`${src}-${index}`}
                 src={src}
                 width={200}
                 height={200}
+                priority={index === 0}
                 alt={`post image ${index + 1}`}
                 className={styles.postImage}
               />

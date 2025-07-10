@@ -9,7 +9,6 @@ export const routes = {
   api: {
     callback: '/auth/callback',
     checkEmail: '/auth/check-email',
-    createPost: '/posts/create',
     getTweets: '/posts',
     getUser: '/users',
   },
