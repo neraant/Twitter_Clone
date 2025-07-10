@@ -133,7 +133,7 @@ export const EditProfileModal = ({ onClose }: EditProfileModalProps) => {
           <div className={styles.genderWrapper}>
             <input type='hidden' {...register('gender')} />
 
-            <span className={styles.genderLabel}>{LABELS.GENDER}</span>
+            <p className={styles.genderLabel}>{LABELS.GENDER}</p>
             <DropDownList
               placeholder={user?.gender || LABELS.BIO}
               options={GENDER_OPTIONS}
@@ -142,7 +142,7 @@ export const EditProfileModal = ({ onClose }: EditProfileModalProps) => {
             />
 
             {errors.gender && (
-              <span className={styles.error}>{errors.gender.message}</span>
+              <p className={styles.error}>{errors.gender.message}</p>
             )}
           </div>
         </div>

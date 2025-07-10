@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
-import { getUserTweets } from '@/entities/post/api';
+import { getUserPostsCount } from '@/entities/post/api';
 import { getCurrentUserAction } from '@/entities/user/api';
 import { ProfileClient, ProfileClientSkeleton } from '@/widgets/profile-client';
 
@@ -18,12 +18,12 @@ async function ProfileData() {
     const user = await getCurrentUserAction();
     if (!user) return null;
 
-    const tweets = await getUserTweets({ userId: user.id });
+    const tweetsCount = await getUserPostsCount(user.id);
 
     return (
       <ProfileClient
         user={user}
-        tweets={tweets}
+        tweetsCount={tweetsCount}
         currentUserId={user.id}
         isOwner={true}
       />
@@ -37,7 +37,7 @@ async function ProfileData() {
 export default function Profile() {
   return (
     <div className={styles.page}>
-      <Suspense fallback={<ProfileClientSkeleton />}>
+      <Suspense fallback={<ProfileClientSkeleton isOwner />}>
         <ProfileData />
       </Suspense>
     </div>

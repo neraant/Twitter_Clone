@@ -1,0 +1,21 @@
+.likeButton {
+  margin-top: var(--spacing-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  max-width: fit-content;
+
+  &.active {
+    .likeText {
+      color: var(active-like-color);
+    }
+  }
+
+  .likeIcon {
+    fill: var(--non-active-like-color);
+  }
+  .likeText {
+    color: var(--non-active-like-color);
+    font-size: var(--font-size-md);
+  }
+}

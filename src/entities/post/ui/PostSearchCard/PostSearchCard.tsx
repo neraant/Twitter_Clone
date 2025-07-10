@@ -31,8 +31,8 @@ export const PostSearchCard = ({
       />
 
       <div className={styles.postInfo}>
-        <span className={styles.name}>{name}</span>
-        <span className={styles.content}>{content}</span>
+        <p className={styles.name}>{name}</p>
+        <p className={styles.content}>{content}</p>
       </div>
     </Link>
   );

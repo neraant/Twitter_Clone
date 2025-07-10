@@ -1,18 +1,18 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
-import { Post } from '@/entities/post';
 import { User } from '@/entities/user';
 import { AddPostForm } from '@/widgets/add-post-form/ui/AddPostForm';
 import { EditProfileModal } from '@/widgets/edit-profile-modal';
+import { PostsList } from '@/widgets/posts-list';
 import { ProfileBanner } from '@/widgets/profile-banner';
 import { ProfileHeader } from '@/widgets/profile-header';
 import { ProfileStats } from '@/widgets/profile-stats';
 
 type ProfileClientProps = {
   user: User;
-  tweets: Post[];
+  tweetsCount: number;
   currentUserId: string;
   isOwner: boolean;
   isInitialFollow?: boolean;
@@ -20,36 +20,49 @@ type ProfileClientProps = {
 
 export const ProfileClient = ({
   user,
-  tweets,
+  tweetsCount,
   currentUserId,
   isInitialFollow = false,
   isOwner,
 }: ProfileClientProps) => {
+  const postsListRef = useRef<{ refreshPosts: () => void }>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  const handlePostCreated = () => {
+    postsListRef.current?.refreshPosts();
+  };
 
   return (
     <>
-      <ProfileBanner
-        userName={user.name}
-        userBanner={user.banner_url}
-        tweetsLength={tweets.length}
-      />
-      <ProfileHeader
-        user={user}
-        isOwner={isOwner}
-        currentUserId={currentUserId}
-        onEditClick={() => setIsEditModalOpen(true)}
-      />
-      <ProfileStats
-        user={user}
-        isOwner={isOwner}
-        currentUserId={currentUserId}
-        targetUserId={user.id}
-        isInitialFollow={isInitialFollow}
-        onEditClick={() => setIsEditModalOpen(true)}
-      />
+      <section>
+        <ProfileBanner
+          userName={user.name}
+          userBanner={user.banner_url}
+          tweetsLength={tweetsCount}
+        />
+        <ProfileHeader
+          user={user}
+          isOwner={isOwner}
+          currentUserId={currentUserId}
+          onEditClick={() => setIsEditModalOpen(true)}
+        />
+        <ProfileStats
+          user={user}
+          isOwner={isOwner}
+          currentUserId={currentUserId}
+          targetUserId={user.id}
+          isInitialFollow={isInitialFollow}
+          onEditClick={() => setIsEditModalOpen(true)}
+        />
+      </section>
 
-      {isOwner && <AddPostForm />}
+      <section>
+        {isOwner && (
+          <AddPostForm user={user} onPostCreated={handlePostCreated} />
+        )}
+        <PostsList userId={user.id} ref={postsListRef} />
+      </section>
+
       {user && isEditModalOpen && (
         <EditProfileModal onClose={() => setIsEditModalOpen(false)} />
       )}

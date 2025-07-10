@@ -9,6 +9,7 @@ import { useFollowStore } from '@/features/follow-button/model';
 import { FollowButton } from '@/features/follow-button/ui';
 import { routes } from '@/shared/config/routes';
 
+import { UNNAMED_USER } from '../../lib';
 import { User } from '../../model';
 import styles from './UserSmallCard.module.scss';
 
@@ -55,10 +56,10 @@ export const UserSmallCard = ({
         />
 
         <div className={styles.userInfo}>
-          <span className={styles.name} title={name!}>
-            {name}
-          </span>
-          <span className={styles.subname}>{user_telegram}</span>
+          <p className={styles.name} title={name ?? UNNAMED_USER}>
+            {name ?? UNNAMED_USER}
+          </p>
+          <p className={styles.subname}>{user_telegram}</p>
         </div>
       </Link>
 

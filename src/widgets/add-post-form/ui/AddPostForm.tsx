@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import Image from 'next/image';
 
+import { User } from '@/entities/user';
 import { AddTweetButton } from '@/features/add-tweet-button';
-import { useAuthStore } from '@/features/auth';
 import { PostImageUploader } from '@/features/image-uploader';
 
 import { MAX_LENGTH, TEXTAREA_PLACEHOLDER, usePostForm } from '../lib';
@@ -10,25 +10,28 @@ import styles from './AddPostForm.module.scss';
 
 const DefaultAvatar = '/images/user-avatar.png';
 
-export const AddPostForm = () => {
-  const user = useAuthStore((state) => state.user);
+type AddPostFormProps = {
+  user: User;
+  onPostCreated: () => void;
+};
 
+export const AddPostForm = ({ user, onPostCreated }: AddPostFormProps) => {
   const {
     handleSubmit,
     onSubmit,
     register,
     watch,
+    handleChange: handleImagesChange,
     previews,
-    handleChange,
     removeImage,
     isSubmitting,
     imageError,
     errors,
-  } = usePostForm({ userId: user?.id });
+  } = usePostForm({ userId: user?.id, onPostCreated });
 
   const content = watch('content') || '';
   const contentLength = content.length;
-  const isOverLimit = contentLength > MAX_LENGTH;
+  const isOverLimit = contentLength >= MAX_LENGTH;
 
   if (!user) return null;
 
@@ -48,12 +51,13 @@ export const AddPostForm = () => {
             {...register('content')}
             placeholder={TEXTAREA_PLACEHOLDER}
             className={styles.textarea}
+            maxLength={MAX_LENGTH}
             rows={3}
           />
 
           <p
             className={clsx(styles.counterText, {
-              [styles.error]: isOverLimit,
+              [styles.errorText]: isOverLimit,
             })}
           >
             {contentLength}/{MAX_LENGTH}
@@ -63,16 +67,14 @@ export const AddPostForm = () => {
         <PostImageUploader
           label='post'
           imagePreviews={previews}
-          handleChange={handleChange}
+          handleChange={handleImagesChange}
           onRemove={removeImage}
           className={styles.actions}
         >
           <AddTweetButton isLoading={isSubmitting} />
         </PostImageUploader>
 
-        <span className={styles.error}>
-          {errors.content?.message || imageError}
-        </span>
+        <p className={styles.error}>{errors.content?.message || imageError}</p>
       </div>
     </form>
   );

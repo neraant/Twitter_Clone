@@ -63,6 +63,7 @@ export async function updateSession(request: NextRequest) {
     routes.api.checkEmail,
     routes.api.createPost,
     routes.api.getUser,
+    routes.api.getTweets,
   ];
 
   const isProtectedRoute = protectedRoutes.some((route) =>

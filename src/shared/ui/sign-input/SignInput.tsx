@@ -99,7 +99,7 @@ export const SignInput = forwardRef<HTMLInputElement, SignInputProps>(
           </button>
         )}
 
-        {error && <span className={styles.errorMessage}>{error.message}</span>}
+        {error && <p className={styles.errorMessage}>{error.message}</p>}
       </div>
     );
   },

@@ -1,6 +1,5 @@
 'use server';
 
-import { revalidateTag } from 'next/cache';
 import { cookies } from 'next/headers';
 
 import { Post } from '@/entities/post';
@@ -24,8 +23,6 @@ export const createPostAction = async (payload: Post) => {
       const data = await res.json();
       throw new Error(data.error?.message || 'Error while sending post');
     }
-
-    revalidateTag('posts');
   } catch (error) {
     console.error(error);
     throw error;

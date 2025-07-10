@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
-import { getUserTweets } from '@/entities/post/api';
+import { getUserPostsCount } from '@/entities/post/api';
 import { getCurrentUserAction, getUserByIdAction } from '@/entities/user/api';
 import { isFollowingAction } from '@/features/follow-button/api/followActions';
 import { isValidUUID } from '@/shared/lib/isValidUUID';
@@ -17,10 +17,10 @@ export const metadata: Metadata = {
 
 async function ProfileData({ userId }: { userId: string }) {
   try {
-    const [user, currentUser, tweets] = await Promise.all([
+    const [user, currentUser, tweetsCount] = await Promise.all([
       getUserByIdAction(userId),
       getCurrentUserAction(),
-      getUserTweets({ userId }),
+      getUserPostsCount(userId),
     ]);
 
     if (!user || !currentUser) return notFound();
@@ -31,7 +31,7 @@ async function ProfileData({ userId }: { userId: string }) {
     return (
       <ProfileClient
         user={user}
-        tweets={tweets}
+        tweetsCount={tweetsCount}
         currentUserId={currentUser.id}
         isOwner={isOwner}
         isInitialFollow={isInitialFollow}

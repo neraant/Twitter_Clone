@@ -15,41 +15,46 @@ export const SearchedPosts = () => {
   const isLoading = useSearchPostsStore((state) => state.isLoading);
   const posts = useSearchPostsStore((state) => state.results);
   const query = useSearchPostsStore((state) => state.query);
+  const hasSearched = useSearchPostsStore((state) => state.hasSearched);
 
   const isQueryEmpty = query.trim() === '';
+
+  const showSkeletons = isLoading && !isQueryEmpty;
+
+  const showNoResults =
+    hasSearched && !isLoading && posts.length === 0 && !isQueryEmpty;
+
+  const showResults = !isLoading && posts.length > 0 && !isQueryEmpty;
+
+  const showGallery = isQueryEmpty && !isLoading;
 
   return (
     <>
       <PostSearchInput />
 
       <div className={styles.wrapper}>
-        {isQueryEmpty && <Gallery />}
+        {showGallery && <Gallery />}
 
         <div className={styles.postsWrapper}>
-          {!isQueryEmpty && (
-            <>
-              {isLoading ? (
-                Array.from({ length: SKELETON_COUNT }, (_, i) => (
-                  <UserSmallCardSkeleton
-                    key={i}
-                    className={styles.postSkeleton}
-                  />
-                ))
-              ) : posts.length === 0 ? (
-                <span className={styles.noResults}>{NO_RESULTS_TITLE}</span>
-              ) : (
-                posts.map(({ id, content, author_avatar, author_name }) => (
-                  <PostSearchCard
-                    key={id}
-                    content={content!}
-                    name={author_name!}
-                    avatar={author_avatar ?? DefaultAvatar}
-                    href={`post/${id}`}
-                  />
-                ))
-              )}
-            </>
+          {showSkeletons &&
+            Array.from({ length: SKELETON_COUNT }, (_, i) => (
+              <UserSmallCardSkeleton key={i} className={styles.postSkeleton} />
+            ))}
+
+          {showNoResults && (
+            <span className={styles.noResults}>{NO_RESULTS_TITLE}</span>
           )}
+
+          {showResults &&
+            posts.map(({ id, content, author_avatar, author_name }) => (
+              <PostSearchCard
+                key={id}
+                content={content!}
+                name={author_name!}
+                avatar={author_avatar ?? DefaultAvatar}
+                href={`post/${id}`}
+              />
+            ))}
         </div>
       </div>
     </>

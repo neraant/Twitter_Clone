@@ -10,6 +10,7 @@ export const routes = {
     callback: '/auth/callback',
     checkEmail: '/auth/check-email',
     createPost: '/posts/create',
+    getTweets: '/posts',
     getUser: '/users',
   },
   app: {

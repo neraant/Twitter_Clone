@@ -3,13 +3,18 @@ import { useForm } from 'react-hook-form';
 
 import { Post } from '@/entities/post';
 import { createPostAction } from '@/features/add-tweet-button';
-import { uploadImage } from '@/features/image-uploader';
+import { uploadPost } from '@/features/image-uploader';
 import { useToast } from '@/shared/lib/toast';
 
 import { addTweetSchema } from './addPostForm.schema';
 import { usePostImages } from './usePostImages';
 
-export const usePostForm = ({ userId }: { userId?: string }) => {
+type usePostFormProps = {
+  userId: string;
+  onPostCreated?: () => void;
+};
+
+export const usePostForm = ({ userId, onPostCreated }: usePostFormProps) => {
   const {
     previews,
     error: imageError,
@@ -24,6 +29,7 @@ export const usePostForm = ({ userId }: { userId?: string }) => {
     handleSubmit,
     reset,
     watch,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(addTweetSchema),
@@ -41,7 +47,7 @@ export const usePostForm = ({ userId }: { userId?: string }) => {
       const uploadedUrls: string[] = [];
 
       for (const file of imageFiles) {
-        const publicUrl = await uploadImage(file, 'posts', userId);
+        const publicUrl = await uploadPost(file, 'posts', userId);
         uploadedUrls.push(publicUrl);
       }
 
@@ -53,9 +59,12 @@ export const usePostForm = ({ userId }: { userId?: string }) => {
       };
 
       await createPostAction(payload);
+
       reset();
       resetImages();
       showToast('Success', 'Post created successfully!', 'success');
+
+      onPostCreated?.();
     } catch (error) {
       console.error(error);
       showToast('Error', 'Post creating failure', 'error');
@@ -67,9 +76,10 @@ export const usePostForm = ({ userId }: { userId?: string }) => {
     onSubmit,
     register,
     watch,
-    previews,
+    setValue,
     handleChange,
     removeImage,
+    previews,
     isSubmitting,
     imageError,
     errors,

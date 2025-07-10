@@ -1,28 +1,28 @@
 'use client';
 
-import { ChangeEvent, useEffect } from 'react';
+import { ChangeEvent } from 'react';
 
-import { useDebounce } from '@/shared/lib/hooks';
 import { Input } from '@/shared/ui/input/Input';
 
-import { DEBOUNCE_MS, SEARCH_PLACEHOLDER } from '../lib';
+import { SEARCH_PLACEHOLDER, usePostsDebounce } from '../lib';
 import { useSearchPostsStore } from '../model';
 
 export const PostSearchInput = () => {
   const setQuery = useSearchPostsStore((state) => state.setQuery);
   const search = useSearchPostsStore((state) => state.search);
+  const setLoading = useSearchPostsStore((state) => state.setLoading);
   const query = useSearchPostsStore((state) => state.query);
-
-  const { debouncedValue } = useDebounce(query, DEBOUNCE_MS);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setQuery(value);
   };
 
-  useEffect(() => {
-    search(debouncedValue);
-  }, [debouncedValue, search]);
+  usePostsDebounce({
+    fetch: search,
+    value: query,
+    setLoading,
+  });
 
   return (
     <Input

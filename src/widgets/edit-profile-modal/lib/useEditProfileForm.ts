@@ -6,7 +6,7 @@ import { Resolver, useForm } from 'react-hook-form';
 
 import { User } from '@/entities/user';
 import { useAuthStore } from '@/features/auth';
-import { uploadImage } from '@/features/image-uploader';
+import { uploadProfile } from '@/features/image-uploader';
 import { useToast } from '@/shared/lib/toast';
 
 import { editProfileAction } from '../api';
@@ -67,7 +67,7 @@ export const useEditProfileForm = (onSuccess?: () => void) => {
 
       if (avatarFile) {
         try {
-          avatarUrl = await uploadImage(avatarFile, 'avatars', user.id);
+          avatarUrl = await uploadProfile(avatarFile, 'avatars', user.id);
         } catch (error) {
           console.error('Avatar upload failed:', error);
           showToast('Error', 'Failed to upload avatar!', 'error');
@@ -77,7 +77,7 @@ export const useEditProfileForm = (onSuccess?: () => void) => {
 
       if (bannerFile) {
         try {
-          bannerUrl = await uploadImage(bannerFile, 'banners', user.id);
+          bannerUrl = await uploadProfile(bannerFile, 'banners', user.id);
         } catch (error) {
           console.error('Banner upload failed:', error);
           showToast('Error', 'Failed to upload banner!', 'error');

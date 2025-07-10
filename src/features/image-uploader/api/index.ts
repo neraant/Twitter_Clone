@@ -1,1 +1,2 @@
-export * from './uploadImage';
+export { uploadPost } from './uploadPost';
+export { uploadProfile } from './uploadProfile';

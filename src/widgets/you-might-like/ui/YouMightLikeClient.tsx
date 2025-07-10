@@ -54,36 +54,38 @@ export const YouMightLikeClient = ({
 
   return (
     <div className={styles.wrapper}>
-      <p className={styles.title}>{TITLE}</p>
+      <div className={styles.content}>
+        <p className={styles.title}>{TITLE}</p>
 
-      {isError ? (
-        <span className={styles.emptyStateText}>{ERROR_USERS_TEXT}</span>
-      ) : (
-        <div className={clsx(styles.users, isMore ? styles.active : '')}>
-          {usersWithCurrentStatus.length === 0 && (
-            <span className={styles.emptyStateText}>{EMPTY_USERS_TEXT}</span>
-          )}
+        {isError ? (
+          <span className={styles.emptyStateText}>{ERROR_USERS_TEXT}</span>
+        ) : (
+          <div className={clsx(styles.users, isMore ? styles.active : '')}>
+            {usersWithCurrentStatus.length === 0 && (
+              <span className={styles.emptyStateText}>{EMPTY_USERS_TEXT}</span>
+            )}
 
-          {usersWithCurrentStatus.map((user) => (
-            <UserSmallCard
-              key={user.id}
-              user={user}
-              isFollowed={user.isFollowed}
-              currentUserId={currentUserId}
-            />
-          ))}
-        </div>
-      )}
+            {usersWithCurrentStatus.map((user) => (
+              <UserSmallCard
+                key={user.id}
+                user={user}
+                isFollowed={user.isFollowed}
+                currentUserId={currentUserId}
+              />
+            ))}
+          </div>
+        )}
 
-      {usersWithCurrentStatus.length > 0 && (
-        <button
-          type='button'
-          className={styles.showButton}
-          onClick={handleSeeMore}
-        >
-          {isMore ? SHOW_LESS_BUTTON : SHOW_MORE_BUTTON}
-        </button>
-      )}
+        {usersWithCurrentStatus.length > 0 && (
+          <button
+            type='button'
+            className={styles.showButton}
+            onClick={handleSeeMore}
+          >
+            {isMore ? SHOW_LESS_BUTTON : SHOW_MORE_BUTTON}
+          </button>
+        )}
+      </div>
     </div>
   );
 };

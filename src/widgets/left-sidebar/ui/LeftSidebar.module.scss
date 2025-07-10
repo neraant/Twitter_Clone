@@ -218,7 +218,7 @@
     margin-top: auto;
     margin-bottom: var(--spacing-lg);
 
-    span {
+    p {
       max-width: none !important;
       @media (max-width: 1280px) {
         display: none;

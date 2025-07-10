@@ -43,7 +43,7 @@ export const ConfirmModal = ({
           <CrossIcon onClick={handleClose} />
         </button>
 
-        <span className={styles.title}>{title}</span>
+        <h6 className={styles.title}>{title}</h6>
 
         <p className={styles.description}>{description}</p>
 
