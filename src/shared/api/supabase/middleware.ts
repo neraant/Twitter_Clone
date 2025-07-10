@@ -31,6 +31,10 @@ export async function updateSession(request: NextRequest) {
     },
   );
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   const pathname = request.nextUrl.pathname;
 
   const protectedRoutes = [
@@ -44,54 +48,44 @@ export async function updateSession(request: NextRequest) {
     routes.app.profile,
   ];
 
+  const authRoutes = [
+    routes.auth.signUpMain,
+    routes.auth.error,
+    routes.auth.login,
+    routes.auth.signUp,
+  ];
+
+  const knownRoutes = [
+    routes.root,
+    ...protectedRoutes,
+    ...authRoutes,
+    routes.api.callback,
+    routes.api.checkEmail,
+    routes.api.createPost,
+    routes.api.getUser,
+  ];
+
   const isProtectedRoute = protectedRoutes.some((route) =>
     pathname.startsWith(route),
   );
 
-  try {
-    const {
-      data: { user },
-      error,
-    } = await supabase.auth.getUser();
+  const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
 
-    if (error) {
-      console.error('Auth error:', error);
+  const routeExists = knownRoutes.some(
+    (route) => pathname === route || pathname.startsWith(route + '/'),
+  );
 
-      if (error.message?.includes('refresh_token_not_found')) {
-        supabaseResponse.cookies.delete('sb-access-token');
-        supabaseResponse.cookies.delete('sb-refresh-token');
-
-        if (isProtectedRoute) {
-          const redirectUrl = new URL(routes.auth.signUpMain, request.url);
-          return NextResponse.redirect(redirectUrl);
-        }
-      }
-
-      return supabaseResponse;
-    }
-
-    if (!user && isProtectedRoute) {
-      const redirectUrl = new URL(routes.auth.signUpMain, request.url);
-      return NextResponse.redirect(redirectUrl);
-    }
-
-    if (user && isProtectedRoute) {
-      const redirectUrl = new URL(routes.app.home, request.url);
-      return NextResponse.redirect(redirectUrl);
-    }
-
-    return supabaseResponse;
-  } catch (error) {
-    console.error('Middleware error:', error);
-
-    supabaseResponse.cookies.delete('sb-access-token');
-    supabaseResponse.cookies.delete('sb-refresh-token');
-
-    if (isProtectedRoute) {
-      const redirectUrl = new URL(routes.auth.signUpMain, request.url);
-      return NextResponse.redirect(redirectUrl);
-    }
-
-    return supabaseResponse;
+  if (!user && isProtectedRoute) {
+    return NextResponse.redirect(new URL(routes.auth.signUpMain, request.url));
   }
+
+  if (user && isAuthRoute) {
+    return NextResponse.redirect(new URL(routes.app.home, request.url));
+  }
+
+  if (!routeExists) {
+    return NextResponse.rewrite(new URL('/404', request.url));
+  }
+
+  return supabaseResponse;
 }

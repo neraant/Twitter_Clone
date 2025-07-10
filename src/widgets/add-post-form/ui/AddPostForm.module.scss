@@ -47,6 +47,15 @@
       padding-top: 0;
     }
   }
+  .counterText {
+    font-size: var(--font-size-sm);
+    color: var(--dark-text-color);
+    opacity: 0.7;
+
+    &.error {
+      color: var(--error-color);
+    }
+  }
   .actions {
     button {
       max-width: 120px;

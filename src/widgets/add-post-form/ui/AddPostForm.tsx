@@ -1,10 +1,11 @@
+import clsx from 'clsx';
 import Image from 'next/image';
 
 import { AddTweetButton } from '@/features/add-tweet-button';
 import { useAuthStore } from '@/features/auth';
 import { PostImageUploader } from '@/features/image-uploader';
 
-import { TEXTAREA_PLACEHOLDER, usePostForm } from '../lib';
+import { MAX_LENGTH, TEXTAREA_PLACEHOLDER, usePostForm } from '../lib';
 import styles from './AddPostForm.module.scss';
 
 const DefaultAvatar = '/images/user-avatar.png';
@@ -16,6 +17,7 @@ export const AddPostForm = () => {
     handleSubmit,
     onSubmit,
     register,
+    watch,
     previews,
     handleChange,
     removeImage,
@@ -23,6 +25,10 @@ export const AddPostForm = () => {
     imageError,
     errors,
   } = usePostForm({ userId: user?.id });
+
+  const content = watch('content') || '';
+  const contentLength = content.length;
+  const isOverLimit = contentLength > MAX_LENGTH;
 
   if (!user) return null;
 
@@ -37,12 +43,22 @@ export const AddPostForm = () => {
       />
 
       <div className={styles.content}>
-        <textarea
-          {...register('content')}
-          placeholder={TEXTAREA_PLACEHOLDER}
-          className={styles.textarea}
-          rows={3}
-        />
+        <div className={styles.textAreaWrapper}>
+          <textarea
+            {...register('content')}
+            placeholder={TEXTAREA_PLACEHOLDER}
+            className={styles.textarea}
+            rows={3}
+          />
+
+          <p
+            className={clsx(styles.counterText, {
+              [styles.error]: isOverLimit,
+            })}
+          >
+            {contentLength}/{MAX_LENGTH}
+          </p>
+        </div>
 
         <PostImageUploader
           label='post'

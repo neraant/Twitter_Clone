@@ -46,10 +46,11 @@ export const ProfileClient = ({
         currentUserId={currentUserId}
         targetUserId={user.id}
         isInitialFollow={isInitialFollow}
+        onEditClick={() => setIsEditModalOpen(true)}
       />
 
       {isOwner && <AddPostForm />}
-      {isEditModalOpen && (
+      {user && isEditModalOpen && (
         <EditProfileModal onClose={() => setIsEditModalOpen(false)} />
       )}
     </>

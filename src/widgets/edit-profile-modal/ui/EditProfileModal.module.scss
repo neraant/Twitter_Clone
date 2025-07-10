@@ -25,6 +25,12 @@
     align-items: center;
     gap: var(--spacing-xl);
     margin-bottom: var(--spacing-md);
+    margin-top: var(--spacing-xl);
+
+    .uploaderWrapper {
+      width: 100%;
+      position: relative;
+    }
     .avatar {
       border-radius: 50%;
       max-width: 120px;
@@ -72,7 +78,7 @@
   }
 
   .input {
-    margin-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
     input {
       padding-right: var(--spacing-lg);
       @media (max-width: 768px) {
@@ -81,26 +87,33 @@
     }
   }
 
+  .error {
+    position: absolute;
+    bottom: -18px;
+    padding-left: 6px;
+    left: 0;
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-xs);
+    color: var(--error-color);
+    pointer-events: none;
+    white-space: nowrap;
+
+    @media (max-width: 480px) {
+      font-size: var(--font-size-xxs);
+    }
+  }
+
   .genderWrapper {
+    position: relative;
     margin-bottom: var(--spacing-xl);
     .genderLabel {
       font-size: var(--font-size-md);
       color: var(--dark-text-color);
       opacity: 0.6;
     }
-    .error {
-      position: absolute;
-      bottom: -18px;
-      left: 0;
-      font-weight: var(--font-weight-semibold);
-      font-size: var(--font-size-xs);
-      color: var(--error-color);
-      padding: 0px 6px;
-      pointer-events: none;
 
-      @media (max-width: 480px) {
-        font-size: var(--font-size-xxs);
-      }
+    ul {
+      top: calc(100% + 20px);
     }
   }
 

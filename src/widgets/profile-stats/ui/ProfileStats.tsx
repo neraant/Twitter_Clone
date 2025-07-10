@@ -10,6 +10,7 @@ type ProfileStatsProps = {
   currentUserId: string;
   targetUserId: string;
   isInitialFollow: boolean;
+  onEditClick: () => void;
 };
 
 export const ProfileStats = ({
@@ -18,6 +19,7 @@ export const ProfileStats = ({
   currentUserId,
   targetUserId,
   isInitialFollow,
+  onEditClick,
 }: ProfileStatsProps) => {
   const FOLLOWER_TEXT = user.followers_count === 1 ? FOLLOWER : FOLLOWERS;
 
@@ -38,6 +40,7 @@ export const ProfileStats = ({
         currentUserId={currentUserId}
         targetUserId={targetUserId}
         isInitialFollow={isInitialFollow}
+        onEditClick={onEditClick}
       />
     </div>
   );

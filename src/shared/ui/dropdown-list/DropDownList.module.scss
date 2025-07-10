@@ -1,6 +1,5 @@
 .wrapper {
   position: relative;
-  z-index: 100;
   width: 100%;
   border: 1px solid var(--border-input-color);
   border-radius: var(--radius-md);
@@ -34,7 +33,7 @@
   }
 
   .options {
-    z-index: 10;
+    z-index: 100;
     position: absolute;
     top: calc(100% + 4px);
     left: 0;

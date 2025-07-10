@@ -9,7 +9,11 @@ export const usePostImages = () => {
   const [previews, setPreviews] = useState<string[]>([]);
   const [error, setError] = useState('');
 
-  const { handleChange } = useImageUpload({
+  const {
+    handleChange,
+    error: imageUploadError,
+    setError: setUploadError,
+  } = useImageUpload({
     onFileChange: (newFiles) => {
       if (!newFiles) return;
 
@@ -39,17 +43,22 @@ export const usePostImages = () => {
       return prev.filter((_, i) => i !== index);
     });
     setError('');
+    setUploadError('');
   };
 
   const resetImages = () => {
     setPreviews([]);
     setImageFiles([]);
+    setError('');
+    setUploadError('');
   };
+
+  const combinedError = error || imageUploadError;
 
   return {
     imageFiles,
     previews,
-    error,
+    error: combinedError,
     handleChange,
     removeImage,
     resetImages,

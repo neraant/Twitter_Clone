@@ -23,6 +23,7 @@ export const usePostForm = ({ userId }: { userId?: string }) => {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(addTweetSchema),
@@ -65,6 +66,7 @@ export const usePostForm = ({ userId }: { userId?: string }) => {
     handleSubmit,
     onSubmit,
     register,
+    watch,
     previews,
     handleChange,
     removeImage,

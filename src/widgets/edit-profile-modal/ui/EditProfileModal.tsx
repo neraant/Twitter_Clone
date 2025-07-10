@@ -49,19 +49,21 @@ export const EditProfileModal = ({ onClose }: EditProfileModalProps) => {
     formState: { errors },
   } = form;
 
-  const { handleChange: handleChangeAvatar } = useImageUpload({
-    onFileChange: (files) => {
-      const filesArray = Array.isArray(files) ? files : [files];
-      handleAvatarChange(filesArray[0]);
-    },
-  });
+  const { handleChange: handleChangeAvatar, error: avatarError } =
+    useImageUpload({
+      onFileChange: (files) => {
+        const filesArray = Array.isArray(files) ? files : [files];
+        handleAvatarChange(filesArray[0]);
+      },
+    });
 
-  const { handleChange: handleChangeBanner } = useImageUpload({
-    onFileChange: (files) => {
-      const filesArray = Array.isArray(files) ? files : [files];
-      handleBannerChange(filesArray[0]);
-    },
-  });
+  const { handleChange: handleChangeBanner, error: bannerError } =
+    useImageUpload({
+      onFileChange: (files) => {
+        const filesArray = Array.isArray(files) ? files : [files];
+        handleBannerChange(filesArray[0]);
+      },
+    });
 
   const handleGender = (value: string) => {
     setValue('gender', value);
@@ -92,18 +94,24 @@ export const EditProfileModal = ({ onClose }: EditProfileModalProps) => {
           />
 
           <div className={styles.uploadersWrapper}>
-            <ProfileImageUploader
-              label='avatar'
-              imagePreview={avatarPreview ?? '/images/user-avatar.png'}
-              handleChange={handleChangeAvatar}
-              className={styles.avatar}
-            />
-            <ProfileImageUploader
-              label='banner'
-              imagePreview={bannerPreview ?? '/images/default-banner.png'}
-              handleChange={handleChangeBanner}
-              className={styles.banner}
-            />
+            <div className={clsx(styles.uploaderWrapper, styles.avatar)}>
+              <ProfileImageUploader
+                label='avatar'
+                imagePreview={avatarPreview ?? '/images/user-avatar.png'}
+                handleChange={handleChangeAvatar}
+                className={styles.avatar}
+              />
+              {avatarError && <p className={styles.error}>{avatarError}</p>}
+            </div>
+            <div className={clsx(styles.uploaderWrapper, styles.banner)}>
+              <ProfileImageUploader
+                label='banner'
+                imagePreview={bannerPreview ?? '/images/default-banner.png'}
+                handleChange={handleChangeBanner}
+                className={styles.banner}
+              />
+              {bannerError && <p className={styles.error}>{bannerError}</p>}
+            </div>
           </div>
 
           <h4 className={styles.subtitle}>{ADDITIONAL_INFO_TITLE}</h4>
