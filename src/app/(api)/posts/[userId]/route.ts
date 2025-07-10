@@ -11,8 +11,12 @@ export async function GET(
     const { searchParams } = new URL(request.url);
 
     const { userId } = await params;
-    const limit = parseInt(searchParams.get('limit') || '10');
+    const limit = Math.min(parseInt(searchParams.get('limit') || '10'), 50);
     const cursor = searchParams.get('cursor');
+
+    if (!userId || typeof userId !== 'string') {
+      return NextResponse.json({ error: 'Invalid userId' }, { status: 400 });
+    }
 
     let query = supabase
       .from('post_with_author')
@@ -22,22 +26,42 @@ export async function GET(
       .limit(limit);
 
     if (cursor) {
-      query = query.lt('created_at', cursor);
+      try {
+        const cursorDate = new Date(cursor);
+        if (isNaN(cursorDate.getTime())) {
+          return NextResponse.json(
+            { error: 'Invalid cursor format' },
+            { status: 400 },
+          );
+        }
+        query = query.lt('created_at', cursor);
+      } catch (error) {
+        console.error(error);
+        return NextResponse.json({ error: 'Invalid cursor' }, { status: 400 });
+      }
     }
 
     const { data, error } = await query;
 
     if (error) {
+      console.error('Supabase error:', error);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
+    const posts = data || [];
+
     return NextResponse.json({
-      data: data || [],
-      hasMore: data?.length === limit,
-      nextCursor: data?.length ? data[data.length - 1].created_at : null,
+      data: posts,
+      hasMore: posts.length === limit,
+      nextCursor: posts.length > 0 ? posts[posts.length - 1].created_at : null,
     });
   } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: 'Server error' }, { status: 500 });
+    console.error('API route error:', error);
+    return NextResponse.json(
+      {
+        error: error instanceof Error ? error.message : 'Server error',
+      },
+      { status: 500 },
+    );
   }
 }

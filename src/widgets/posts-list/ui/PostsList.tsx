@@ -5,6 +5,7 @@ import {
   useCallback,
   useEffect,
   useImperativeHandle,
+  useMemo,
   useRef,
 } from 'react';
 import useSWRInfinite from 'swr/infinite';
@@ -23,36 +24,59 @@ type PostsListProps = {
   ref: RefObject<{ refreshPosts: () => void } | null>;
 };
 
+type ReturnDataType = {
+  data: Post[];
+  hasMore: boolean;
+  nextCursor: number | null;
+};
+
 export const PostsList = ({ userId, ref }: PostsListProps) => {
   const lastRef = useRef<HTMLDivElement | null>(null);
 
   const { showToast } = useToast();
 
-  const { data, error, size, setSize, mutate, isValidating, isLoading } =
-    useSWRInfinite(
-      (pageIndex, previousPageData) => {
-        if (previousPageData && !previousPageData.data?.length) return null;
+  const getKey = useCallback(
+    (pageIndex: number, previousPageData: ReturnDataType) => {
+      if (pageIndex > 0 && previousPageData && !previousPageData.hasMore) {
+        return null;
+      }
 
-        if (pageIndex === 0) return `posts-${userId}-page-0`;
+      if (pageIndex === 0) {
+        return `posts-${userId}-page-0`;
+      }
 
-        const cursor = previousPageData?.nextCursor;
-        if (!cursor) return null;
+      const cursor = previousPageData?.nextCursor;
+      if (!cursor) return null;
 
-        return `posts-${userId}-page-${pageIndex}-cursor-${cursor}`;
-      },
-      async (key) => {
-        const cursorMatch = key.match(/cursor-(.+)$/);
-        const cursor = cursorMatch ? cursorMatch[1] : null;
+      return `posts-${userId}-page-${pageIndex}-cursor-${cursor}`;
+    },
+    [userId],
+  );
 
-        return getUserPostsPaginated(userId, cursor);
-      },
-      {
-        revalidateOnFocus: false,
-        revalidateOnReconnect: false,
-        revalidateIfStale: false,
-        refreshInterval: 0,
-      },
-    );
+  const fetcher = useCallback(
+    async (key: string) => {
+      const cursorMatch = key.match(/cursor-(.+)$/);
+      const cursor = cursorMatch ? cursorMatch[1] : null;
+
+      try {
+        return await getUserPostsPaginated(userId, cursor);
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+        throw error;
+      }
+    },
+    [userId],
+  );
+
+  const { data, error, setSize, mutate, isValidating, isLoading } =
+    useSWRInfinite(getKey, fetcher, {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      revalidateIfStale: false,
+      refreshInterval: 0,
+      errorRetryCount: 3,
+      errorRetryInterval: 1000,
+    });
 
   useImperativeHandle(ref, () => ({
     refreshPosts: () => {
@@ -60,18 +84,27 @@ export const PostsList = ({ userId, ref }: PostsListProps) => {
     },
   }));
 
-  const posts = data ? data.flatMap((page) => page.data || []) : [];
-  const hasMore = data?.[data.length - 1]?.hasMore ?? true;
-  const isLoadingMore = isValidating && data && data.length > 0;
+  const posts = useMemo(() => {
+    return data ? data.flatMap((page) => page.data || []) : [];
+  }, [data]);
+
+  const hasMore = useMemo(() => {
+    return data?.[data.length - 1]?.hasMore ?? true;
+  }, [data]);
+
+  const isLoadingMore = useMemo(() => {
+    return isValidating && data && data.length > 0;
+  }, [isValidating, data]);
 
   const loadMore = useCallback(() => {
-    if (!isValidating && hasMore) {
-      setSize(size + 1);
+    if (!isValidating && hasMore && data) {
+      setSize((prevSize) => prevSize + 1);
     }
-  }, [size, setSize, isValidating, hasMore]);
+  }, [isValidating, hasMore, data, setSize]);
 
   useEffect(() => {
-    if (!lastRef.current || !hasMore || isValidating) return;
+    const element = lastRef.current;
+    if (!element || !hasMore || isValidating) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -82,15 +115,19 @@ export const PostsList = ({ userId, ref }: PostsListProps) => {
       { threshold: 0.1 },
     );
 
-    const element = lastRef.current;
     observer.observe(element);
 
-    return () => observer.disconnect();
-  }, [loadMore, hasMore, isValidating]);
+    return () => {
+      observer.disconnect();
+    };
+  }, [hasMore, isValidating, loadMore]);
 
-  if (error) {
-    showToast('Error', 'Tweets loading failure!', 'error');
-  }
+  useEffect(() => {
+    if (error) {
+      console.error('PostsList error:', error);
+      showToast('Error', 'Tweets loading failure!', 'error');
+    }
+  }, [error, showToast]);
 
   if (isLoading) {
     return <PostsListSkeleton />;
