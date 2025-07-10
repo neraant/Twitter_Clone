@@ -13,10 +13,3 @@ export type GetUserTweetsOptions = {
   limit?: number;
   cursor?: string;
 };
-
-export type PostsState = {
-  posts: Post[];
-  isLoading: boolean;
-  error: string | null;
-  fetchUserPosts: ({ userId, limit, cursor }: GetUserTweetsOptions) => void;
-};
