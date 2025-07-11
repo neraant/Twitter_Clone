@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -80,16 +81,25 @@ export const PostCard = ({
         </div>
         <p className={styles.postContentText}>{content}</p>
         {image_urls && image_urls.length > 0 && (
-          <div className={styles.postImages} data-count={imageCount}>
+          <div
+            className={clsx(
+              styles.postImages,
+              image_urls.length === 1 && styles.singleImageWrapper,
+            )}
+            data-count={imageCount}
+          >
             {image_urls.map((src, index) => (
               <Image
                 key={`${src}-${index}`}
                 src={src}
-                width={200}
-                height={200}
+                width={700}
+                height={700}
                 priority={index === 0}
                 alt={`post image ${index + 1}`}
-                className={styles.postImage}
+                className={clsx(
+                  styles.postImage,
+                  image_urls.length === 1 && styles.singleImage,
+                )}
               />
             ))}
           </div>

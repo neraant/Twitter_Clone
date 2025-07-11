@@ -30,6 +30,4 @@ export async function GET(request: NextRequest) {
       redirect(next);
     }
   }
-
-  redirect(routes.auth.error);
 }

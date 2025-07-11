@@ -4,7 +4,6 @@ export const routes = {
     signUpMain: '/welcome',
     signUp: '/register',
     login: '/login',
-    error: '/error',
   },
   api: {
     callback: '/auth/callback',

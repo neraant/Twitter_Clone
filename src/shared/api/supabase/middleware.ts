@@ -50,7 +50,6 @@ export async function updateSession(request: NextRequest) {
 
   const authRoutes = [
     routes.auth.signUpMain,
-    routes.auth.error,
     routes.auth.login,
     routes.auth.signUp,
   ];

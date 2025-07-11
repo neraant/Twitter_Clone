@@ -10,7 +10,10 @@
       color: var(--active-like-color);
     }
   }
-
+  .likeIcon {
+    flex-shrink: 0;
+    width: 25px;
+  }
   .likeText {
     color: var(--non-active-like-color);
     font-size: var(--font-size-md);
