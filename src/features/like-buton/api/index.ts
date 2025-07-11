@@ -1,0 +1,1 @@
+export { LikePost } from './LikePost';

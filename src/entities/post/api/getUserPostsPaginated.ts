@@ -2,18 +2,21 @@
 
 import { createClient } from '@/shared/api/supabase/server';
 
+import { GetUserPostsPaginatedReturnType } from '../model';
+
 export const getUserPostsPaginated = async (
   userId: string,
   cursor: string | null,
-) => {
+): Promise<GetUserPostsPaginatedReturnType> => {
   try {
     const supabase = await createClient();
     const limit = 10;
 
     let query = supabase
-      .from('post_with_author')
+      .from('post_with_author_and_likes')
       .select('*')
       .eq('author_id', userId)
+      .eq('is_deleted', false)
       .order('created_at', { ascending: false })
       .limit(limit);
 

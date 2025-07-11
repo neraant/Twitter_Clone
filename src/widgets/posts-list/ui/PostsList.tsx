@@ -21,6 +21,7 @@ import { PostsListSkeleton } from './PostsListSkeleton';
 
 type PostsListProps = {
   userId: string;
+  currentUserId: string;
   ref: RefObject<{ refreshPosts: () => void } | null>;
 };
 
@@ -30,7 +31,7 @@ type ReturnDataType = {
   nextCursor: number | null;
 };
 
-export const PostsList = ({ userId, ref }: PostsListProps) => {
+export const PostsList = ({ userId, currentUserId, ref }: PostsListProps) => {
   const lastRef = useRef<HTMLDivElement | null>(null);
 
   const { showToast } = useToast();
@@ -138,7 +139,11 @@ export const PostsList = ({ userId, ref }: PostsListProps) => {
       <ul className={styles.postsList}>
         {posts.map((post: Post) => (
           <li key={post.id}>
-            <PostCard {...post} />
+            <PostCard
+              post={post}
+              currentUserId={currentUserId}
+              onPostDeleted={ref.current?.refreshPosts}
+            />
           </li>
         ))}
       </ul>

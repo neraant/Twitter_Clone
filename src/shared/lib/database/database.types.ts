@@ -10,6 +10,31 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: '12.2.3 (519615d)';
   };
+  graphql_public: {
+    Tables: {
+      [_ in never]: never;
+    };
+    Views: {
+      [_ in never]: never;
+    };
+    Functions: {
+      graphql: {
+        Args: {
+          operationName?: string;
+          query?: string;
+          variables?: Json;
+          extensions?: Json;
+        };
+        Returns: Json;
+      };
+    };
+    Enums: {
+      [_ in never]: never;
+    };
+    CompositeTypes: {
+      [_ in never]: never;
+    };
+  };
   public: {
     Tables: {
       comments: {
@@ -46,7 +71,7 @@ export type Database = {
             foreignKeyName: 'comments_post_id_fkey';
             columns: ['post_id'];
             isOneToOne: false;
-            referencedRelation: 'post_with_author';
+            referencedRelation: 'post_with_author_and_likes';
             referencedColumns: ['id'];
           },
           {
@@ -112,7 +137,7 @@ export type Database = {
             foreignKeyName: 'likes_post_id_fkey';
             columns: ['post_id'];
             isOneToOne: false;
-            referencedRelation: 'post_with_author';
+            referencedRelation: 'post_with_author_and_likes';
             referencedColumns: ['id'];
           },
           {
@@ -138,6 +163,7 @@ export type Database = {
           created_at: string;
           id: string;
           image_urls: string[] | null;
+          is_deleted: boolean | null;
         };
         Insert: {
           author_id?: string | null;
@@ -145,6 +171,7 @@ export type Database = {
           created_at?: string;
           id?: string;
           image_urls?: string[] | null;
+          is_deleted?: boolean | null;
         };
         Update: {
           author_id?: string | null;
@@ -152,6 +179,7 @@ export type Database = {
           created_at?: string;
           id?: string;
           image_urls?: string[] | null;
+          is_deleted?: boolean | null;
         };
         Relationships: [
           {
@@ -216,7 +244,7 @@ export type Database = {
       };
     };
     Views: {
-      post_with_author: {
+      post_with_author_and_likes: {
         Row: {
           author_avatar: string | null;
           author_id: string | null;
@@ -225,6 +253,9 @@ export type Database = {
           created_at: string | null;
           id: string | null;
           image_urls: string[] | null;
+          is_deleted: boolean | null;
+          is_liked: boolean | null;
+          likes_count: number | null;
         };
         Relationships: [
           {

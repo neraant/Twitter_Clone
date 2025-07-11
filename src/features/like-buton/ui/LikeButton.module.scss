@@ -7,13 +7,10 @@
 
   &.active {
     .likeText {
-      color: var(active-like-color);
+      color: var(--active-like-color);
     }
   }
 
-  .likeIcon {
-    fill: var(--non-active-like-color);
-  }
   .likeText {
     color: var(--non-active-like-color);
     font-size: var(--font-size-md);

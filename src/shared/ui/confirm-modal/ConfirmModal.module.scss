@@ -50,6 +50,7 @@
   .description {
     font-size: var(--font-size-md);
     opacity: 0.8;
+    text-align: center;
 
     @media (max-width: 580px) {
       font-size: var(--font-size-sm);

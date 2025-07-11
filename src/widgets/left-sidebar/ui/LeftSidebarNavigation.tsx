@@ -22,7 +22,7 @@ export const LeftSidebarNavigation = () => {
 
           const handleClick = () => {
             if (action === MORE_ACTION) {
-              setIsMoreActionsOpen(true);
+              setIsMoreActionsOpen((prev) => !prev);
               return;
             }
           };

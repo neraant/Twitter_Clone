@@ -1,18 +1,43 @@
 import Image from 'next/image';
+import { useState } from 'react';
 
 import { Post } from '@/entities/post/model';
 import { LikeButton } from '@/features/like-buton';
+import { ManagePost } from '@/features/manage-post';
 
 import styles from './PostCard.module.scss';
-
-export type PostCardProps = Omit<Post, 'author_id' | 'id'>;
 
 const DEFAULT_AVATAR = '/images/user-avatar.png';
 const LOCATION = 'en-US';
 
-export const PostCard = (post: PostCardProps) => {
-  const { author_avatar, author_name, content, image_urls, created_at } = post;
-  if (!post) return null;
+type PostCardProps = {
+  post: Post;
+  currentUserId: string;
+  onPostDeleted?: () => void;
+};
+
+export const PostCard = ({
+  post,
+  currentUserId,
+  onPostDeleted,
+}: PostCardProps) => {
+  const [localIsLiked, setLocalIsLiked] = useState(post.is_liked ?? false);
+  const [localLikesCount, setLocalLikesCount] = useState(post.likes_count ?? 0);
+
+  const handleLikeUpdate = (newIsLiked: boolean) => {
+    setLocalIsLiked(newIsLiked);
+    setLocalLikesCount((prev) => (newIsLiked ? prev + 1 : prev - 1));
+  };
+
+  const {
+    id: postId,
+    author_avatar,
+    author_name,
+    content,
+    image_urls,
+    created_at,
+  } = post;
+  if (!postId) return null;
 
   const formattedTime = created_at
     ? new Intl.DateTimeFormat(LOCATION, {
@@ -26,6 +51,8 @@ export const PostCard = (post: PostCardProps) => {
 
   const imageCount = image_urls?.length || 0;
 
+  const isOwner = currentUserId === post.author_id;
+
   return (
     <article className={styles.postCard}>
       <Image
@@ -38,12 +65,20 @@ export const PostCard = (post: PostCardProps) => {
 
       <div className={styles.postContent}>
         <div className={styles.postHeader}>
-          <p className={styles.postAuthorName}>{author_name}</p>
-          <p className={styles.postCreatedAt}>{formattedTime}</p>
+          <div className={styles.postHeaderInfo}>
+            <p className={styles.postAuthorName}>{author_name}</p>
+            <p className={styles.postCreatedAt}>{formattedTime}</p>
+          </div>
+
+          {isOwner && (
+            <ManagePost
+              postId={postId}
+              className={styles.managePost}
+              onPostDeleted={onPostDeleted}
+            />
+          )}
         </div>
-
         <p className={styles.postContentText}>{content}</p>
-
         {image_urls && image_urls.length > 0 && (
           <div className={styles.postImages} data-count={imageCount}>
             {image_urls.map((src, index) => (
@@ -60,7 +95,13 @@ export const PostCard = (post: PostCardProps) => {
           </div>
         )}
 
-        <LikeButton isActive={false} likeQuantity='10' />
+        <LikeButton
+          isActive={localIsLiked}
+          likeQuantity={localLikesCount?.toString()}
+          userId={currentUserId}
+          postId={postId}
+          onLikeUpdate={handleLikeUpdate}
+        />
       </div>
     </article>
   );

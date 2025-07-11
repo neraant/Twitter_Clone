@@ -60,7 +60,11 @@ export const ProfileClient = ({
         {isOwner && (
           <AddPostForm user={user} onPostCreated={handlePostCreated} />
         )}
-        <PostsList userId={user.id} ref={postsListRef} />
+        <PostsList
+          userId={user.id}
+          currentUserId={currentUserId}
+          ref={postsListRef}
+        />
       </section>
 
       {user && isEditModalOpen && (
