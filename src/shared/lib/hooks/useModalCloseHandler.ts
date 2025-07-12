@@ -1,6 +1,4 @@
-import { RefObject, useCallback, useState } from 'react';
-
-import { useClickOutside } from './useClickOutside';
+import { MouseEvent, RefObject, useCallback, useState } from 'react';
 
 const DEFAULT_DELAY = 200;
 
@@ -18,7 +16,14 @@ export const useModalCloseHandler = (
     }, delay);
   }, [onClose, delay]);
 
-  useClickOutside(ref, handleClose);
+  const handleClickOutside = useCallback(
+    (event: MouseEvent) => {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+        handleClose();
+      }
+    },
+    [handleClose, ref],
+  );
 
-  return { isClosing, handleClose };
+  return { isClosing, handleClose, handleClickOutside };
 };

@@ -1,13 +1,13 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { MouseEvent, ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
 import styles from './Overlay.module.scss';
 
 type OverlayProps = {
   children: ReactNode;
-  onClickOutside: () => void;
+  onClickOutside?: (event: MouseEvent) => void;
   isClosing: boolean;
 };
 
@@ -16,10 +16,16 @@ export const Overlay = ({
   onClickOutside,
   isClosing,
 }: OverlayProps) => {
+  const handleOverlayClick = (event: MouseEvent) => {
+    if (event.target === event.currentTarget && onClickOutside) {
+      onClickOutside(event);
+    }
+  };
+
   return createPortal(
     <div
       className={`${styles.overlay} ${isClosing ? styles.closing : ''}`}
-      onClick={onClickOutside}
+      onClick={handleOverlayClick}
     >
       {children}
     </div>,

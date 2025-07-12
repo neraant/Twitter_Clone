@@ -2,7 +2,7 @@ import { PostCardSkeleton } from '@/entities/post/ui/PostCard/ui/PostCardSkeleto
 
 import styles from './PostsList.module.scss';
 
-export const SKELETON_COUNT = 3;
+export const SKELETON_COUNT = 5;
 
 export const PostsListSkeleton = () => {
   return (

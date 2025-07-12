@@ -39,6 +39,11 @@ const nextConfig: NextConfig = {
     ],
     domains: ['tyijrtgqykgvxzlwllbg.supabase.co'],
   },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '26mb',
+    },
+  },
 };
 
 export default nextConfig;

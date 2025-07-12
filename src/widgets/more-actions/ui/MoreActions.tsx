@@ -41,7 +41,7 @@ export const MoreActions = ({ onClose }: MoreActionsProps) => {
     }
   };
 
-  useClickOutside(ref, onClose);
+  useClickOutside(ref, isModalOpen ? () => {} : onClose);
 
   return (
     <div ref={ref}>

@@ -1,7 +1,7 @@
 'use client';
 
 import clsx from 'clsx';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 import { ProfileImageUploader } from '@/features/image-uploader';
 import { useImageUpload, useModalCloseHandler } from '@/shared/lib/hooks';
@@ -11,9 +11,11 @@ import { CrossIcon } from '@/shared/ui/icon';
 import { Loader } from '@/shared/ui/loader';
 import { Overlay } from '@/shared/ui/overlay';
 import { SignInput } from '@/shared/ui/sign-input';
+import { ChangePasswordModal } from '@/widgets/change-password-modal';
 
 import {
   ADDITIONAL_INFO_TITLE,
+  CHANGE_PASSWORD_BUTTON,
   EDIT_TITLE,
   GENDER_OPTIONS,
   LABELS,
@@ -28,15 +30,21 @@ type EditProfileModalProps = {
 
 export const EditProfileModal = ({ onClose }: EditProfileModalProps) => {
   const modalRef = useRef<HTMLFormElement | null>(null);
-  const { isClosing, handleClose } = useModalCloseHandler(modalRef, onClose);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+
+  const { isClosing, handleClose, handleClickOutside } = useModalCloseHandler(
+    modalRef,
+    onClose,
+  );
 
   const {
-    form,
-    onSubmit,
-    isLoading,
     user,
+    form,
+    isLoading,
     avatarPreview,
     bannerPreview,
+    isChanged,
+    onSubmit,
     handleAvatarChange,
     handleBannerChange,
   } = useEditProfileForm(handleClose);
@@ -69,96 +77,115 @@ export const EditProfileModal = ({ onClose }: EditProfileModalProps) => {
     setValue('gender', value);
   };
 
+  const handlePasswordModalClose = () => {
+    setIsPasswordModalOpen(false);
+  };
+
   if (!user) return null;
 
   return (
-    <Overlay isClosing={isClosing} onClickOutside={handleClose}>
-      <form
-        ref={modalRef}
-        className={clsx(styles.modalWrapper, isClosing && styles.closing)}
-        onClick={(e) => e.stopPropagation()}
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <button type='button' aria-label='close' onClick={handleClose}>
-          <CrossIcon width={18} height={18} className={styles.closeButton} />
-        </button>
+    <>
+      <Overlay isClosing={isClosing} onClickOutside={handleClickOutside}>
+        <form
+          ref={modalRef}
+          className={clsx(styles.modalWrapper, isClosing && styles.closing)}
+          onClick={(e) => e.stopPropagation()}
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <button type='button' aria-label='close' onClick={handleClose}>
+            <CrossIcon width={18} height={18} className={styles.closeButton} />
+          </button>
 
-        <div className={styles.modalContent}>
-          <h2 className={styles.title}>{EDIT_TITLE}</h2>
+          <div className={styles.modalContent}>
+            <h2 className={styles.title}>{EDIT_TITLE}</h2>
 
-          <SignInput
-            {...register('name')}
-            label={LABELS.NAME}
-            error={errors.name}
-            className={styles.input}
-          />
-
-          <div className={styles.uploadersWrapper}>
-            <div className={clsx(styles.uploaderWrapper, styles.avatar)}>
-              <ProfileImageUploader
-                label='avatar'
-                imagePreview={avatarPreview ?? '/images/user-avatar.png'}
-                handleChange={handleChangeAvatar}
-                className={styles.avatar}
-              />
-              {avatarError && <p className={styles.error}>{avatarError}</p>}
-            </div>
-            <div className={clsx(styles.uploaderWrapper, styles.banner)}>
-              <ProfileImageUploader
-                label='banner'
-                imagePreview={bannerPreview ?? '/images/default-banner.png'}
-                handleChange={handleChangeBanner}
-                className={styles.banner}
-              />
-              {bannerError && <p className={styles.error}>{bannerError}</p>}
-            </div>
-          </div>
-
-          <h4 className={styles.subtitle}>{ADDITIONAL_INFO_TITLE}</h4>
-
-          <SignInput
-            {...register('telegram')}
-            label={LABELS.TELEGRAM}
-            error={errors.telegram}
-            className={styles.input}
-          />
-
-          <SignInput
-            {...register('bio')}
-            label={LABELS.BIO}
-            error={errors.bio}
-            className={styles.input}
-          />
-
-          <div className={styles.genderWrapper}>
-            <input type='hidden' {...register('gender')} />
-
-            <p className={styles.genderLabel}>{LABELS.GENDER}</p>
-            <DropDownList
-              placeholder={user?.gender || LABELS.BIO}
-              options={GENDER_OPTIONS}
-              onSelect={handleGender}
-              selected={watch('gender')}
+            <SignInput
+              {...register('name')}
+              label={LABELS.NAME}
+              error={errors.name}
+              className={styles.input}
             />
 
-            {errors.gender && (
-              <p className={styles.error}>{errors.gender.message}</p>
-            )}
-          </div>
-        </div>
+            <button
+              type='button'
+              aria-label='change password'
+              onClick={() => setIsPasswordModalOpen(true)}
+              className={styles.changePasswordButton}
+            >
+              {CHANGE_PASSWORD_BUTTON}
+            </button>
 
-        <div className={styles.submitButtonWrapper}>
-          <Button
-            ariaLabel='save'
-            type='submit'
-            disabled={isLoading}
-            className={styles.submitButton}
-          >
-            {SAVE_BUTTON_LABEL}
-            {isLoading && <Loader className={styles.loader} />}
-          </Button>
-        </div>
-      </form>
-    </Overlay>
+            <div className={styles.uploadersWrapper}>
+              <div className={clsx(styles.uploaderWrapper, styles.avatar)}>
+                <ProfileImageUploader
+                  label='avatar'
+                  imagePreview={avatarPreview ?? '/images/user-avatar.png'}
+                  handleChange={handleChangeAvatar}
+                  className={styles.avatar}
+                />
+                {avatarError && <p className={styles.error}>{avatarError}</p>}
+              </div>
+              <div className={clsx(styles.uploaderWrapper, styles.banner)}>
+                <ProfileImageUploader
+                  label='banner'
+                  imagePreview={bannerPreview ?? '/images/default-banner.png'}
+                  handleChange={handleChangeBanner}
+                  className={styles.banner}
+                />
+                {bannerError && <p className={styles.error}>{bannerError}</p>}
+              </div>
+            </div>
+
+            <h4 className={styles.subtitle}>{ADDITIONAL_INFO_TITLE}</h4>
+
+            <SignInput
+              {...register('telegram')}
+              label={LABELS.TELEGRAM}
+              error={errors.telegram}
+              className={styles.input}
+            />
+
+            <SignInput
+              {...register('bio')}
+              label={LABELS.BIO}
+              error={errors.bio}
+              className={styles.input}
+            />
+
+            <div className={styles.genderWrapper}>
+              <input type='hidden' {...register('gender')} />
+
+              <p className={styles.genderLabel}>{LABELS.GENDER}</p>
+              <DropDownList
+                placeholder={user?.gender || LABELS.BIO}
+                options={GENDER_OPTIONS}
+                onSelect={handleGender}
+                selected={watch('gender')}
+              />
+
+              {errors.gender && (
+                <p className={styles.error}>{errors.gender.message}</p>
+              )}
+            </div>
+          </div>
+
+          <div className={styles.submitButtonWrapper}>
+            <Button
+              ariaLabel='save'
+              type='submit'
+              disabled={isLoading || !isChanged}
+              className={styles.submitButton}
+            >
+              {SAVE_BUTTON_LABEL}
+              {isLoading && <Loader className={styles.loader} />}
+            </Button>
+          </div>
+        </form>
+      </Overlay>
+
+      {isPasswordModalOpen && (
+        <ChangePasswordModal onClose={handlePasswordModalClose} />
+      )}
+    </>
   );
 };

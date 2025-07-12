@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useImageUpload } from '@/shared/lib/hooks';
+import { MB } from '@/shared/lib/image';
 
 import { MAX_IMAGES } from './addPostForm.constants';
 
@@ -10,6 +11,7 @@ export const usePostImages = () => {
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
   const [error, setError] = useState('');
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   const {
     handleChange,
@@ -38,29 +40,46 @@ export const usePostImages = () => {
     },
   });
 
-  const removeImage = (index: number) => {
-    setImageFiles((prev) => prev.filter((_, i) => i !== index));
-    setPreviews((prev) => {
-      URL.revokeObjectURL(prev[index]);
-      return prev.filter((_, i) => i !== index);
-    });
-    setError('');
-    setUploadError('');
-  };
+  const removeImage = useCallback(
+    (index: number) => {
+      setImageFiles((prev) => prev.filter((_, i) => i !== index));
+      setPreviews((prev) => {
+        URL.revokeObjectURL(prev[index]);
+        return prev.filter((_, i) => i !== index);
+      });
+      setError('');
+      setUploadError('');
+    },
+    [setUploadError],
+  );
 
-  const resetImages = () => {
+  const resetImages = useCallback(() => {
+    previews.forEach((url) => URL.revokeObjectURL(url));
     setPreviews([]);
     setImageFiles([]);
     setError('');
     setUploadError('');
-  };
+    setUploadProgress(0);
+  }, [previews, setUploadError]);
+
+  useEffect(() => {
+    return () => {
+      previews.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [previews]);
 
   const combinedError = error || imageUploadError;
+  const imagesSize = useMemo(() => {
+    const totalBytes = imageFiles.reduce((acc, cur) => acc + cur.size, 0);
+    return (totalBytes / MB).toFixed(2);
+  }, [imageFiles]);
 
   return {
     imageFiles,
     previews,
+    uploadProgress,
     error: combinedError,
+    imagesSize,
     handleChange,
     removeImage,
     resetImages,

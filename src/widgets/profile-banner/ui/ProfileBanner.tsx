@@ -26,8 +26,8 @@ export const ProfileBanner = ({
         <BackButton />
 
         <div className={styles.wrapper}>
-          <span className={styles.name}>{userName || UNNAMED_USER}</span>
-          <span className={styles.tweetsQnty}>{TWEET_TEXT}</span>
+          <p className={styles.name}>{userName || UNNAMED_USER}</p>
+          <p className={styles.tweetsQnty}>{TWEET_TEXT}</p>
         </div>
       </div>
 

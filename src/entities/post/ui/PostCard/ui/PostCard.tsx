@@ -1,10 +1,12 @@
 import clsx from 'clsx';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { Post } from '@/entities/post/model';
 import { LikeButton } from '@/features/like-buton';
 import { ManagePost } from '@/features/manage-post';
+import { routes } from '@/shared/config/routes';
 
 import styles from './PostCard.module.scss';
 
@@ -14,20 +16,21 @@ const LOCATION = 'en-US';
 type PostCardProps = {
   post: Post;
   currentUserId: string;
-  onPostDeleted?: () => void;
 };
 
-export const PostCard = ({
-  post,
-  currentUserId,
-  onPostDeleted,
-}: PostCardProps) => {
+export const PostCard = ({ post, currentUserId }: PostCardProps) => {
+  const router = useRouter();
+
   const [localIsLiked, setLocalIsLiked] = useState(post.is_liked ?? false);
   const [localLikesCount, setLocalLikesCount] = useState(post.likes_count ?? 0);
 
   const handleLikeUpdate = (newIsLiked: boolean) => {
     setLocalIsLiked(newIsLiked);
     setLocalLikesCount((prev) => (newIsLiked ? prev + 1 : prev - 1));
+  };
+
+  const handleCardClick = () => {
+    router.push(`${routes.app.post}/${post.id}`);
   };
 
   const {
@@ -62,24 +65,24 @@ export const PostCard = ({
         width={50}
         height={50}
         className={styles.userIcon}
+        onClick={handleCardClick}
       />
 
       <div className={styles.postContent}>
         <div className={styles.postHeader}>
-          <div className={styles.postHeaderInfo}>
+          <div className={styles.postHeaderInfo} onClick={handleCardClick}>
             <p className={styles.postAuthorName}>{author_name}</p>
             <p className={styles.postCreatedAt}>{formattedTime}</p>
           </div>
 
           {isOwner && (
-            <ManagePost
-              postId={postId}
-              className={styles.managePost}
-              onPostDeleted={onPostDeleted}
-            />
+            <ManagePost postId={postId} className={styles.managePost} />
           )}
         </div>
-        <p className={styles.postContentText}>{content}</p>
+
+        <p className={styles.postContentText} onClick={handleCardClick}>
+          {content}
+        </p>
         {image_urls && image_urls.length > 0 && (
           <div
             className={clsx(

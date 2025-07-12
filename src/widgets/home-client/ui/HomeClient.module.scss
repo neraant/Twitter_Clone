@@ -1,0 +1,16 @@
+.homeHeaderWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg-plus) var(--spacing-md);
+
+  @media (max-width: 768px) {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  .homeHeaderWrapperText {
+    font-size: var(--font-size-lg-plus);
+    font-weight: var(--font-weight-bold);
+  }
+}

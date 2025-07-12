@@ -46,6 +46,7 @@ export async function updateSession(request: NextRequest) {
     routes.app.more,
     routes.app.notifications,
     routes.app.profile,
+    routes.app.post,
   ];
 
   const authRoutes = [

@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from 'react';
 
-import { MAX_IMAGE_SIZE } from '../image';
+import { MAX_IMAGE_SIZE_5MB } from '../image';
 
 type UseImageUploadProps = {
   onFileChange: (file: File[] | File) => void;
@@ -13,7 +13,7 @@ export const useImageUpload = ({ onFileChange }: UseImageUploadProps) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
 
-    const maxSize = MAX_IMAGE_SIZE;
+    const maxSize = MAX_IMAGE_SIZE_5MB;
     const validFiles: File[] = [];
 
     Array.from(files).forEach((file) => {

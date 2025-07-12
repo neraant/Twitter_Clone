@@ -1,12 +1,13 @@
 'use client';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Resolver, useForm } from 'react-hook-form';
 
 import { User } from '@/entities/user';
 import { useAuthStore } from '@/features/auth';
-import { uploadProfile } from '@/features/image-uploader';
+import { uploadSingleImage } from '@/features/image-uploader';
+import { StorageFolders } from '@/shared/lib/database';
 import { useToast } from '@/shared/lib/toast';
 
 import { editProfileAction } from '../api';
@@ -38,6 +39,10 @@ export const useEditProfileForm = (onSuccess?: () => void) => {
   });
 
   const handleAvatarChange = (file: File | null) => {
+    if (avatarPreview && avatarPreview.startsWith('blob:')) {
+      URL.revokeObjectURL(avatarPreview);
+    }
+
     setAvatarFile(file);
     if (file) {
       const previewUrl = URL.createObjectURL(file);
@@ -46,6 +51,10 @@ export const useEditProfileForm = (onSuccess?: () => void) => {
   };
 
   const handleBannerChange = (file: File | null) => {
+    if (bannerPreview && bannerPreview.startsWith('blob:')) {
+      URL.revokeObjectURL(bannerPreview);
+    }
+
     setBannerFile(file);
     if (file) {
       const previewUrl = URL.createObjectURL(file);
@@ -67,7 +76,13 @@ export const useEditProfileForm = (onSuccess?: () => void) => {
 
       if (avatarFile) {
         try {
-          avatarUrl = await uploadProfile(avatarFile, 'avatars', user.id);
+          const uploadResult = await uploadSingleImage(
+            avatarFile,
+            StorageFolders.avatars,
+            user.id,
+            true,
+          );
+          avatarUrl = uploadResult.url;
         } catch (error) {
           console.error('Avatar upload failed:', error);
           showToast('Error', 'Failed to upload avatar!', 'error');
@@ -77,7 +92,13 @@ export const useEditProfileForm = (onSuccess?: () => void) => {
 
       if (bannerFile) {
         try {
-          bannerUrl = await uploadProfile(bannerFile, 'banners', user.id);
+          const uploadResult = await uploadSingleImage(
+            bannerFile,
+            StorageFolders.banners,
+            user.id,
+            true,
+          );
+          bannerUrl = uploadResult.url;
         } catch (error) {
           console.error('Banner upload failed:', error);
           showToast('Error', 'Failed to upload banner!', 'error');
@@ -123,13 +144,37 @@ export const useEditProfileForm = (onSuccess?: () => void) => {
     }
   };
 
+  useEffect(() => {
+    return () => {
+      if (avatarPreview && avatarPreview.startsWith('blob:')) {
+        URL.revokeObjectURL(avatarPreview);
+      }
+      if (bannerPreview && bannerPreview.startsWith('blob:')) {
+        URL.revokeObjectURL(bannerPreview);
+      }
+    };
+  }, [avatarPreview, bannerPreview]);
+
+  const watchFields = form.watch(['name', 'telegram', 'bio', 'gender']);
+  const isFormChanged =
+    watchFields[0] !== user?.name ||
+    watchFields[1] !== user?.user_telegram ||
+    watchFields[2] !== user?.bio ||
+    watchFields[3] !== user?.gender;
+
+  const isAvatarChanged = avatarPreview !== user?.avatar_url;
+  const isBannerChanged = bannerPreview !== user?.banner_url;
+
+  const isChanged = isFormChanged || isAvatarChanged || isBannerChanged;
+
   return {
     form,
-    onSubmit,
     isLoading,
     user,
     avatarPreview,
     bannerPreview,
+    isChanged,
+    onSubmit,
     handleAvatarChange,
     handleBannerChange,
   };

@@ -1,2 +1,1 @@
-export { uploadPost } from './uploadPost';
-export { uploadProfile } from './uploadProfile';
+export { uploadSingleImage } from './uploadSingleImage';

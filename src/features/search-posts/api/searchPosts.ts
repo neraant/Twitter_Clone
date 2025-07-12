@@ -1,7 +1,9 @@
-import { createClient } from '@/shared/api/supabase/client';
+'use server';
+
+import { createClient } from '@/shared/api/supabase/server';
 
 export const searchPosts = async (searchTerm: string) => {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   if (!searchTerm.trim()) return [];
 

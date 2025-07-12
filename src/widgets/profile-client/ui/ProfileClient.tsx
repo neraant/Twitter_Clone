@@ -1,7 +1,8 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
+import { PostFetchingMode } from '@/entities/post';
 import { User } from '@/entities/user';
 import { AddPostForm } from '@/widgets/add-post-form/ui/AddPostForm';
 import { EditProfileModal } from '@/widgets/edit-profile-modal';
@@ -25,12 +26,7 @@ export const ProfileClient = ({
   isInitialFollow = false,
   isOwner,
 }: ProfileClientProps) => {
-  const postsListRef = useRef<{ refreshPosts: () => void }>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-
-  const handlePostCreated = () => {
-    postsListRef.current?.refreshPosts();
-  };
 
   return (
     <>
@@ -57,13 +53,11 @@ export const ProfileClient = ({
       </section>
 
       <section>
-        {isOwner && (
-          <AddPostForm user={user} onPostCreated={handlePostCreated} />
-        )}
+        {isOwner && <AddPostForm user={user} />}
         <PostsList
           userId={user.id}
           currentUserId={currentUserId}
-          ref={postsListRef}
+          mode={PostFetchingMode.user}
         />
       </section>
 

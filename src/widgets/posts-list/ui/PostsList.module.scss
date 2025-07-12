@@ -10,5 +10,8 @@
   font-size: var(--font-size-lg);
   text-align: center;
   color: var(--search-placeholder-color);
-  margin-bottom: var(--spacing-xl);
+  margin: var(--spacing-xl) 0;
+}
+.loadingTrigger {
+  height: 20px;
 }

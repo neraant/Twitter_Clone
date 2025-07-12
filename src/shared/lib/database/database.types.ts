@@ -1,3 +1,9 @@
+export const enum StorageFolders {
+  posts = 'posts',
+  avatars = 'avatars',
+  banners = 'banners',
+}
+
 export type Json =
   | string
   | number
@@ -162,24 +168,30 @@ export type Database = {
           content: string | null;
           created_at: string;
           id: string;
+          image_hashes: string[] | null;
           image_urls: string[] | null;
           is_deleted: boolean | null;
+          perceptual_hashes: string[] | null;
         };
         Insert: {
           author_id?: string | null;
           content?: string | null;
           created_at?: string;
           id?: string;
+          image_hashes?: string[] | null;
           image_urls?: string[] | null;
           is_deleted?: boolean | null;
+          perceptual_hashes?: string[] | null;
         };
         Update: {
           author_id?: string | null;
           content?: string | null;
           created_at?: string;
           id?: string;
+          image_hashes?: string[] | null;
           image_urls?: string[] | null;
           is_deleted?: boolean | null;
+          perceptual_hashes?: string[] | null;
         };
         Relationships: [
           {

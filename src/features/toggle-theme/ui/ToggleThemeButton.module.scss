@@ -1,0 +1,34 @@
+.toggleWrapper {
+  width: 52px;
+  height: 32px;
+  background-color: var(--color-bg);
+  border: 2px solid var(--toggle-color);
+  border-radius: var(--radius-lg-plus);
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  flex-shrink: 0;
+
+  &.toggled {
+    background-color: var(--primary-color);
+  }
+
+  .circle {
+    width: 16px;
+    height: 16px;
+    background-color: var(--toggle-color);
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 6px;
+    transform: translateY(-50%);
+    transition: all 0.3s ease-in-out;
+    flex-shrink: 0;
+
+    &.toggled {
+      left: 26px;
+
+      background-color: var(--color-bg);
+    }
+  }
+}

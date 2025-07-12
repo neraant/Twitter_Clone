@@ -3,6 +3,7 @@
   gap: var(--spacing-md);
 
   .userIcon {
+    cursor: pointer;
     border-radius: 50%;
     flex-shrink: 0;
     @media (max-width: 1280px) {
@@ -22,6 +23,7 @@
     margin-bottom: var(--spacing-xs);
 
     .postHeaderInfo {
+      cursor: pointer;
       display: flex;
       align-items: center;
       gap: var(--spacing-sm);
@@ -40,6 +42,10 @@
         overflow: hidden;
         text-overflow: ellipsis;
         max-width: 110px;
+
+        @media (max-width: 480px) {
+          max-width: 300px;
+        }
       }
       .postCreatedAt {
         font-size: var(--font-size-md-plus);
@@ -55,6 +61,7 @@
     }
   }
   .postContentText {
+    cursor: pointer;
     font-size: var(--font-size-md-plus);
     color: var(--dark-text-color);
     word-break: break-word;

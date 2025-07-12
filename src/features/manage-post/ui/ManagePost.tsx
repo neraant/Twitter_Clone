@@ -1,10 +1,12 @@
 import clsx from 'clsx';
 import { useRef, useState } from 'react';
 
+import { PostFetchingMode } from '@/entities/post';
 import { useClickOutside } from '@/shared/lib/hooks';
 import { useToast } from '@/shared/lib/toast';
 import { ConfirmModal } from '@/shared/ui/confirm-modal';
 import { DotsIcon } from '@/shared/ui/icon';
+import { usePosts } from '@/widgets/posts-list/lib';
 
 import { deletePost } from '../api';
 import { DELETE_ACTION, MANAGE_ACTIONS } from '../lib';
@@ -13,20 +15,16 @@ import styles from './ManagePost.module.scss';
 type ManagePostProps = {
   postId: string;
   className?: string;
-  onPostDeleted?: () => void;
 };
 
-export const ManagePost = ({
-  postId,
-  className,
-  onPostDeleted,
-}: ManagePostProps) => {
+export const ManagePost = ({ postId, className }: ManagePostProps) => {
   const manageRef = useRef<HTMLDivElement>(null);
 
   const [isManageOpen, setIsManageOpen] = useState(false);
   const [isConfirmDelete, setIsConfirmDelete] = useState(false);
 
   const { showToast } = useToast();
+  const { refreshPosts } = usePosts({ mode: PostFetchingMode.all });
 
   const handleOpenManage = () => {
     setIsManageOpen(true);
@@ -51,12 +49,12 @@ export const ManagePost = ({
       handleCloseConfirmModal();
       handleCloseManage();
       showToast('Success', 'The post has been successfully deleted', 'success');
-
-      onPostDeleted?.();
     } catch (error) {
       if (typeof error === 'string') {
         showToast('Error', error, 'error');
       }
+    } finally {
+      refreshPosts();
     }
   };
 

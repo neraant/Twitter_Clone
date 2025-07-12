@@ -3,7 +3,8 @@ import Image from 'next/image';
 
 import { User } from '@/entities/user';
 import { AddTweetButton } from '@/features/add-tweet-button';
-import { PostImageUploader } from '@/features/image-uploader';
+import { PostImageUploader } from '@/features/image-uploader/ui';
+import { MAX_VERCEL_SIZE } from '@/shared/lib/image';
 
 import { MAX_LENGTH, TEXTAREA_PLACEHOLDER, usePostForm } from '../lib';
 import styles from './AddPostForm.module.scss';
@@ -12,22 +13,22 @@ const DefaultAvatar = '/images/user-avatar.png';
 
 type AddPostFormProps = {
   user: User;
-  onPostCreated: () => void;
 };
 
-export const AddPostForm = ({ user, onPostCreated }: AddPostFormProps) => {
+export const AddPostForm = ({ user }: AddPostFormProps) => {
   const {
     handleSubmit,
     onSubmit,
     register,
     watch,
+    removeImage,
     handleChange: handleImagesChange,
     previews,
-    removeImage,
+    imagesSize,
     isSubmitting,
     imageError,
     errors,
-  } = usePostForm({ userId: user?.id, onPostCreated });
+  } = usePostForm({ userId: user?.id });
 
   const content = watch('content') || '';
   const contentLength = content.length;
@@ -61,6 +62,10 @@ export const AddPostForm = ({ user, onPostCreated }: AddPostFormProps) => {
             })}
           >
             {contentLength}/{MAX_LENGTH}
+          </p>
+
+          <p className={styles.maxVercelSize}>
+            ({imagesSize}MB/{MAX_VERCEL_SIZE}MB)
           </p>
         </div>
 

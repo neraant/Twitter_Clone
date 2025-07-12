@@ -20,5 +20,6 @@ export const routes = {
     lists: '/lists',
     profile: '/profile',
     more: '/more',
+    post: '/post',
   },
 };

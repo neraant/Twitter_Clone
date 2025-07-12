@@ -78,4 +78,11 @@
       font-size: var(--font-size-xxs);
     }
   }
+
+  .maxVercelSize {
+    font-size: var(--font-size-xs);
+    margin-top: var(--spacing-xxs);
+    color: var(--dark-text-color);
+    opacity: 0.6;
+  }
 }

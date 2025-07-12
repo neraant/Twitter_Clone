@@ -1,7 +1,9 @@
 import clsx from 'clsx';
 
+import { PostFetchingMode } from '@/entities/post';
 import { useToast } from '@/shared/lib/toast';
 import { LikeActiveIcon, LikeNonActiveIcon } from '@/shared/ui/icon';
+import { usePosts } from '@/widgets/posts-list/lib';
 
 import { LikePost } from '../api';
 import styles from './LikeButton.module.scss';
@@ -22,6 +24,7 @@ export const LikeButton = ({
   onLikeUpdate,
 }: LikeButtonProps) => {
   const { showToast } = useToast();
+  const { refreshPosts } = usePosts({ mode: PostFetchingMode.all });
 
   const handleLikePost = async () => {
     const newIsLiked = !isActive;
@@ -37,6 +40,8 @@ export const LikeButton = ({
       onLikeUpdate(isActive);
       console.error(error);
       if (typeof error === 'string') showToast('Error', error, 'error');
+    } finally {
+      refreshPosts();
     }
   };
 
@@ -45,7 +50,10 @@ export const LikeButton = ({
       type='button'
       aria-label='like post'
       className={clsx(styles.likeButton, isActive && styles.active)}
-      onClick={handleLikePost}
+      onClick={(e) => {
+        e.stopPropagation();
+        handleLikePost();
+      }}
     >
       {isActive ? (
         <LikeActiveIcon width={24} height={24} className={styles.likeIcon} />
