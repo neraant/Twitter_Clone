@@ -180,40 +180,6 @@
     }
   }
 
-  .newTweetButton {
-    margin-bottom: var(--spacing-md);
-
-    @media (max-width: 1280px) {
-      height: 100%;
-      width: 100%;
-      max-width: 40px;
-      max-height: 40px;
-      margin: 0 auto;
-      margin-bottom: var(--spacing-md);
-    }
-
-    @media (max-width: 768px) {
-      display: none;
-    }
-
-    .newTweetText {
-      @media (max-width: 1280px) {
-        display: none;
-      }
-    }
-
-    .plusIcon {
-      display: none;
-
-      @media (max-width: 1280px) {
-        display: flex;
-        path {
-          fill: var(--light-text-color);
-        }
-      }
-    }
-  }
-
   .user {
     margin-top: auto;
     margin-bottom: var(--spacing-lg);

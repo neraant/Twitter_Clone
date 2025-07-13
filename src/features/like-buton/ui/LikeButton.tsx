@@ -13,6 +13,7 @@ type LikeButtonProps = {
   likeQuantity: string;
   userId: string;
   postId: string;
+  isDisabled: boolean;
   onLikeUpdate: (isLiked: boolean) => void;
 };
 
@@ -21,6 +22,7 @@ export const LikeButton = ({
   likeQuantity,
   userId,
   postId,
+  isDisabled = false,
   onLikeUpdate,
 }: LikeButtonProps) => {
   const { showToast } = useToast();
@@ -54,6 +56,7 @@ export const LikeButton = ({
         e.stopPropagation();
         handleLikePost();
       }}
+      disabled={isDisabled}
     >
       {isActive ? (
         <LikeActiveIcon width={24} height={24} className={styles.likeIcon} />

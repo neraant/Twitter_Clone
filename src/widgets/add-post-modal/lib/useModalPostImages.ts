@@ -3,11 +3,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useImageUpload } from '@/shared/lib/hooks';
-import { MB } from '@/shared/lib/image';
+import { MAX_IMAGES, MB } from '@/shared/lib/image';
 
-import { MAX_IMAGES } from './addPostForm.constants';
-
-export const usePostImages = () => {
+export const useModalPostImages = () => {
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
   const [error, setError] = useState('');

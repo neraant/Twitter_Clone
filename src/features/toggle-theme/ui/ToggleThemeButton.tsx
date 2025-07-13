@@ -13,7 +13,7 @@ export const ToggleThemeButton = () => {
 
   return (
     <button
-      data-testid='theme-wrapper'
+      aria-label='change theme'
       data-theme={theme}
       className={clsx(styles.toggleWrapper, {
         [styles.toggled]: isDark,

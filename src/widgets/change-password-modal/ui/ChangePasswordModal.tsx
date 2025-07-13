@@ -46,7 +46,8 @@ export const ChangePasswordModal = ({ onClose }: ChangePasswordModalProps) => {
 
   const onSubmit = async (formData: changePasswordFormData) => {
     const { currentPassword, changePassword } = formData;
-
+    console.log('formData:', formData);
+    console.log('isEmailUser:', isEmailUser);
     try {
       setIsLoading(true);
       if (isEmailUser) {
@@ -55,9 +56,18 @@ export const ChangePasswordModal = ({ onClose }: ChangePasswordModalProps) => {
           return;
         }
 
+        if (currentPassword === changePassword) {
+          showToast(
+            'Error',
+            'New password must be different from current password',
+            'error',
+          );
+          return;
+        }
+
         const { success, message } = await changePasswordWithEmailAction(
           currentPassword,
-          changePassword,
+          changePassword!,
         );
 
         if (success) {
@@ -67,8 +77,9 @@ export const ChangePasswordModal = ({ onClose }: ChangePasswordModalProps) => {
           showToast('Error', message, 'error');
         }
       } else {
-        const { success, message } =
-          await changePasswordWithGoogleAction(changePassword);
+        const { success, message } = await changePasswordWithGoogleAction(
+          changePassword!,
+        );
 
         if (success) {
           showToast('Success', message, 'success');

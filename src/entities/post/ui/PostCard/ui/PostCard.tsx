@@ -16,9 +16,14 @@ const LOCATION = 'en-US';
 type PostCardProps = {
   post: Post;
   currentUserId: string;
+  isPreview?: boolean;
 };
 
-export const PostCard = ({ post, currentUserId }: PostCardProps) => {
+export const PostCard = ({
+  post,
+  currentUserId,
+  isPreview = false,
+}: PostCardProps) => {
   const router = useRouter();
 
   const [localIsLiked, setLocalIsLiked] = useState(post.is_liked ?? false);
@@ -30,6 +35,7 @@ export const PostCard = ({ post, currentUserId }: PostCardProps) => {
   };
 
   const handleCardClick = () => {
+    if (isPreview) return;
     router.push(`${routes.app.post}/${post.id}`);
   };
 
@@ -75,7 +81,7 @@ export const PostCard = ({ post, currentUserId }: PostCardProps) => {
             <p className={styles.postCreatedAt}>{formattedTime}</p>
           </div>
 
-          {isOwner && (
+          {isOwner && !isPreview && (
             <ManagePost postId={postId} className={styles.managePost} />
           )}
         </div>
@@ -114,6 +120,7 @@ export const PostCard = ({ post, currentUserId }: PostCardProps) => {
           userId={currentUserId}
           postId={postId}
           onLikeUpdate={handleLikeUpdate}
+          isDisabled={isPreview}
         />
       </div>
     </article>

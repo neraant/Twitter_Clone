@@ -10,6 +10,13 @@ export const changePasswordWithEmailAction = async (
 ) => {
   const supabase = await createClient();
   try {
+    if (currentPassword === newPassword) {
+      return {
+        success: false,
+        message: 'New password must be different from current password',
+      };
+    }
+
     const isCorrectPassword = await checkCurrentPasswordAction(currentPassword);
 
     if (!isCorrectPassword) throw new Error('Current password is incorrect');
