@@ -1,0 +1,23 @@
+.postWrapper {
+  .postHeaderWrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg-plus) var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: var(--spacing-xl-plus);
+
+    @media (max-width: 768px) {
+      padding: var(--spacing-sm) var(--spacing-md);
+    }
+
+    .postHeaderWrapperText {
+      font-size: var(--font-size-lg-plus);
+      font-weight: var(--font-weight-bold);
+    }
+  }
+
+  .postCardWrapper {
+    padding: 0 var(--spacing-md);
+  }
+}

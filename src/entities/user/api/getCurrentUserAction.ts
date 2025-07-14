@@ -2,7 +2,9 @@ import { cookies, headers } from 'next/headers';
 
 import { routes } from '@/shared/config/routes';
 
-export const getCurrentUserAction = async () => {
+import { User } from '../model';
+
+export const getCurrentUserAction = async (): Promise<User | null> => {
   const cookieStore = await cookies();
   const cookieHeader = cookieStore.toString();
   const headersList = await headers();

@@ -6,8 +6,6 @@ import { getUserPostsCount } from '@/entities/post/api';
 import { getCurrentUserAction } from '@/entities/user/api';
 import { ProfileClient, ProfileClientSkeleton } from '@/widgets/profile-client';
 
-import styles from './profile.module.scss';
-
 export const metadata: Metadata = {
   title: 'Twitter Clone | Profile',
   description: 'This is the profile page',
@@ -36,7 +34,7 @@ async function ProfileData() {
 
 export default function Profile() {
   return (
-    <div className={styles.page}>
+    <div>
       <Suspense fallback={<ProfileClientSkeleton isOwner />}>
         <ProfileData />
       </Suspense>

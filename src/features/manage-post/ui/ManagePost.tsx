@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 
 import { PostFetchingMode } from '@/entities/post';
@@ -18,6 +19,7 @@ type ManagePostProps = {
 };
 
 export const ManagePost = ({ postId, className }: ManagePostProps) => {
+  const router = useRouter();
   const manageRef = useRef<HTMLDivElement>(null);
 
   const [isManageOpen, setIsManageOpen] = useState(false);
@@ -49,6 +51,7 @@ export const ManagePost = ({ postId, className }: ManagePostProps) => {
       handleCloseConfirmModal();
       handleCloseManage();
       showToast('Success', 'The post has been successfully deleted', 'success');
+      router.back();
     } catch (error) {
       if (typeof error === 'string') {
         showToast('Error', error, 'error');

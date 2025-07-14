@@ -10,6 +10,7 @@ export const searchPosts = async (searchTerm: string) => {
   const { data, error } = await supabase
     .from('post_with_author_and_likes')
     .select('*')
+    .eq('is_deleted', false)
     .or(`content.ilike.%${searchTerm}%,author_name.ilike.%${searchTerm}%`)
     .order('created_at', { ascending: false })
     .limit(10);

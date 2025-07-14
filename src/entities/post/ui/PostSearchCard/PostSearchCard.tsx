@@ -1,13 +1,15 @@
 import Image, { StaticImageData } from 'next/image';
 import Link from 'next/link';
 
+import { routes } from '@/shared/config/routes';
+
 import styles from './PostSearchCard.module.scss';
 
 type PostSearchCardProps = {
   avatar: string | null | StaticImageData;
   name: string;
   content: string;
-  href: string;
+  postId: string;
 };
 
 const DefaultAvatar = '/images/user-avatar.png';
@@ -16,10 +18,10 @@ export const PostSearchCard = ({
   avatar,
   name,
   content,
-  href,
+  postId,
 }: PostSearchCardProps) => {
   return (
-    <Link href={href} className={styles.postLink}>
+    <Link href={`${routes.app.post}/${postId}`} className={styles.postLink}>
       <Image
         className={styles.avatar}
         src={avatar || DefaultAvatar}

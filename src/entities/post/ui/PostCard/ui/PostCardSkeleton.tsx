@@ -21,7 +21,7 @@ export const PostCardSkeleton = () => {
           />
         </div>
 
-        <Skeleton height='50px' className={styles.postContentText} />
+        <Skeleton height='100px' className={styles.postContentText} />
       </div>
     </article>
   );
