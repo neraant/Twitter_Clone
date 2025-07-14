@@ -34,6 +34,7 @@
     color: var(--dark-text-color);
     margin-bottom: var(--spacing-ms);
     padding-top: var(--spacing-ms);
+    background: var(--color-bg);
 
     &::placeholder {
       color: var(--search-placeholder-color);

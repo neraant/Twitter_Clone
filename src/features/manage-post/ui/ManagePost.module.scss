@@ -2,6 +2,10 @@
 
 .manageWrapper {
   position: relative;
+
+  .manageIcon path {
+    fill: var(--dark-text-color);
+  }
 }
 .manageModal {
   @include modal-animation;

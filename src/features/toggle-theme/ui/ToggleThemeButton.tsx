@@ -1,28 +1,24 @@
 import clsx from 'clsx';
-import { useState } from 'react';
 
+import { THEMES } from '@/shared/lib/theme';
+
+import { useTheme } from '../lib';
 import styles from './ToggleThemeButton.module.scss';
 
 export const ToggleThemeButton = () => {
-  const [theme, setTheme] = useState<'dark' | 'light'>('light');
-  const isDark = theme === 'dark';
-
-  const handleToggleTheme = () => {
-    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
-  };
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <button
-      aria-label='change theme'
-      data-theme={theme}
+      aria-label={`Switch to ${theme === THEMES.LIGHT ? 'dark' : 'light'} theme`}
       className={clsx(styles.toggleWrapper, {
-        [styles.toggled]: isDark,
+        [styles.toggled]: theme === THEMES.DARK,
       })}
-      onClick={handleToggleTheme}
+      onClick={toggleTheme}
     >
       <div
         className={clsx(styles.circle, {
-          [styles.toggled]: isDark,
+          [styles.toggled]: theme === THEMES.DARK,
         })}
       />
     </button>

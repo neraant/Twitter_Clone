@@ -9,6 +9,9 @@
 
   .icon {
     flex-shrink: 0;
+    path {
+      fill: var(--dark-text-color);
+    }
   }
   .input {
     font-size: var(--font-size-md-plus);

@@ -139,6 +139,10 @@
           width: 24px;
           height: 24px;
         }
+
+        path {
+          fill: var(--dark-text-color);
+        }
       }
 
       .linkText {

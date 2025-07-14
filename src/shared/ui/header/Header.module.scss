@@ -36,4 +36,10 @@
     align-items: center;
     gap: var(--spacing-md);
   }
+
+  .linkIcon {
+    path {
+      fill: var(--dark-text-color);
+    }
+  }
 }

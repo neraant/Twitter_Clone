@@ -2,4 +2,8 @@
 
 .backButton {
   @include flex-center;
+
+  .backIcon path {
+    fill: var(--dark-text-color);
+  }
 }
