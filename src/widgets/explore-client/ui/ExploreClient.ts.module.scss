@@ -1,0 +1,39 @@
+@use '@styles/_mixins.scss' as *;
+
+.wrapper {
+  padding: 0 var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  height: calc(100% - 160px);
+  display: flex;
+  flex-direction: column;
+
+  .postsWrapper {
+    @include flex-center;
+    width: 100%;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+  }
+
+  .statesWrapper {
+    @include flex-center;
+    height: 100%;
+  }
+
+  .postSkeleton {
+    width: 100%;
+    padding: var(--spacing-xs);
+  }
+
+  .emptyWrapper {
+    @include flex-center;
+    flex-direction: column;
+    gap: var(--spacing-md);
+
+    .noResults {
+      font-size: var(--font-size-md);
+      text-align: center;
+      color: var(--search-placeholder-color);
+    }
+  }
+}

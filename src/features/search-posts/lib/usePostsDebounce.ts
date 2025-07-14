@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { DEBOUNCE_MS } from './searchPosts.constants';
 
 type usePostsDebounceProps = {
-  fetch: (value: string) => Promise<void>;
+  fetch: (value: string) => void;
   value: string;
   setLoading?: (loading: boolean) => void;
 };
@@ -25,5 +25,6 @@ export const usePostsDebounce = ({
     }, DEBOUNCE_MS);
 
     return () => clearTimeout(timeoutId);
-  }, [fetch, value, setLoading]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value, setLoading]);
 };
