@@ -1,3 +1,5 @@
+'use client';
+
 import { CreatePostPayload, PostFetchingMode } from '@/entities/post';
 import { usePosts } from '@/widgets/posts-list/lib';
 

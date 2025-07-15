@@ -1,5 +1,10 @@
 import type { NextConfig } from 'next';
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
 const nextConfig: NextConfig = {
   webpack(config) {
     config.module.rules.push({
@@ -44,6 +49,7 @@ const nextConfig: NextConfig = {
       bodySizeLimit: '26mb',
     },
   },
+  reactStrictMode: true,
 };
 
-export default nextConfig;
+export default withBundleAnalyzer(nextConfig);

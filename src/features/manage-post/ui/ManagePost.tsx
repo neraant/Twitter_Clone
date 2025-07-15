@@ -1,8 +1,11 @@
+'use client';
+
 import clsx from 'clsx';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 
 import { PostFetchingMode } from '@/entities/post';
+import { routes } from '@/shared/config/routes';
 import { useClickOutside } from '@/shared/lib/hooks';
 import { useToast } from '@/shared/lib/toast';
 import { ConfirmModal } from '@/shared/ui/confirm-modal';
@@ -20,6 +23,8 @@ type ManagePostProps = {
 
 export const ManagePost = ({ postId, className }: ManagePostProps) => {
   const router = useRouter();
+  const route = usePathname();
+
   const manageRef = useRef<HTMLDivElement>(null);
 
   const [isManageOpen, setIsManageOpen] = useState(false);
@@ -51,7 +56,10 @@ export const ManagePost = ({ postId, className }: ManagePostProps) => {
       handleCloseConfirmModal();
       handleCloseManage();
       showToast('Success', 'The post has been successfully deleted', 'success');
-      router.back();
+
+      if (route.includes(routes.app.post)) {
+        router.back();
+      }
     } catch (error) {
       if (typeof error === 'string') {
         showToast('Error', error, 'error');

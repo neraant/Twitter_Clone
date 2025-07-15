@@ -1,3 +1,5 @@
+'use client';
+
 import { useRef, useState } from 'react';
 
 import { useTheme } from '@/features/toggle-theme/lib';
@@ -16,7 +18,6 @@ export const MoreActions = ({ onClose }: MoreActionsProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { toggleTheme } = useTheme();
-
   const { handleLogout } = useLogout();
 
   const handleCloseModal = () => {

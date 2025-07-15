@@ -1,3 +1,5 @@
+'use server';
+
 import { cookies, headers } from 'next/headers';
 
 import { routes } from '@/shared/config/routes';

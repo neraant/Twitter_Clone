@@ -1,3 +1,5 @@
+'use client';
+
 import { MouseEvent, RefObject, useCallback, useState } from 'react';
 
 const DEFAULT_DELAY = 200;

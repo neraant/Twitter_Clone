@@ -1,3 +1,5 @@
+'use client';
+
 import { ToggleThemeButton } from '@/features/toggle-theme';
 
 import { HOME_TEXT } from '../lib';

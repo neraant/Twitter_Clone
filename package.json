@@ -10,7 +10,9 @@
     "format": "prettier --write .",
     "check-format": "prettier --check .",
     "stylelint": "stylelint \"**/*.{css,scss}\" --allow-empty-input",
-    "prepare": "husky"
+    "prepare": "husky",
+    "analyze": "cross-env ANALYZE=true next build",
+    "build:analyze": "npm run build && npm run analyze"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
@@ -28,10 +30,12 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@next/bundle-analyzer": "^15.4.1",
     "@svgr/webpack": "^8.1.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "cross-env": "^7.0.3",
     "eslint": "^9",
     "eslint-config-next": "15.3.4",
     "eslint-config-prettier": "^10.1.5",

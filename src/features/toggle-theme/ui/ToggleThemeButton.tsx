@@ -1,12 +1,16 @@
+'use client';
+
 import clsx from 'clsx';
 
+import { useTheme } from '@/features/toggle-theme/lib';
 import { THEMES } from '@/shared/lib/theme';
 
-import { useTheme } from '../lib';
 import styles from './ToggleThemeButton.module.scss';
 
 export const ToggleThemeButton = () => {
   const { theme, toggleTheme } = useTheme();
+
+  if (!theme) return null;
 
   return (
     <button

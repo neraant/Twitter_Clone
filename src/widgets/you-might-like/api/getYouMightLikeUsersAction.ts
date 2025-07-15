@@ -1,3 +1,5 @@
+'use server';
+
 import { createClient } from '@/shared/api/supabase/server';
 
 export const getYouMightLikeUsersAction = async (currentUserId: string) => {
