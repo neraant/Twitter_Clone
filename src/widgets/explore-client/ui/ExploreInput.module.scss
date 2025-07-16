@@ -1,0 +1,21 @@
+@use '@styles/_mixins.scss' as *;
+
+.inputWrapper {
+  position: relative;
+
+  .exploreInput {
+    padding-right: 20px;
+  }
+
+  .clearButton {
+    @include flex-center;
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    path {
+      fill: var(--primary-color);
+    }
+  }
+}

@@ -7,6 +7,22 @@
   display: flex;
   flex-direction: column;
 
+  .userCard {
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.3s ease-in-out;
+    padding: var(--spacing-xs);
+    border-radius: var(--radius-md);
+
+    p {
+      max-width: none !important;
+    }
+
+    &:hover {
+      background: var(--post-hover-bg);
+    }
+  }
+
   .postsWrapper {
     @include flex-center;
     width: 100%;

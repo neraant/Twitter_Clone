@@ -1,52 +1,58 @@
 'use client';
 
 import Image from 'next/image';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 
-import { Post } from '@/entities/post';
-import { PostSearchCard } from '@/entities/post/ui/PostSearchCard';
 import { UserSmallCardSkeleton } from '@/entities/user';
-import { searchPosts } from '@/features/search-posts/api/searchPosts';
 
-import { EXPLORE_TITLE, NO_RESULTS_TITLE, SKELETON_COUNT } from '../lib';
-import styles from './ExploreClient.ts.module.scss';
+import {
+  EXPLORE_TITLE,
+  NO_RESULTS_TITLE,
+  searchType,
+  SKELETON_COUNT,
+  useExploreSearch,
+} from '../lib';
+import styles from './ExploreClient.module.scss';
 import { ExploreInput } from './ExploreInput';
+import { ExplorePosts } from './ExplorePosts';
+import { ExploreTabs } from './ExploreTabs';
+import { ExploreUsers } from './ExploreUsers';
 
-const DefaultAvatar = '/images/user-avatar.png';
 const EmptyStateImage = '/images/empty-state_icon.svg';
 const ExploreStateImage = '/images/explore-state_icon.svg';
 
 export const ExploreClient = () => {
+  const [activeTab, setActiveTab] = useState(0);
   const [query, setQuery] = useState('');
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasSearched, setHasSearched] = useState(false);
+  const { posts, users, isLoading, hasSearched, setIsLoading, search } =
+    useExploreSearch();
 
-  const handleSearch = useCallback(async (searchQuery: string) => {
-    if (searchQuery.trim() === '') {
-      setPosts([]);
-      setHasSearched(false);
-      return;
-    }
+  const handleTabSelect = (index: number) => {
+    setActiveTab(index);
 
-    setIsLoading(true);
-    try {
-      const results = await searchPosts(searchQuery);
-      setPosts(results);
-      setHasSearched(true);
-    } catch (error) {
-      console.error('Search error:', error);
-      setPosts([]);
-    } finally {
-      setIsLoading(false);
+    if (query.trim() !== '') {
+      const type = index === 0 ? searchType.posts : searchType.users;
+      search(type, query);
     }
-  }, []);
+  };
+
+  const handleSearch = (query: string) => {
+    const type = activeTab === 0 ? searchType.posts : searchType.users;
+    search(type, query);
+  };
 
   const isQueryEmpty = query.trim() === '';
+
+  const currentItemsCount = activeTab === 0 ? posts.length : users.length;
   const showSkeletons = isLoading && !isQueryEmpty;
   const showNoResults =
-    hasSearched && !isLoading && posts.length === 0 && !isQueryEmpty;
-  const showResults = !isLoading && posts.length > 0 && !isQueryEmpty;
+    hasSearched && !isLoading && currentItemsCount === 0 && !isQueryEmpty;
+  const showResults = !isLoading && currentItemsCount > 0 && !isQueryEmpty;
+
+  const tabContent = [
+    <ExplorePosts posts={posts} key='posts' />,
+    <ExploreUsers users={users} key='users' />,
+  ];
 
   return (
     <section className={styles.wrapper}>
@@ -55,6 +61,8 @@ export const ExploreClient = () => {
         onSearch={handleSearch}
         onLoadingChange={setIsLoading}
       />
+
+      <ExploreTabs activeTab={activeTab} onTabSelect={handleTabSelect} />
 
       {(isQueryEmpty || showNoResults) && (
         <div className={styles.statesWrapper}>
@@ -93,16 +101,7 @@ export const ExploreClient = () => {
             <UserSmallCardSkeleton key={i} className={styles.postSkeleton} />
           ))}
 
-        {showResults &&
-          posts.map(({ id, content, author_avatar, author_name }) => (
-            <PostSearchCard
-              key={id}
-              content={content!}
-              name={author_name!}
-              avatar={author_avatar ?? DefaultAvatar}
-              postId={id!}
-            />
-          ))}
+        {showResults && tabContent[activeTab]}
       </div>
     </section>
   );
