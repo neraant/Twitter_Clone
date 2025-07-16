@@ -10,7 +10,8 @@ export const registerSchema = yup.object({
     .string()
     .required(REGISTER_SCHEMA.NAME.REQUIRED)
     .min(3, REGISTER_SCHEMA.NAME.MIN_LEN)
-    .max(20, REGISTER_SCHEMA.NAME.MAX_LEN),
+    .max(20, REGISTER_SCHEMA.NAME.MAX_LEN)
+    .matches(/^[^\s]+$/, REGISTER_SCHEMA.NAME.REQUIRED),
   email: yup
     .string()
     .required(REGISTER_SCHEMA.EMAIL.REQUIRED)
