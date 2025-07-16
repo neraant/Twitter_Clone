@@ -22,4 +22,9 @@ export const routes = {
     more: '/more',
     post: '/post',
   },
+  seo: {
+    robots: '/robots.txt',
+    sitemap: '/sitemap.xml',
+    ogimage: '/og-image.png',
+  },
 };

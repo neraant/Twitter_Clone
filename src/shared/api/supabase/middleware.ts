@@ -62,6 +62,8 @@ export async function updateSession(request: NextRequest) {
     routes.api.callback,
     routes.api.checkEmail,
     routes.api.getUser,
+    routes.seo.sitemap,
+    routes.seo.robots,
   ];
 
   const isProtectedRoute = protectedRoutes.some((route) =>
