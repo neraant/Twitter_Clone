@@ -78,7 +78,6 @@ export const LoginForm = () => {
         <SignInput
           {...register('password')}
           placeholder={PLACEHOLDERS.PASSWORD}
-          error={errors.password}
           isPassword
         />
       </div>
