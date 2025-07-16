@@ -7,10 +7,11 @@ const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
 export const metadata: Metadata = {
   title: 'Twitter Clone | Home',
-  description: 'This is the home page',
+  description: 'Welcome back! See what’s happening now ✨',
+
   openGraph: {
     title: 'Twitter Clone | Home',
-    description: 'Join us! Tweets are waiting for you!❤️',
+    description: 'Welcome back! See what’s happening now ✨',
     url: BASE_URL,
     siteName: 'Twitter Clone',
     locale: 'en_US',
@@ -20,9 +21,16 @@ export const metadata: Metadata = {
         url: `${BASE_URL}/images/og-image.png`,
         width: 1200,
         height: 630,
-        alt: 'Twitter Clone OG Image',
+        alt: 'Twitter Clone Home',
       },
     ],
+  },
+
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Twitter Clone | Home',
+    description: 'Welcome back! See what’s happening now ✨',
+    images: [`${BASE_URL}/images/og-image.png`],
   },
 };
 

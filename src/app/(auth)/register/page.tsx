@@ -6,9 +6,35 @@ import { RegisterForm } from '@/widgets/register-form/ui';
 
 import styles from './register.module.scss';
 
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+
 export const metadata: Metadata = {
   title: 'Twitter Clone | Register',
-  description: 'This is the register page',
+  description: 'Create your account and join thousands of users 🚀',
+
+  openGraph: {
+    title: 'Twitter Clone | Register',
+    description: 'Create your account and join thousands of users 🚀',
+    url: `${BASE_URL}/register`,
+    siteName: 'Twitter Clone',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: `${BASE_URL}/images/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: 'Twitter Clone Register',
+      },
+    ],
+  },
+
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Register to Twitter Clone',
+    description: 'Create your account and join thousands of users 🚀',
+    images: [`${BASE_URL}/images/og-image.png`],
+  },
 };
 
 const personImage = '/images/person-with-laptop.png';

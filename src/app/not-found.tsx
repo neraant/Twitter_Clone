@@ -7,8 +7,8 @@ import { CurveBackIcon, NotFound404Icon } from '@/shared/ui/icon';
 import styles from './not-found.module.scss';
 
 export const metadata: Metadata = {
-  title: 'Twitter Clone | Not Found',
-  description: 'This is the not found page',
+  title: 'Page Not Found | Twitter Clone',
+  description: 'Oops! This page does not exist 😢',
 };
 
 export default async function NotFound() {
