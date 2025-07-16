@@ -38,9 +38,13 @@ export const PostsList = ({
   return (
     <div className={styles.postsContainer}>
       <ul className={styles.postsList}>
-        {posts.map((post: Post) => (
+        {posts.map((post: Post, index) => (
           <li key={post.id}>
-            <PostCard post={post} currentUserId={currentUserId} />
+            <PostCard
+              post={post}
+              currentUserId={currentUserId}
+              isFirst={index === 0}
+            />
           </li>
         ))}
       </ul>
