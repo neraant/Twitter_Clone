@@ -1,8 +1,10 @@
+'use client';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 
 import { CreatePostPayload } from '@/entities/post';
-import { useCreatePost } from '@/features/add-tweet-button/lib';
+import { usePosts } from '@/entities/post/lib';
 import { uploadMultipleImagesAction } from '@/features/image-uploader/lib';
 import { StorageFolders } from '@/shared/lib/database';
 import { useToast } from '@/shared/lib/toast';
@@ -40,8 +42,8 @@ export const usePostForm = ({ userId }: usePostFormProps) => {
     },
   });
 
-  const createPost = useCreatePost();
   const { showToast } = useToast();
+  const { addPost } = usePosts(userId);
 
   const onSubmit = async (data: { content: string }) => {
     if (!userId) return;
@@ -62,7 +64,6 @@ export const usePostForm = ({ userId }: usePostFormProps) => {
           StorageFolders.posts,
           userId,
         );
-
         if (!uploadResult.success) {
           throw new Error(uploadResult.error);
         }
@@ -88,14 +89,18 @@ export const usePostForm = ({ userId }: usePostFormProps) => {
         perceptual_hashes: perceptualHashes,
       };
 
-      await createPost(payload);
+      await addPost.mutateAsync(payload);
 
       reset();
       resetImages();
       showToast('Success', 'Post created successfully!', 'success');
     } catch (error) {
       console.error(error);
-      showToast('Error', 'Post creating failure', 'error');
+      showToast(
+        'Error',
+        error instanceof Error ? error.message : 'Post creating failure',
+        'error',
+      );
     }
   };
 

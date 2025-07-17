@@ -12,7 +12,6 @@ type ProfileActionProps = {
   isOwner: boolean;
   currentUserId?: string;
   targetUserId?: string;
-  isInitialFollow?: boolean;
   onEditClick?: () => void;
 };
 
@@ -21,7 +20,6 @@ export const ProfileAction = ({
   isOwner,
   currentUserId,
   targetUserId,
-  isInitialFollow = false,
   onEditClick,
 }: ProfileActionProps) => {
   if (!currentUserId || !targetUserId) return null;
@@ -30,7 +28,6 @@ export const ProfileAction = ({
     <div className={clsx(styles.action, className)}>
       {!isOwner ? (
         <FollowButton
-          isInitialFollow={isInitialFollow}
           targetUserId={targetUserId}
           currentUserId={currentUserId}
         />

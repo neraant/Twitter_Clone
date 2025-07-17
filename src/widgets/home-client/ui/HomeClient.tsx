@@ -1,6 +1,5 @@
 'use client';
 
-import { PostFetchingMode } from '@/entities/post';
 import { User } from '@/entities/user';
 import { AddPostForm } from '@/widgets/add-post-form/ui/AddPostForm';
 import { PostsList } from '@/widgets/posts-list';
@@ -17,7 +16,7 @@ export const HomeClient = ({ currentUser }: { currentUser: User }) => {
       </section>
 
       <section>
-        <PostsList currentUserId={currentUser.id} mode={PostFetchingMode.all} />
+        <PostsList currentUserId={currentUser.id} />
       </section>
     </>
   );

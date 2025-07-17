@@ -6,21 +6,22 @@ import { FOLLOW_TEXT, UNFOLLOW_TEXT, useFollow } from '../lib';
 import styles from './FollowButton.module.scss';
 
 type FollowButtonProps = {
-  isInitialFollow: boolean;
   targetUserId: string;
   currentUserId: string;
 };
 
 export const FollowButton = ({
-  isInitialFollow,
   targetUserId,
   currentUserId,
 }: FollowButtonProps) => {
   const { handleClick, loading, isFollowed } = useFollow({
     targetUserId,
     currentUserId,
-    isInitialFollow,
   });
+
+  if (isFollowed === undefined) {
+    return null;
+  }
 
   return (
     <button

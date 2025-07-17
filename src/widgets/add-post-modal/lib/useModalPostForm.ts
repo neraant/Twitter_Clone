@@ -1,8 +1,10 @@
+'use client';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 
 import { CreatePostPayload } from '@/entities/post';
-import { useCreatePost } from '@/features/add-tweet-button/lib';
+import { usePosts } from '@/entities/post/lib';
 import { uploadMultipleImagesAction } from '@/features/image-uploader/lib';
 import { StorageFolders } from '@/shared/lib/database';
 import { useToast } from '@/shared/lib/toast';
@@ -44,7 +46,7 @@ export const useModalPostForm = ({
     },
   });
 
-  const createPost = useCreatePost();
+  const { addPost } = usePosts();
   const { showToast } = useToast();
 
   const onSubmit = async (data: { content: string }) => {
@@ -92,7 +94,7 @@ export const useModalPostForm = ({
         perceptual_hashes: perceptualHashes,
       };
 
-      await createPost(payload);
+      await addPost.mutateAsync(payload);
 
       reset();
       resetImages();

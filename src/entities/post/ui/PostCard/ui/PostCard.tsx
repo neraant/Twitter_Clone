@@ -12,6 +12,7 @@ import { routes } from '@/shared/config/routes';
 import { Skeleton } from '@/shared/ui/skeleton';
 
 import styles from './PostCard.module.scss';
+import { PostCardSkeleton } from './PostCardSkeleton';
 
 const DEFAULT_AVATAR = '/images/user-avatar.png';
 const LOCATION = 'en-US';
@@ -19,6 +20,8 @@ const LOCATION = 'en-US';
 type PostCardProps = {
   post: Post;
   currentUserId: string;
+  likePost?: (postId: string) => void;
+  unlikePost?: (postId: string) => void;
   isPreview?: boolean;
   isFirst?: boolean;
 };
@@ -26,21 +29,16 @@ type PostCardProps = {
 export const PostCard = ({
   post,
   currentUserId,
+  likePost,
+  unlikePost,
   isPreview = false,
   isFirst = false,
 }: PostCardProps) => {
   const router = useRouter();
 
-  const [localIsLiked, setLocalIsLiked] = useState(post.is_liked ?? false);
-  const [localLikesCount, setLocalLikesCount] = useState(post.likes_count ?? 0);
   const [loadingImages, setLoadingImages] = useState<boolean[]>(
     post?.image_urls?.map(() => true) ?? [],
   );
-
-  const handleLikeUpdate = (newIsLiked: boolean) => {
-    setLocalIsLiked(newIsLiked);
-    setLocalLikesCount((prev) => (newIsLiked ? prev + 1 : prev - 1));
-  };
 
   const handleCardClick = () => {
     if (isPreview) return;
@@ -62,8 +60,11 @@ export const PostCard = ({
     content,
     image_urls,
     created_at,
+    likes_count,
+    is_liked,
   } = post;
-  if (!postId) return null;
+
+  if (!post || !postId) return <PostCardSkeleton />;
 
   const formattedTime = created_at
     ? new Intl.DateTimeFormat(LOCATION, {
@@ -98,7 +99,11 @@ export const PostCard = ({
           </div>
 
           {isOwner && !isPreview && (
-            <ManagePost postId={postId} className={styles.managePost} />
+            <ManagePost
+              postId={postId}
+              currentUserId={currentUserId}
+              className={styles.managePost}
+            />
           )}
         </div>
 
@@ -147,12 +152,13 @@ export const PostCard = ({
         )}
 
         <LikeButton
-          isActive={localIsLiked}
-          likeQuantity={localLikesCount?.toString()}
+          isActive={!!is_liked}
+          likeQuantity={likes_count?.toString() ?? '0'}
           userId={currentUserId}
           postId={postId}
-          onLikeUpdate={handleLikeUpdate}
           isDisabled={isPreview}
+          likePost={likePost}
+          unlikePost={unlikePost}
         />
       </div>
     </article>

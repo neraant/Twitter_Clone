@@ -1,3 +1,5 @@
+'use client';
+
 import clsx from 'clsx';
 import Image from 'next/image';
 
@@ -61,7 +63,7 @@ export const AddPostForm = ({ user }: AddPostFormProps) => {
               [styles.errorText]: isOverLimit,
             })}
           >
-            {contentLength}/{MAX_LENGTH}
+            {contentLength}/{MAX_LENGTH}{' '}
           </p>
 
           <p className={styles.maxVercelSize}>

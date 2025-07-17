@@ -1,9 +1,9 @@
+'use client';
+
 import clsx from 'clsx';
 
-import { PostFetchingMode } from '@/entities/post';
 import { useToast } from '@/shared/lib/toast';
 import { LikeActiveIcon, LikeNonActiveIcon } from '@/shared/ui/icon';
-import { usePosts } from '@/widgets/posts-list/lib';
 
 import { LikePost } from '../api';
 import styles from './LikeButton.module.scss';
@@ -14,7 +14,8 @@ type LikeButtonProps = {
   userId: string;
   postId: string;
   isDisabled: boolean;
-  onLikeUpdate: (isLiked: boolean) => void;
+  likePost?: (postId: string) => void;
+  unlikePost?: (postId: string) => void;
 };
 
 export const LikeButton = ({
@@ -22,15 +23,20 @@ export const LikeButton = ({
   likeQuantity,
   userId,
   postId,
+  likePost,
+  unlikePost,
   isDisabled = false,
-  onLikeUpdate,
 }: LikeButtonProps) => {
   const { showToast } = useToast();
-  const { refreshPosts } = usePosts({ mode: PostFetchingMode.all });
 
   const handleLikePost = async () => {
     const newIsLiked = !isActive;
-    onLikeUpdate(newIsLiked);
+
+    if (newIsLiked) {
+      likePost?.(postId);
+    } else {
+      unlikePost?.(postId);
+    }
 
     try {
       const { success, message } = await LikePost({ userId, postId });
@@ -39,11 +45,14 @@ export const LikeButton = ({
         showToast('Success', message, 'success');
       }
     } catch (error) {
-      onLikeUpdate(isActive);
+      if (newIsLiked) {
+        unlikePost?.(postId);
+      } else {
+        likePost?.(postId);
+      }
+
       console.error(error);
       if (typeof error === 'string') showToast('Error', error, 'error');
-    } finally {
-      refreshPosts();
     }
   };
 
