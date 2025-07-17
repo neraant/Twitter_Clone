@@ -9,23 +9,28 @@ import { uploadMultipleImagesAction } from '@/features/image-uploader/lib';
 import { StorageFolders } from '@/shared/lib/database';
 import { useToast } from '@/shared/lib/toast';
 
+import { UPLOADER_DEBOUNCE_TIME } from './addPostForm.constants';
 import { addTweetSchema } from './addPostForm.schema';
 import { usePostImages } from './usePostImages';
 
 type usePostFormProps = {
   userId: string;
+  onSuccess?: () => void;
 };
 
-export const usePostForm = ({ userId }: usePostFormProps) => {
+export const usePostForm = ({ userId, onSuccess }: usePostFormProps) => {
   const {
     previews,
     error: imageError,
     imageFiles,
     uploadProgress,
+    isUploading,
     imagesSize,
     handleChange,
     removeImage,
     resetImages,
+    updateUploadProgress,
+    setUploadingStatus,
   } = usePostImages();
 
   const {
@@ -54,15 +59,23 @@ export const usePostForm = ({ userId }: usePostFormProps) => {
       let perceptualHashes: string[] = [];
 
       if (imageFiles.length > 0) {
+        setUploadingStatus(true);
+        updateUploadProgress(0);
+
         const formData = new FormData();
         imageFiles.forEach((file) => {
           formData.append('files', file);
         });
 
+        const onProgress = (progress: number) => {
+          updateUploadProgress(progress);
+        };
+
         const uploadResult = await uploadMultipleImagesAction(
           formData,
           StorageFolders.posts,
           userId,
+          onProgress,
         );
         if (!uploadResult.success) {
           throw new Error(uploadResult.error);
@@ -79,6 +92,10 @@ export const usePostForm = ({ userId }: usePostFormProps) => {
             .filter((result) => !result.isDuplicate && result.perceptualHash)
             .map((result) => result.perceptualHash!);
         }
+
+        updateUploadProgress(100);
+        await new Promise((res) => setTimeout(res, UPLOADER_DEBOUNCE_TIME));
+        setUploadingStatus(false);
       }
 
       const payload: CreatePostPayload = {
@@ -94,6 +111,7 @@ export const usePostForm = ({ userId }: usePostFormProps) => {
       reset();
       resetImages();
       showToast('Success', 'Post created successfully!', 'success');
+      onSuccess?.();
     } catch (error) {
       console.error(error);
       showToast(
@@ -114,9 +132,10 @@ export const usePostForm = ({ userId }: usePostFormProps) => {
     removeImage,
     imagesSize,
     previews,
-    isSubmitting,
+    isSubmitting: isSubmitting || isUploading,
     imageError,
     uploadProgress,
+    isUploading,
     errors,
   };
 };

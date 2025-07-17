@@ -12,6 +12,7 @@ export const usePostImages = () => {
   const [previews, setPreviews] = useState<string[]>([]);
   const [error, setError] = useState('');
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
 
   const {
     handleChange,
@@ -62,6 +63,14 @@ export const usePostImages = () => {
     setUploadProgress(0);
   }, [previews, setUploadError]);
 
+  const updateUploadProgress = useCallback((progress: number) => {
+    setUploadProgress(progress);
+  }, []);
+
+  const setUploadingStatus = useCallback((status: boolean) => {
+    setIsUploading(status);
+  }, []);
+
   useEffect(() => {
     return () => {
       previews.forEach((url) => URL.revokeObjectURL(url));
@@ -78,10 +87,13 @@ export const usePostImages = () => {
     imageFiles,
     previews,
     uploadProgress,
+    isUploading,
     error: combinedError,
     imagesSize,
     handleChange,
     removeImage,
     resetImages,
+    updateUploadProgress,
+    setUploadingStatus,
   };
 };

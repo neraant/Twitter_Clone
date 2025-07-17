@@ -6,8 +6,10 @@ import { useEffect } from 'react';
 import { AddTweetButton } from '@/features/add-tweet-button';
 import { PostImageUploader } from '@/features/image-uploader/ui';
 import { MAX_VERCEL_SIZE } from '@/shared/lib/image';
+import { CircleProgressBar } from '@/shared/ui/progress-bar';
+import { usePostForm } from '@/widgets/add-post-form/lib';
 
-import { MAX_LENGTH, TEXTAREA_PLACEHOLDER, useModalPostForm } from '../lib';
+import { MAX_LENGTH, TEXTAREA_PLACEHOLDER } from '../lib';
 import styles from './AddPostModalForm.module.scss';
 
 type AddPostModalFormProps = {
@@ -39,7 +41,9 @@ export const AddPostModalForm = ({
     isSubmitting,
     imageError,
     errors,
-  } = useModalPostForm({ userId: userId, onSuccess });
+    isUploading,
+    uploadProgress,
+  } = usePostForm({ userId: userId, onSuccess });
 
   const content = watch('content') || '';
   const contentLength = content.length;
@@ -83,6 +87,14 @@ export const AddPostModalForm = ({
           onRemove={removeImage}
           className={styles.actions}
         >
+          {isUploading && (
+            <CircleProgressBar
+              size={30}
+              strokeWidth={4}
+              progress={uploadProgress}
+              className={styles.progressBar}
+            />
+          )}
           <AddTweetButton isLoading={isSubmitting} />
         </PostImageUploader>
 

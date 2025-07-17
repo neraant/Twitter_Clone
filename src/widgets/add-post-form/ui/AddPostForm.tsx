@@ -7,6 +7,7 @@ import { User } from '@/entities/user';
 import { AddTweetButton } from '@/features/add-tweet-button';
 import { PostImageUploader } from '@/features/image-uploader/ui';
 import { MAX_VERCEL_SIZE } from '@/shared/lib/image';
+import { CircleProgressBar } from '@/shared/ui/progress-bar';
 
 import { MAX_LENGTH, TEXTAREA_PLACEHOLDER, usePostForm } from '../lib';
 import styles from './AddPostForm.module.scss';
@@ -30,6 +31,8 @@ export const AddPostForm = ({ user }: AddPostFormProps) => {
     isSubmitting,
     imageError,
     errors,
+    isUploading,
+    uploadProgress,
   } = usePostForm({ userId: user?.id });
 
   const content = watch('content') || '';
@@ -78,6 +81,14 @@ export const AddPostForm = ({ user }: AddPostFormProps) => {
           onRemove={removeImage}
           className={styles.actions}
         >
+          {isUploading && (
+            <CircleProgressBar
+              size={30}
+              strokeWidth={4}
+              progress={uploadProgress}
+              className={styles.progressBar}
+            />
+          )}
           <AddTweetButton isLoading={isSubmitting} />
         </PostImageUploader>
 
