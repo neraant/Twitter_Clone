@@ -9,21 +9,13 @@ import styles from './PostsList.module.scss';
 import { PostsListSkeleton } from './PostsListSkeleton';
 
 type PostsListProps = {
-  userId?: string;
+  userId: string;
   currentUserId: string;
 };
 
 export const PostsList = ({ userId, currentUserId }: PostsListProps) => {
-  const {
-    posts,
-    isLoading,
-    lastRef,
-    error,
-    isLoadingMore,
-    hasNextPage,
-    likePost,
-    unlikePost,
-  } = usePosts(userId);
+  const { posts, isLoading, lastRef, error, isLoadingMore, hasNextPage } =
+    usePosts(userId);
 
   if (isLoading) {
     return <PostsListSkeleton />;
@@ -53,8 +45,6 @@ export const PostsList = ({ userId, currentUserId }: PostsListProps) => {
               post={post}
               currentUserId={currentUserId}
               isFirst={index === 0}
-              likePost={likePost}
-              unlikePost={unlikePost}
             />
           </li>
         ))}

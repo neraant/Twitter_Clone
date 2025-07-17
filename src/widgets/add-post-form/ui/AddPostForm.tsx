@@ -26,6 +26,7 @@ export const AddPostForm = ({ user }: AddPostFormProps) => {
     watch,
     removeImage,
     handleChange: handleImagesChange,
+    previewItems,
     previews,
     imagesSize,
     isSubmitting,
@@ -70,7 +71,7 @@ export const AddPostForm = ({ user }: AddPostFormProps) => {
           </p>
 
           <p className={styles.maxVercelSize}>
-            ({imagesSize}MB/{MAX_VERCEL_SIZE}MB)
+            ({imagesSize}MB/{MAX_VERCEL_SIZE}MB per image)
           </p>
         </div>
 
@@ -79,6 +80,7 @@ export const AddPostForm = ({ user }: AddPostFormProps) => {
           imagePreviews={previews}
           handleChange={handleImagesChange}
           onRemove={removeImage}
+          previewItems={previewItems}
           className={styles.actions}
         >
           {isUploading && (

@@ -16,7 +16,7 @@ export const HomeClient = ({ currentUser }: { currentUser: User }) => {
       </section>
 
       <section>
-        <PostsList currentUserId={currentUser.id} />
+        <PostsList userId='global' currentUserId={currentUser.id} />
       </section>
     </>
   );

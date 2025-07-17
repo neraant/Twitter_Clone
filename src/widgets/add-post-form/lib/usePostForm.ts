@@ -26,6 +26,7 @@ export const usePostForm = ({ userId, onSuccess }: usePostFormProps) => {
     uploadProgress,
     isUploading,
     imagesSize,
+    previewItems,
     handleChange,
     removeImage,
     resetImages,
@@ -119,6 +120,9 @@ export const usePostForm = ({ userId, onSuccess }: usePostFormProps) => {
         error instanceof Error ? error.message : 'Post creating failure',
         'error',
       );
+
+      updateUploadProgress(0);
+      setUploadingStatus(false);
     }
   };
 
@@ -130,6 +134,7 @@ export const usePostForm = ({ userId, onSuccess }: usePostFormProps) => {
     setValue,
     handleChange,
     removeImage,
+    previewItems,
     imagesSize,
     previews,
     isSubmitting: isSubmitting || isUploading,

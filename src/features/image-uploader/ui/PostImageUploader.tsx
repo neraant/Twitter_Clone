@@ -6,9 +6,16 @@ import { CrossIcon, ImageIcon } from '@/shared/ui/icon';
 
 import styles from './PostImageUploader.module.scss';
 
+interface ImagePreview {
+  id: string;
+  file: File;
+  url: string;
+}
+
 type PostImageUploaderProps = {
   label: string;
-  imagePreviews: string[] | StaticImageData[] | null;
+  imagePreviews?: string[] | StaticImageData[] | null;
+  previewItems?: ImagePreview[];
   className?: string;
   children?: ReactNode;
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -18,11 +25,14 @@ type PostImageUploaderProps = {
 export const PostImageUploader = ({
   label,
   imagePreviews,
+  previewItems,
   className,
   children,
   handleChange,
   onRemove,
 }: PostImageUploaderProps) => {
+  const items = previewItems || imagePreviews;
+
   return (
     <div className={styles.uploaderWrapper}>
       <label htmlFor={label} className={styles.labelWrapper}>
@@ -41,26 +51,38 @@ export const PostImageUploader = ({
         </div>
       </label>
 
-      {imagePreviews && imagePreviews.length > 0 && (
+      {items && items.length > 0 && (
         <div className={styles.previewImages}>
-          {imagePreviews.map((src, index) => (
-            <div key={index} className={styles.imageWrapper}>
-              <button
-                type='button'
-                onClick={() => onRemove(index)}
-                className={styles.removeButton}
-              >
-                <CrossIcon width={16} height={16} />
-              </button>
-              <Image
-                src={src}
-                width={70}
-                height={70}
-                alt='Preview'
-                className={styles.previewImage}
-              />
-            </div>
-          ))}
+          {items.map((item, index) => {
+            const src =
+              typeof item === 'string'
+                ? item
+                : 'url' in item
+                  ? item.url
+                  : (item as StaticImageData);
+            const key = previewItems
+              ? previewItems[index]?.id
+              : `${src}-${index}`;
+
+            return (
+              <div key={key} className={styles.imageWrapper}>
+                <button
+                  type='button'
+                  onClick={() => onRemove(index)}
+                  className={styles.removeButton}
+                >
+                  <CrossIcon width={16} height={16} />
+                </button>
+                <Image
+                  src={src}
+                  width={70}
+                  height={70}
+                  alt='Preview'
+                  className={styles.previewImage}
+                />
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

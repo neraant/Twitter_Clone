@@ -2,10 +2,9 @@
 
 import clsx from 'clsx';
 
-import { useToast } from '@/shared/lib/toast';
+import { usePosts } from '@/entities/post/lib';
 import { LikeActiveIcon, LikeNonActiveIcon } from '@/shared/ui/icon';
 
-import { LikePost } from '../api';
 import styles from './LikeButton.module.scss';
 
 type LikeButtonProps = {
@@ -14,8 +13,6 @@ type LikeButtonProps = {
   userId: string;
   postId: string;
   isDisabled: boolean;
-  likePost?: (postId: string) => void;
-  unlikePost?: (postId: string) => void;
 };
 
 export const LikeButton = ({
@@ -23,37 +20,12 @@ export const LikeButton = ({
   likeQuantity,
   userId,
   postId,
-  likePost,
-  unlikePost,
   isDisabled = false,
 }: LikeButtonProps) => {
-  const { showToast } = useToast();
+  const { toggleLike } = usePosts(userId);
 
   const handleLikePost = async () => {
-    const newIsLiked = !isActive;
-
-    if (newIsLiked) {
-      likePost?.(postId);
-    } else {
-      unlikePost?.(postId);
-    }
-
-    try {
-      const { success, message } = await LikePost({ userId, postId });
-
-      if (success) {
-        showToast('Success', message, 'success');
-      }
-    } catch (error) {
-      if (newIsLiked) {
-        unlikePost?.(postId);
-      } else {
-        likePost?.(postId);
-      }
-
-      console.error(error);
-      if (typeof error === 'string') showToast('Error', error, 'error');
-    }
+    await toggleLike.mutateAsync({ userId, postId });
   };
 
   return (

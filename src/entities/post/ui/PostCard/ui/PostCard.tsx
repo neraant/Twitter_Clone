@@ -20,8 +20,6 @@ const LOCATION = 'en-US';
 type PostCardProps = {
   post: Post;
   currentUserId: string;
-  likePost?: (postId: string) => void;
-  unlikePost?: (postId: string) => void;
   isPreview?: boolean;
   isFirst?: boolean;
 };
@@ -29,8 +27,6 @@ type PostCardProps = {
 export const PostCard = ({
   post,
   currentUserId,
-  likePost,
-  unlikePost,
   isPreview = false,
   isFirst = false,
 }: PostCardProps) => {
@@ -157,8 +153,6 @@ export const PostCard = ({
           userId={currentUserId}
           postId={postId}
           isDisabled={isPreview}
-          likePost={likePost}
-          unlikePost={unlikePost}
         />
       </div>
     </article>

@@ -20,7 +20,7 @@ export const getAllPostsPaginated = async (
       .order('created_at', { ascending: false })
       .limit(limit);
 
-    if (userId) {
+    if (userId && userId !== 'global') {
       query = query.eq('author_id', userId);
     }
 
@@ -38,7 +38,7 @@ export const getAllPostsPaginated = async (
     const posts = data || [];
 
     return {
-      posts: posts,
+      posts,
       hasMore: posts.length === limit,
       nextCursor: posts.length > 0 ? posts[posts.length - 1].created_at : null,
     };

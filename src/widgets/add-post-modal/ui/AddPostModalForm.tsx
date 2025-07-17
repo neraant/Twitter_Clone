@@ -37,6 +37,7 @@ export const AddPostModalForm = ({
     removeImage,
     handleChange: handleImagesChange,
     previews,
+    previewItems,
     imagesSize,
     isSubmitting,
     imageError,
@@ -76,7 +77,7 @@ export const AddPostModalForm = ({
           </p>
 
           <p className={styles.maxVercelSize}>
-            ({imagesSize}MB/{MAX_VERCEL_SIZE}MB)
+            ({imagesSize}MB/{MAX_VERCEL_SIZE}MB per image)
           </p>
         </div>
 
@@ -84,6 +85,7 @@ export const AddPostModalForm = ({
           label='modal-post'
           imagePreviews={previews}
           handleChange={handleImagesChange}
+          previewItems={previewItems}
           onRemove={removeImage}
           className={styles.actions}
         >
