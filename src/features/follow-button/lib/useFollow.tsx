@@ -1,79 +1,107 @@
 'use client';
 
-import { useCallback, useEffect } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useToast } from '@/shared/lib/toast';
 
-import { followUserAction, unfollowUserAction } from '../api/followActions';
+import {
+  followUserAction,
+  isFollowingAction,
+  unfollowUserAction,
+} from '../api/followActions';
 import { useFollowStore } from '../model';
-import { FOLLOWED, UNFOLLOWED } from './followButton.constants';
 
 type UseFollowProps = {
   targetUserId: string;
   currentUserId: string;
-  isInitialFollow: boolean;
 };
 
-export const useFollow = ({
-  targetUserId,
-  currentUserId,
-  isInitialFollow,
-}: UseFollowProps) => {
-  const {
-    initializeFollowStatus,
-    setFollowStatus,
-    getFollowStatus,
-    setUserLoading,
-    isUserLoading,
-  } = useFollowStore();
+export const useFollow = ({ targetUserId, currentUserId }: UseFollowProps) => {
+  const queryClient = useQueryClient();
   const { showToast } = useToast();
+  const { setUserLoading, isUserLoading } = useFollowStore();
 
-  useEffect(() => {
-    initializeFollowStatus(targetUserId, isInitialFollow);
-  }, [targetUserId, isInitialFollow, initializeFollowStatus]);
+  const { data: isFollowed, isLoading: isQueryLoading } = useQuery({
+    queryKey: ['isFollowing', targetUserId, currentUserId],
+    queryFn: () => isFollowingAction(targetUserId, currentUserId),
+    enabled: !!targetUserId && !!currentUserId,
+    staleTime: 5 * 60 * 1000,
+  });
 
-  const isFollowed = getFollowStatus(targetUserId, isInitialFollow);
-  const loading = isUserLoading(targetUserId);
+  const followMutation = useMutation({
+    mutationFn: () => followUserAction(targetUserId, currentUserId),
+    onMutate: async () => {
+      await queryClient.cancelQueries({
+        queryKey: ['isFollowing', targetUserId, currentUserId],
+      });
 
-  const handleClick = useCallback(async () => {
-    if (loading) return;
+      queryClient.setQueryData(
+        ['isFollowing', targetUserId, currentUserId],
+        true,
+      );
+    },
+    onSuccess: () => {
+      showToast('Success', 'Followed', 'success');
 
-    try {
-      setUserLoading(targetUserId, true);
+      queryClient.invalidateQueries({
+        queryKey: ['isFollowing', targetUserId, currentUserId],
+      });
+    },
+    onError: () => {
+      showToast('Error', 'Failed to follow', 'error');
 
-      let result;
-      if (isFollowed) {
-        result = await unfollowUserAction(targetUserId, currentUserId);
-      } else {
-        result = await followUserAction(targetUserId, currentUserId);
-      }
+      queryClient.setQueryData(
+        ['isFollowing', targetUserId, currentUserId],
+        false,
+      );
+    },
+  });
 
-      if (result.success) {
-        setFollowStatus(targetUserId, !isFollowed);
-        const MESSAGE = `You ${!isFollowed ? FOLLOWED : UNFOLLOWED} successfully`;
-        showToast('Success', MESSAGE, 'success');
-      } else {
-        showToast('Error', 'Something went wrong', 'error');
-      }
-    } catch (error) {
-      showToast('Error', 'Something went wrong', 'error');
-      console.error('Follow/Unfollow error:', error);
-    } finally {
-      setUserLoading(targetUserId, false);
-    }
-  }, [
-    targetUserId,
-    currentUserId,
-    showToast,
-    isFollowed,
-    loading,
-    setFollowStatus,
-    setUserLoading,
-  ]);
+  const unfollowMutation = useMutation({
+    mutationFn: () => unfollowUserAction(targetUserId, currentUserId),
+    onMutate: async () => {
+      await queryClient.cancelQueries({
+        queryKey: ['isFollowing', targetUserId, currentUserId],
+      });
+
+      queryClient.setQueryData(
+        ['isFollowing', targetUserId, currentUserId],
+        false,
+      );
+    },
+    onSuccess: () => {
+      showToast('Success', 'Unfollowed', 'success');
+      queryClient.invalidateQueries({
+        queryKey: ['isFollowing', targetUserId, currentUserId],
+      });
+    },
+    onError: () => {
+      showToast('Error', 'Failed to unfollow', 'error');
+      queryClient.setQueryData(
+        ['isFollowing', targetUserId, currentUserId],
+        true,
+      );
+    },
+  });
+
+  const handleClick = () => {
+    setUserLoading(targetUserId, true);
+    const mutation = isFollowed ? unfollowMutation : followMutation;
+
+    mutation.mutate(undefined, {
+      onSettled: () => setUserLoading(targetUserId, false),
+    });
+  };
+
+  const loading =
+    isQueryLoading ||
+    followMutation.isPending ||
+    unfollowMutation.isPending ||
+    isUserLoading(targetUserId);
 
   return {
-    handleClick,
+    isFollowed: !!isFollowed,
     loading,
-    isFollowed,
+    handleClick,
   };
 };

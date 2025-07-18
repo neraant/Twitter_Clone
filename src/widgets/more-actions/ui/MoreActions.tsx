@@ -3,7 +3,11 @@
 import { useRef, useState } from 'react';
 
 import { useTheme } from '@/features/toggle-theme/lib';
-import { useClickOutside, useLogout } from '@/shared/lib/hooks';
+import {
+  useClickOutside,
+  useLockBodyScroll,
+  useLogout,
+} from '@/shared/lib/hooks';
 import { THEMES } from '@/shared/lib/theme';
 import { ConfirmModal } from '@/shared/ui/confirm-modal';
 
@@ -47,6 +51,7 @@ export const MoreActions = ({ onClose }: MoreActionsProps) => {
   };
 
   useClickOutside(ref, isModalOpen ? () => {} : onClose);
+  useLockBodyScroll(isModalOpen);
 
   return (
     <div ref={ref}>

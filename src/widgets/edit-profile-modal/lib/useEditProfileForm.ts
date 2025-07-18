@@ -85,7 +85,11 @@ export const useEditProfileForm = (onSuccess?: () => void) => {
           avatarUrl = uploadResult.url;
         } catch (error) {
           console.error('Avatar upload failed:', error);
-          showToast('Error', 'Failed to upload avatar!', 'error');
+          showToast(
+            'Error',
+            error instanceof Error ? error.message : 'Failed to upload avatar!',
+            'error',
+          );
           return;
         }
       }
@@ -101,7 +105,11 @@ export const useEditProfileForm = (onSuccess?: () => void) => {
           bannerUrl = uploadResult.url;
         } catch (error) {
           console.error('Banner upload failed:', error);
-          showToast('Error', 'Failed to upload banner!', 'error');
+          showToast(
+            'Error',
+            error instanceof Error ? error.message : 'Failed to upload banner!',
+            'error',
+          );
           return;
         }
       }

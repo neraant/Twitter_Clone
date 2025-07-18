@@ -2,7 +2,7 @@ import './globals.scss';
 
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { Suspense } from 'react';
+import React, { Suspense } from 'react';
 
 import { themeScript } from '@/features/toggle-theme/lib';
 import { GlobalLoader } from '@/shared/ui/global-loader';

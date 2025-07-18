@@ -7,6 +7,7 @@ import { User } from '@/entities/user';
 import { AddTweetButton } from '@/features/add-tweet-button';
 import { PostImageUploader } from '@/features/image-uploader/ui';
 import { MAX_VERCEL_SIZE } from '@/shared/lib/image';
+import { CircleProgressBar } from '@/shared/ui/progress-bar';
 
 import { MAX_LENGTH, TEXTAREA_PLACEHOLDER, usePostForm } from '../lib';
 import styles from './AddPostForm.module.scss';
@@ -25,11 +26,14 @@ export const AddPostForm = ({ user }: AddPostFormProps) => {
     watch,
     removeImage,
     handleChange: handleImagesChange,
+    previewItems,
     previews,
     imagesSize,
     isSubmitting,
     imageError,
     errors,
+    isUploading,
+    uploadProgress,
   } = usePostForm({ userId: user?.id });
 
   const content = watch('content') || '';
@@ -63,11 +67,11 @@ export const AddPostForm = ({ user }: AddPostFormProps) => {
               [styles.errorText]: isOverLimit,
             })}
           >
-            {contentLength}/{MAX_LENGTH}
+            {contentLength}/{MAX_LENGTH}{' '}
           </p>
 
           <p className={styles.maxVercelSize}>
-            ({imagesSize}MB/{MAX_VERCEL_SIZE}MB)
+            ({imagesSize}MB/{MAX_VERCEL_SIZE}MB per image)
           </p>
         </div>
 
@@ -76,8 +80,17 @@ export const AddPostForm = ({ user }: AddPostFormProps) => {
           imagePreviews={previews}
           handleChange={handleImagesChange}
           onRemove={removeImage}
+          previewItems={previewItems}
           className={styles.actions}
         >
+          {isUploading && (
+            <CircleProgressBar
+              size={30}
+              strokeWidth={4}
+              progress={uploadProgress}
+              className={styles.progressBar}
+            />
+          )}
           <AddTweetButton isLoading={isSubmitting} />
         </PostImageUploader>
 

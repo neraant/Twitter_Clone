@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import Image from 'next/image';
+import Link from 'next/link';
 
 import { User } from '../../model';
 import styles from './UserBigCard.module.scss';
@@ -18,6 +19,10 @@ export const UserBigCard = ({ user, className }: UserBigCardProps) => {
 
   const { avatar_url, name, user_telegram, bio } = user;
 
+  const cleanTelegramUsername = user_telegram?.startsWith('@')
+    ? user_telegram.slice(1)
+    : user_telegram;
+
   return (
     <div className={clsx(styles.wrapper, className)}>
       <Image
@@ -33,7 +38,16 @@ export const UserBigCard = ({ user, className }: UserBigCardProps) => {
         <p className={styles.name} title={name!}>
           {name}
         </p>
-        {user_telegram && <p className={styles.telegram}>{user_telegram}</p>}
+        {user_telegram && (
+          <Link
+            className={styles.telegram}
+            href={`https://t.me/${cleanTelegramUsername}`}
+            aria-label={`${name}'s telegram`}
+            target='_blank'
+          >
+            {user_telegram}
+          </Link>
+        )}
       </div>
 
       {bio && <p className={styles.bio}>{bio}</p>}

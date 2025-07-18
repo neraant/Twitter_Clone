@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 
+import { useLockBodyScroll } from '@/shared/lib/hooks';
 import { Button } from '@/shared/ui/button/Button';
 import { PlusIcon } from '@/shared/ui/icon';
 import { AddPostModal } from '@/widgets/add-post-modal';
@@ -11,6 +12,7 @@ import styles from './OpenPostModalButton.module.scss';
 
 export const OpenPostModalButton = () => {
   const [isModalOpen, setiIModalOpened] = useState(false);
+  useLockBodyScroll(isModalOpen);
 
   const handleOpenModal = () => setiIModalOpened(true);
 

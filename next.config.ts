@@ -1,10 +1,5 @@
 import type { NextConfig } from 'next';
 
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
-});
-
 const nextConfig: NextConfig = {
   webpack(config) {
     config.module.rules.push({
@@ -52,4 +47,4 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
 };
 
-export default withBundleAnalyzer(nextConfig);
+export default nextConfig;

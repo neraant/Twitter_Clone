@@ -3,11 +3,14 @@
 import clsx from 'clsx';
 import { useEffect } from 'react';
 
+import { ImagePreview } from '@/entities/post/ui/PostCard';
 import { AddTweetButton } from '@/features/add-tweet-button';
 import { PostImageUploader } from '@/features/image-uploader/ui';
 import { MAX_VERCEL_SIZE } from '@/shared/lib/image';
+import { CircleProgressBar } from '@/shared/ui/progress-bar';
+import { usePostForm } from '@/widgets/add-post-form/lib';
 
-import { MAX_LENGTH, TEXTAREA_PLACEHOLDER, useModalPostForm } from '../lib';
+import { MAX_LENGTH, TEXTAREA_PLACEHOLDER } from '../lib';
 import styles from './AddPostModalForm.module.scss';
 
 type AddPostModalFormProps = {
@@ -15,10 +18,10 @@ type AddPostModalFormProps = {
   onSuccess?: () => void;
   onFormDataChange?: ({
     content,
-    previews,
+    previewItems,
   }: {
     content: string;
-    previews: string[];
+    previewItems: ImagePreview[];
   }) => void;
 };
 
@@ -35,19 +38,22 @@ export const AddPostModalForm = ({
     removeImage,
     handleChange: handleImagesChange,
     previews,
+    previewItems,
     imagesSize,
     isSubmitting,
     imageError,
     errors,
-  } = useModalPostForm({ userId: userId, onSuccess });
+    isUploading,
+    uploadProgress,
+  } = usePostForm({ userId: userId, onSuccess });
 
   const content = watch('content') || '';
   const contentLength = content.length;
   const isOverLimit = contentLength >= MAX_LENGTH;
 
   useEffect(() => {
-    onFormDataChange?.({ content, previews });
-  }, [content, onFormDataChange, previews]);
+    onFormDataChange?.({ content, previewItems });
+  }, [content, onFormDataChange, previewItems]);
 
   if (!userId) return null;
 
@@ -72,7 +78,7 @@ export const AddPostModalForm = ({
           </p>
 
           <p className={styles.maxVercelSize}>
-            ({imagesSize}MB/{MAX_VERCEL_SIZE}MB)
+            ({imagesSize}MB/{MAX_VERCEL_SIZE}MB per image)
           </p>
         </div>
 
@@ -80,9 +86,18 @@ export const AddPostModalForm = ({
           label='modal-post'
           imagePreviews={previews}
           handleChange={handleImagesChange}
+          previewItems={previewItems}
           onRemove={removeImage}
           className={styles.actions}
         >
+          {isUploading && (
+            <CircleProgressBar
+              size={30}
+              strokeWidth={4}
+              progress={uploadProgress}
+              className={styles.progressBar}
+            />
+          )}
           <AddTweetButton isLoading={isSubmitting} />
         </PostImageUploader>
 

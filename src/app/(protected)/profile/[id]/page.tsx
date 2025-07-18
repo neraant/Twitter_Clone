@@ -4,7 +4,6 @@ import { Suspense } from 'react';
 
 import { getUserPostsCount } from '@/entities/post/api';
 import { getCurrentUserAction, getUserByIdAction } from '@/entities/user/api';
-import { isFollowingAction } from '@/features/follow-button/api/followActions';
 import { isValidUUID } from '@/shared/lib/isValidUUID';
 import { ProfileClient, ProfileClientSkeleton } from '@/widgets/profile-client';
 
@@ -64,7 +63,6 @@ async function ProfileData({ userId }: { userId: string }) {
 
     if (!user || !currentUser) return notFound();
 
-    const isInitialFollow = await isFollowingAction(user.id, currentUser.id);
     const isOwner = currentUser.id === userId;
 
     return (
@@ -73,7 +71,6 @@ async function ProfileData({ userId }: { userId: string }) {
         tweetsCount={tweetsCount}
         currentUserId={currentUser.id}
         isOwner={isOwner}
-        isInitialFollow={isInitialFollow}
       />
     );
   } catch (error) {

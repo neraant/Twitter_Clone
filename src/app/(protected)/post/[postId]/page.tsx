@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 
 import { getPost } from '@/entities/post/api';
-import { PostCard } from '@/entities/post/ui/PostCard/ui/PostCard';
 import { getCurrentUserAction } from '@/entities/user/api';
+import { PostClient } from '@/widgets/post-client';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
@@ -76,5 +76,5 @@ export default async function Post({
   const currentUser = await getCurrentUserAction();
   if (!currentUser) return null;
 
-  return <PostCard post={post} currentUserId={currentUser.id} />;
+  return <PostClient post={post} currentUserId={currentUser.id} />;
 }

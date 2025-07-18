@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { useRef, useState } from 'react';
 
 import { Post } from '@/entities/post';
+import { ImagePreview } from '@/entities/post/ui/PostCard';
 import { PostCard } from '@/entities/post/ui/PostCard/ui/PostCard';
 import { useAuthStore } from '@/features/auth';
 import { useModalCloseHandler } from '@/shared/lib/hooks';
@@ -26,8 +27,8 @@ export const AddPostModal = ({ onClose }: AddPostModalProps) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const [previewData, setPreviewData] = useState<{
     content: string;
-    previews: string[];
-  }>({ content: '', previews: [] });
+    previewItems: ImagePreview[];
+  }>({ content: '', previewItems: [] });
 
   const { isClosing, handleClose } = useModalCloseHandler(modalRef, onClose);
   const user = useAuthStore((state) => state.user);
@@ -41,7 +42,7 @@ export const AddPostModal = ({ onClose }: AddPostModalProps) => {
     author_name: user.name,
     author_id: user.id,
     content: previewData.content || DEFAULT_CONTENT,
-    image_urls: previewData.previews,
+    image_urls: previewData.previewItems.map((item) => item.url),
     is_deleted: false,
   };
 
