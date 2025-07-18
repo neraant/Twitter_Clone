@@ -12,6 +12,7 @@ import { routes } from '@/shared/config/routes';
 import { Skeleton } from '@/shared/ui/skeleton';
 
 import styles from './PostCard.module.scss';
+import { PostCardSkeleton } from './PostCardSkeleton';
 
 const DEFAULT_AVATAR = '/images/user-avatar.png';
 const LOCATION = 'en-US';
@@ -37,18 +38,13 @@ export const PostCard = ({
     content,
     image_urls,
     created_at,
+    likes_count,
+    is_liked,
   } = post;
 
-  const [localIsLiked, setLocalIsLiked] = useState(post.is_liked ?? false);
-  const [localLikesCount, setLocalLikesCount] = useState(post.likes_count ?? 0);
   const [loadingImages, setLoadingImages] = useState<boolean[]>(
-    post?.image_urls?.map(() => true) ?? [],
+    image_urls?.map(() => true) ?? [],
   );
-
-  const handleLikeUpdate = (newIsLiked: boolean) => {
-    setLocalIsLiked(newIsLiked);
-    setLocalLikesCount((prev) => (newIsLiked ? prev + 1 : prev - 1));
-  };
 
   const onImageLoad = (index: number) => {
     setLoadingImages((prev) => {
@@ -58,7 +54,7 @@ export const PostCard = ({
     });
   };
 
-  if (!postId) return null;
+  if (!post || !postId) return <PostCardSkeleton />;
 
   const formattedTime = created_at
     ? new Intl.DateTimeFormat(LOCATION, {
@@ -96,7 +92,11 @@ export const PostCard = ({
           </Link>
 
           {isOwner && !isPreview && (
-            <ManagePost postId={postId} className={styles.managePost} />
+            <ManagePost
+              postId={postId}
+              currentUserId={currentUserId}
+              className={styles.managePost}
+            />
           )}
         </div>
 
@@ -114,7 +114,10 @@ export const PostCard = ({
               data-count={imageCount}
             >
               {image_urls.map((src, index) => (
-                <div key={`${src}-${index}`} className={styles.imageWrapper}>
+                <div
+                  key={`preview-${index}-${src.slice(-10)}`}
+                  className={styles.imageWrapper}
+                >
                   {loadingImages[index] && (
                     <Skeleton
                       className={clsx(
@@ -148,11 +151,10 @@ export const PostCard = ({
         )}
 
         <LikeButton
-          isActive={localIsLiked}
-          likeQuantity={localLikesCount?.toString()}
+          isActive={!!is_liked}
+          likeQuantity={likes_count?.toString() ?? '0'}
           userId={currentUserId}
           postId={postId}
-          onLikeUpdate={handleLikeUpdate}
           isDisabled={isPreview}
         />
       </div>

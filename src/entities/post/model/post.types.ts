@@ -14,7 +14,7 @@ export type Post = {
 };
 
 export type GetUserPostsPaginatedReturnType = {
-  data: Post[];
+  posts: Post[];
   hasMore: boolean;
   nextCursor: string | null;
 };
@@ -30,4 +30,21 @@ export interface CreatePostPayload {
 export const enum PostFetchingMode {
   all = 'all',
   user = 'user',
+}
+
+export interface PostsState {
+  allPosts: Post[];
+  userPosts: { [userId: string]: Post[] };
+  myPosts: Post[];
+
+  addPost: (post: Post, mode: PostFetchingMode, userId?: string) => void;
+  removePost: (postId: string, userId?: string) => void;
+  likePost: (postId: string, userId?: string) => void;
+  unlikePost: (postId: string, userId?: string) => void;
+  setAllPosts: (posts: Post[] | ((prev: Post[]) => Post[])) => void;
+  setUserPosts: (
+    userId: string,
+    posts: Post[] | ((prev: Post[]) => Post[]),
+  ) => void;
+  setMyPosts: (posts: Post[] | ((prev: Post[]) => Post[])) => void;
 }

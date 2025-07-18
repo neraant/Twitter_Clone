@@ -1,32 +1,35 @@
+'use client';
+
 import clsx from 'clsx';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 
-import { PostFetchingMode } from '@/entities/post';
-import { useClickOutside } from '@/shared/lib/hooks';
-import { useToast } from '@/shared/lib/toast';
+import { routes } from '@/shared/config/routes';
+import { useClickOutside, useLockBodyScroll } from '@/shared/lib/hooks';
 import { ConfirmModal } from '@/shared/ui/confirm-modal';
 import { DotsIcon } from '@/shared/ui/icon';
-import { usePosts } from '@/widgets/posts-list/lib';
 
-import { deletePost } from '../api';
-import { DELETE_ACTION, MANAGE_ACTIONS } from '../lib';
+import { DELETE_ACTION, MANAGE_ACTIONS, useDeletePost } from '../lib';
 import styles from './ManagePost.module.scss';
 
 type ManagePostProps = {
   postId: string;
+  currentUserId: string;
   className?: string;
 };
 
-export const ManagePost = ({ postId, className }: ManagePostProps) => {
+export const ManagePost = ({
+  postId,
+  currentUserId,
+  className,
+}: ManagePostProps) => {
   const router = useRouter();
+  const route = usePathname();
+
   const manageRef = useRef<HTMLDivElement>(null);
 
   const [isManageOpen, setIsManageOpen] = useState(false);
   const [isConfirmDelete, setIsConfirmDelete] = useState(false);
-
-  const { showToast } = useToast();
-  const { refreshPosts } = usePosts({ mode: PostFetchingMode.all });
 
   const handleOpenManage = () => {
     setIsManageOpen(true);
@@ -44,23 +47,6 @@ export const ManagePost = ({ postId, className }: ManagePostProps) => {
     setIsConfirmDelete(true);
   };
 
-  const handleDeletePost = async () => {
-    try {
-      await deletePost(postId);
-
-      handleCloseConfirmModal();
-      handleCloseManage();
-      showToast('Success', 'The post has been successfully deleted', 'success');
-      router.back();
-    } catch (error) {
-      if (typeof error === 'string') {
-        showToast('Error', error, 'error');
-      }
-    } finally {
-      refreshPosts();
-    }
-  };
-
   const handleManageAction = (action: string) => {
     switch (action) {
       case DELETE_ACTION:
@@ -71,7 +57,17 @@ export const ManagePost = ({ postId, className }: ManagePostProps) => {
     }
   };
 
+  const handleDeletePost = useDeletePost(postId, currentUserId, () => {
+    handleCloseManage();
+    handleCloseConfirmModal();
+
+    if (route.includes(routes.app.post)) {
+      router.back();
+    }
+  });
+
   useClickOutside(manageRef, handleCloseManage);
+  useLockBodyScroll(isConfirmDelete);
 
   return (
     <>

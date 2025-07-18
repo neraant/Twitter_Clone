@@ -2,16 +2,17 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { ImagePreview } from '@/entities/post/ui/PostCard';
 import { useImageUpload } from '@/shared/lib/hooks';
 import { MB } from '@/shared/lib/image';
 
 import { MAX_IMAGES } from './addPostForm.constants';
 
 export const usePostImages = () => {
-  const [imageFiles, setImageFiles] = useState<File[]>([]);
-  const [previews, setPreviews] = useState<string[]>([]);
+  const [imageItems, setImageItems] = useState<ImagePreview[]>([]);
   const [error, setError] = useState('');
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
 
   const {
     handleChange,
@@ -25,26 +26,30 @@ export const usePostImages = () => {
         newFiles = [newFiles];
       }
 
-      const spaceLeft = MAX_IMAGES - imageFiles.length;
+      const spaceLeft = MAX_IMAGES - imageItems.length;
 
       if (spaceLeft === 0 || newFiles.length > 5)
         setError('You can upload 5 files maximum');
 
       const filesToAdd = newFiles.slice(0, spaceLeft);
 
-      setImageFiles((prev) => [...prev, ...filesToAdd]);
-      setPreviews((prev) => [
-        ...prev,
-        ...filesToAdd.map((file) => URL.createObjectURL(file)),
-      ]);
+      const newImageItems: ImagePreview[] = filesToAdd.map((file) => ({
+        id: `${Date.now()}-${Math.random()}`,
+        file,
+        url: URL.createObjectURL(file),
+      }));
+
+      setImageItems((prev) => [...prev, ...newImageItems]);
     },
   });
 
   const removeImage = useCallback(
     (index: number) => {
-      setImageFiles((prev) => prev.filter((_, i) => i !== index));
-      setPreviews((prev) => {
-        URL.revokeObjectURL(prev[index]);
+      setImageItems((prev) => {
+        const itemToRemove = prev[index];
+        if (itemToRemove) {
+          URL.revokeObjectURL(itemToRemove.url);
+        }
         return prev.filter((_, i) => i !== index);
       });
       setError('');
@@ -54,21 +59,39 @@ export const usePostImages = () => {
   );
 
   const resetImages = useCallback(() => {
-    previews.forEach((url) => URL.revokeObjectURL(url));
-    setPreviews([]);
-    setImageFiles([]);
+    imageItems.forEach((item) => URL.revokeObjectURL(item.url));
+    setImageItems([]);
     setError('');
     setUploadError('');
     setUploadProgress(0);
-  }, [previews, setUploadError]);
+  }, [imageItems, setUploadError]);
+
+  const updateUploadProgress = useCallback((progress: number) => {
+    setUploadProgress(progress);
+  }, []);
+
+  const setUploadingStatus = useCallback((status: boolean) => {
+    setIsUploading(status);
+  }, []);
 
   useEffect(() => {
     return () => {
-      previews.forEach((url) => URL.revokeObjectURL(url));
+      imageItems.forEach((item) => URL.revokeObjectURL(item.url));
     };
-  }, [previews]);
+  }, [imageItems]);
 
   const combinedError = error || imageUploadError;
+
+  const imageFiles = useMemo(
+    () => imageItems.map((item) => item.file),
+    [imageItems],
+  );
+  const previews = useMemo(
+    () => imageItems.map((item) => item.url),
+    [imageItems],
+  );
+  const previewItems = useMemo(() => imageItems, [imageItems]);
+
   const imagesSize = useMemo(() => {
     const totalBytes = imageFiles.reduce((acc, cur) => acc + cur.size, 0);
     return (totalBytes / MB / MB).toFixed(2);
@@ -77,11 +100,15 @@ export const usePostImages = () => {
   return {
     imageFiles,
     previews,
+    previewItems,
     uploadProgress,
+    isUploading,
     error: combinedError,
     imagesSize,
     handleChange,
     removeImage,
     resetImages,
+    updateUploadProgress,
+    setUploadingStatus,
   };
 };

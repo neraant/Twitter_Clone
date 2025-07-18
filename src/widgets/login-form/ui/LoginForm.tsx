@@ -45,7 +45,7 @@ export const LoginForm = () => {
     try {
       await loginWithPassword({
         email: data.email,
-        password: data.password,
+        password: data.password || '',
       });
 
       showToast('Success!', 'You are login successfully!', 'success');
@@ -78,7 +78,6 @@ export const LoginForm = () => {
         <SignInput
           {...register('password')}
           placeholder={PLACEHOLDERS.PASSWORD}
-          error={errors.password}
           isPassword
         />
       </div>

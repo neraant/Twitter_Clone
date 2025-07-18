@@ -2,9 +2,10 @@ import './globals.scss';
 
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { Suspense } from 'react';
+import React, { Suspense } from 'react';
 
 import { AuthProvider } from '@/features/auth';
+import { ReactQueryProvider } from '@/shared/lib/providers';
 import { ToastProvider } from '@/shared/lib/toast';
 import { GlobalLoader } from '@/shared/ui/global-loader';
 import { ToastContainer } from '@/shared/ui/toast';
@@ -30,10 +31,12 @@ export default function RootLayout({
       <body className={inter.variable}>
         <Suspense fallback={<GlobalLoader />}>
           <AuthProvider>
-            <ToastProvider>
-              <ToastContainer />
-              {children}
-            </ToastProvider>
+            <ReactQueryProvider>
+              <ToastProvider>
+                <ToastContainer />
+                {children}
+              </ToastProvider>
+            </ReactQueryProvider>
           </AuthProvider>
         </Suspense>
       </body>

@@ -1,1 +1,1 @@
-export { deletePost } from './deletePost';
+export { deletePostAction } from './deletePost';
