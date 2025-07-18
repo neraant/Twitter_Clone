@@ -1,3 +1,5 @@
+'use client';
+
 import { ChangeEvent, useState } from 'react';
 
 import { MAX_IMAGE_SIZE_5MB } from '../image';

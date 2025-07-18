@@ -2,14 +2,16 @@
 
 import { createClient } from '@/shared/api/supabase/server';
 
+import { POSTS_LIMIT } from '../lib';
 import { GetUserPostsPaginatedReturnType } from '../model';
 
 export const getAllPostsPaginated = async (
   cursor: string | null,
+  userId?: string,
 ): Promise<GetUserPostsPaginatedReturnType> => {
   try {
     const supabase = await createClient();
-    const limit = 10;
+    const limit = POSTS_LIMIT;
 
     let query = supabase
       .from('post_with_author_and_likes')
@@ -17,6 +19,10 @@ export const getAllPostsPaginated = async (
       .eq('is_deleted', false)
       .order('created_at', { ascending: false })
       .limit(limit);
+
+    if (userId && userId !== 'global') {
+      query = query.eq('author_id', userId);
+    }
 
     if (cursor) {
       query = query.lt('created_at', cursor);
@@ -32,7 +38,7 @@ export const getAllPostsPaginated = async (
     const posts = data || [];
 
     return {
-      data: posts,
+      posts,
       hasMore: posts.length === limit,
       nextCursor: posts.length > 0 ? posts[posts.length - 1].created_at : null,
     };

@@ -46,7 +46,7 @@ export async function uploadSingleImage(
 
   const fileExt = file.name.split('.').pop()?.toLowerCase();
   if (!fileExt || !IMAGE_TYPES.includes(fileExt)) {
-    throw new Error('Unsupported file extension');
+    throw new Error('Unsupported file extension (jpg, jpeg, png, gif, webp)');
   }
 
   let imageHash: string | undefined;

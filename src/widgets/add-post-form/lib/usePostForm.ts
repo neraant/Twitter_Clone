@@ -1,29 +1,37 @@
+'use client';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 
 import { CreatePostPayload } from '@/entities/post';
-import { useCreatePost } from '@/features/add-tweet-button/lib';
+import { usePosts } from '@/entities/post/lib';
 import { uploadMultipleImagesAction } from '@/features/image-uploader/lib';
 import { StorageFolders } from '@/shared/lib/database';
 import { useToast } from '@/shared/lib/toast';
 
+import { UPLOADER_DEBOUNCE_TIME } from './addPostForm.constants';
 import { addTweetSchema } from './addPostForm.schema';
 import { usePostImages } from './usePostImages';
 
 type usePostFormProps = {
   userId: string;
+  onSuccess?: () => void;
 };
 
-export const usePostForm = ({ userId }: usePostFormProps) => {
+export const usePostForm = ({ userId, onSuccess }: usePostFormProps) => {
   const {
     previews,
     error: imageError,
     imageFiles,
     uploadProgress,
+    isUploading,
     imagesSize,
+    previewItems,
     handleChange,
     removeImage,
     resetImages,
+    updateUploadProgress,
+    setUploadingStatus,
   } = usePostImages();
 
   const {
@@ -40,8 +48,8 @@ export const usePostForm = ({ userId }: usePostFormProps) => {
     },
   });
 
-  const createPost = useCreatePost();
   const { showToast } = useToast();
+  const { addPost } = usePosts(userId);
 
   const onSubmit = async (data: { content: string }) => {
     if (!userId) return;
@@ -52,17 +60,24 @@ export const usePostForm = ({ userId }: usePostFormProps) => {
       let perceptualHashes: string[] = [];
 
       if (imageFiles.length > 0) {
+        setUploadingStatus(true);
+        updateUploadProgress(0);
+
         const formData = new FormData();
         imageFiles.forEach((file) => {
           formData.append('files', file);
         });
 
+        const onProgress = (progress: number) => {
+          updateUploadProgress(progress);
+        };
+
         const uploadResult = await uploadMultipleImagesAction(
           formData,
           StorageFolders.posts,
           userId,
+          onProgress,
         );
-
         if (!uploadResult.success) {
           throw new Error(uploadResult.error);
         }
@@ -78,6 +93,10 @@ export const usePostForm = ({ userId }: usePostFormProps) => {
             .filter((result) => !result.isDuplicate && result.perceptualHash)
             .map((result) => result.perceptualHash!);
         }
+
+        updateUploadProgress(100);
+        await new Promise((res) => setTimeout(res, UPLOADER_DEBOUNCE_TIME));
+        setUploadingStatus(false);
       }
 
       const payload: CreatePostPayload = {
@@ -88,14 +107,22 @@ export const usePostForm = ({ userId }: usePostFormProps) => {
         perceptual_hashes: perceptualHashes,
       };
 
-      await createPost(payload);
+      await addPost.mutateAsync(payload);
 
       reset();
       resetImages();
       showToast('Success', 'Post created successfully!', 'success');
+      onSuccess?.();
     } catch (error) {
       console.error(error);
-      showToast('Error', 'Post creating failure', 'error');
+      showToast(
+        'Error',
+        error instanceof Error ? error.message : 'Post creating failure',
+        'error',
+      );
+
+      updateUploadProgress(0);
+      setUploadingStatus(false);
     }
   };
 
@@ -107,11 +134,13 @@ export const usePostForm = ({ userId }: usePostFormProps) => {
     setValue,
     handleChange,
     removeImage,
+    previewItems,
     imagesSize,
     previews,
-    isSubmitting,
+    isSubmitting: isSubmitting || isUploading,
     imageError,
     uploadProgress,
+    isUploading,
     errors,
   };
 };

@@ -83,4 +83,10 @@
     color: var(--dark-text-color);
     opacity: 0.6;
   }
+
+  .progressBar {
+    pointer-events: none;
+    margin-left: auto;
+    margin-right: var(--spacing-sm);
+  }
 }

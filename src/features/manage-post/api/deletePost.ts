@@ -2,7 +2,7 @@
 
 import { createClient } from '@/shared/api/supabase/server';
 
-export const deletePost = async (postId: string) => {
+export const deletePostAction = async (postId: string) => {
   const supabase = await createClient();
 
   const { error } = await supabase

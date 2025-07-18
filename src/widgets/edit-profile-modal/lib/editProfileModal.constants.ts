@@ -5,7 +5,7 @@ export const CHANGE_PASSWORD_BUTTON = 'Would you like to change your password?';
 
 export const LABELS = {
   NAME: 'Name',
-  TELEGRAM: 'Telegram link',
+  TELEGRAM: 'Telegram username',
   BIO: 'Bio',
   GENDER: 'Gender',
 };
@@ -19,7 +19,7 @@ export const EDIT_SCHEMA = {
     MAX_LEN: 'Name cannot exceed 20 characters',
   },
   TELEGRAM: {
-    INVALID: 'Telegram username is invalid',
+    INVALID: 'Telegram name is invalid',
   },
   BIO: {
     LENGTH: 'Maximum length is 200 symbold',

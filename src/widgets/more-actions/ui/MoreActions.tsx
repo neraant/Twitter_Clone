@@ -1,6 +1,12 @@
+'use client';
+
 import { useRef, useState } from 'react';
 
-import { useClickOutside, useLogout } from '@/shared/lib/hooks';
+import {
+  useClickOutside,
+  useLockBodyScroll,
+  useLogout,
+} from '@/shared/lib/hooks';
 import { ConfirmModal } from '@/shared/ui/confirm-modal';
 
 import { ACTIONS, LOGOUT_ACTION, THEME_ACTION } from '../lib';
@@ -42,6 +48,7 @@ export const MoreActions = ({ onClose }: MoreActionsProps) => {
   };
 
   useClickOutside(ref, isModalOpen ? () => {} : onClose);
+  useLockBodyScroll(isModalOpen);
 
   return (
     <div ref={ref}>

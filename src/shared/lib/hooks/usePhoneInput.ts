@@ -1,3 +1,5 @@
+'use client';
+
 import { ChangeEvent, useEffect, useState } from 'react';
 
 const PHONE_PREFIX = '+375';

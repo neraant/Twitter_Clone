@@ -130,9 +130,7 @@ body {
   color: var(--dark-text-color);
   position: relative;
 
-  .dark-theme {
-    --color-bg: #000;
-    --dark-text-color: #fff;
-    --light-text-color: #000;
+  &.no-scroll {
+    overflow: hidden;
   }
 }
