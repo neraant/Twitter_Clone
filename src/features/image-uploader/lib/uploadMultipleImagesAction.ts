@@ -1,5 +1,3 @@
-'use server';
-
 import { Post } from '@/entities/post';
 import { StorageFolders } from '@/shared/lib/database';
 
@@ -19,13 +17,23 @@ export async function uploadMultipleImagesAction(
   formData: FormData,
   folder: StorageFolders,
   userId: string,
+  onProgress?: (progress: number) => void,
 ): Promise<MultipleUploadResult> {
   try {
     const files = formData.getAll('files') as File[];
     const uploadResults: UploadResult[] = [];
     const duplicates: Array<{ fileName: string; duplicatePost: Post }> = [];
 
-    for (const file of files) {
+    const totalFiles = files.length;
+
+    for (let i = 0; i < totalFiles; i++) {
+      const file = files[i];
+
+      if (onProgress) {
+        const progress = (i / totalFiles) * 100;
+        onProgress(progress);
+      }
+
       const result = await uploadSingleImage(file, folder, userId, false, true);
 
       uploadResults.push(result);
@@ -35,6 +43,11 @@ export async function uploadMultipleImagesAction(
           fileName: file.name,
           duplicatePost: result.duplicatePost!,
         });
+      }
+
+      if (onProgress) {
+        const progress = ((i + 1) / totalFiles) * 100;
+        onProgress(progress);
       }
     }
 

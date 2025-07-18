@@ -3,7 +3,7 @@
 import clsx from 'clsx';
 import { ReactNode, useState } from 'react';
 
-import { useLogout } from '@/shared/lib/hooks';
+import { useLockBodyScroll, useLogout } from '@/shared/lib/hooks';
 import { Button } from '@/shared/ui/button/Button';
 import { ConfirmModal } from '@/shared/ui/confirm-modal';
 import { Loader } from '@/shared/ui/loader';
@@ -20,6 +20,7 @@ type LogoutButtonProps = {
 export const LogoutButton = ({ className, children }: LogoutButtonProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { isLoading, handleLogout } = useLogout();
+  useLockBodyScroll(isModalOpen);
 
   const handleCloseModal = () => {
     setIsModalOpen(false);

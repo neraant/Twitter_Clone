@@ -187,4 +187,8 @@ body {
   font-family: var(--font-inter);
   color: var(--dark-text-color);
   position: relative;
+
+  &.no-scroll {
+    overflow: hidden;
+  }
 }

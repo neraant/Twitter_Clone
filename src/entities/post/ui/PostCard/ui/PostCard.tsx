@@ -12,6 +12,7 @@ import { routes } from '@/shared/config/routes';
 import { Skeleton } from '@/shared/ui/skeleton';
 
 import styles from './PostCard.module.scss';
+import { PostCardSkeleton } from './PostCardSkeleton';
 
 const DEFAULT_AVATAR = '/images/user-avatar.png';
 const LOCATION = 'en-US';
@@ -37,18 +38,13 @@ export const PostCard = ({
     content,
     image_urls,
     created_at,
+    likes_count,
+    is_liked,
   } = post;
 
-  const [localIsLiked, setLocalIsLiked] = useState(post.is_liked ?? false);
-  const [localLikesCount, setLocalLikesCount] = useState(post.likes_count ?? 0);
   const [loadingImages, setLoadingImages] = useState<boolean[]>(
-    post?.image_urls?.map(() => true) ?? [],
+    image_urls?.map(() => true) ?? [],
   );
-
-  const handleLikeUpdate = (newIsLiked: boolean) => {
-    setLocalIsLiked(newIsLiked);
-    setLocalLikesCount((prev) => (newIsLiked ? prev + 1 : prev - 1));
-  };
 
   const onImageLoad = (index: number) => {
     setLoadingImages((prev) => {
@@ -58,7 +54,7 @@ export const PostCard = ({
     });
   };
 
-  if (!postId) return null;
+  if (!post || !postId) return <PostCardSkeleton />;
 
   const formattedTime = created_at
     ? new Intl.DateTimeFormat(LOCATION, {
@@ -88,24 +84,33 @@ export const PostCard = ({
       <div className={styles.postContent}>
         <div className={styles.postHeader}>
           <Link
-            className={styles.postHeaderInfo}
             href={`${routes.app.profile}/${author_id}`}
+            className={styles.postHeaderInfo}
           >
             <p className={styles.postAuthorName}>{author_name}</p>
             <p className={styles.postCreatedAt}>{formattedTime}</p>
           </Link>
 
           {isOwner && !isPreview && (
-            <ManagePost postId={postId} className={styles.managePost} />
+            <ManagePost
+              postId={postId}
+              currentUserId={currentUserId}
+              className={styles.managePost}
+            />
           )}
         </div>
 
-        <Link href={`${routes.app.post}/${postId}`}>
+        {isPreview ? (
           <p className={styles.postContentText}>{content}</p>
-        </Link>
-
-        {image_urls && image_urls.length > 0 && (
+        ) : (
           <Link href={`${routes.app.post}/${postId}`}>
+            <p className={styles.postContentText}>{content}</p>
+          </Link>
+        )}
+
+        {image_urls &&
+          image_urls.length > 0 &&
+          (isPreview ? (
             <div
               className={clsx(
                 styles.postImages,
@@ -128,10 +133,7 @@ export const PostCard = ({
                     width={0}
                     height={0}
                     sizes='100vw'
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                    }}
+                    style={{ width: '100%', height: '100%' }}
                     priority={isFirst}
                     alt={`post image ${index + 1}`}
                     onLoad={() => onImageLoad(index)}
@@ -144,15 +146,51 @@ export const PostCard = ({
                 </div>
               ))}
             </div>
-          </Link>
-        )}
+          ) : (
+            <Link href={`${routes.app.post}/${postId}`}>
+              <div
+                className={clsx(
+                  styles.postImages,
+                  image_urls.length === 1 && styles.singleImageWrapper,
+                )}
+                data-count={imageCount}
+              >
+                {image_urls.map((src, index) => (
+                  <div key={`${src}-${index}`} className={styles.imageWrapper}>
+                    {loadingImages[index] && (
+                      <Skeleton
+                        className={clsx(
+                          styles.imageSkeleton,
+                          image_urls.length === 1 && styles.singleImageSkeleton,
+                        )}
+                      />
+                    )}
+                    <Image
+                      src={src}
+                      width={0}
+                      height={0}
+                      sizes='100vw'
+                      style={{ width: '100%', height: '100%' }}
+                      priority={isFirst}
+                      alt={`post image ${index + 1}`}
+                      onLoad={() => onImageLoad(index)}
+                      className={clsx(
+                        styles.postImage,
+                        image_urls.length === 1 && styles.singleImage,
+                        loadingImages[index] && styles.loading,
+                      )}
+                    />
+                  </div>
+                ))}
+              </div>
+            </Link>
+          ))}
 
         <LikeButton
-          isActive={localIsLiked}
-          likeQuantity={localLikesCount?.toString()}
+          isActive={!!is_liked}
+          likeQuantity={likes_count?.toString() ?? '0'}
           userId={currentUserId}
           postId={postId}
-          onLikeUpdate={handleLikeUpdate}
           isDisabled={isPreview}
         />
       </div>

@@ -32,10 +32,12 @@
     gap: var(--spacing-xxs);
 
     .name {
+      color: var(--dark-text-color);
       font-size: var(--font-size-lg-plus);
       font-weight: var(--font-weight-bold);
     }
     .telegram {
+      color: var(--dark-text-color);
       font-size: var(--font-size-md);
       opacity: 0.7;
     }

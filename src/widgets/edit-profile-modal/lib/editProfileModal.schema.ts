@@ -9,10 +9,10 @@ export const editModalSchema = object({
     .required(EDIT_SCHEMA.NAME.REQUIRED)
     .min(3, EDIT_SCHEMA.NAME.MIN_LEN)
     .max(20, EDIT_SCHEMA.NAME.MAX_LEN),
-  telegram: string().matches(
-    telegramUsernameRegex,
-    EDIT_SCHEMA.TELEGRAM.INVALID,
-  ),
+  telegram: string().matches(telegramUsernameRegex, {
+    message: EDIT_SCHEMA.TELEGRAM.INVALID,
+    excludeEmptyString: true,
+  }),
   bio: string().max(200, EDIT_SCHEMA.BIO.LENGTH),
   gender: string().oneOf(GENDER_OPTIONS, EDIT_SCHEMA.GENDER.INVALID),
 });

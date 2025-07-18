@@ -1,11 +1,10 @@
 'use client';
 
 import clsx from 'clsx';
-import { useEffect, useMemo, useState } from 'react';
+import { useState } from 'react';
 
 import { UserSmallCard } from '@/entities/user';
 import { User } from '@/entities/user/model/user.types';
-import { useFollowStore } from '@/features/follow-button/model';
 
 import {
   EMPTY_USERS_TEXT,
@@ -31,26 +30,7 @@ export const YouMightLikeClient = ({
 }: YouMightLikeClientProps) => {
   const [isMore, setIsMore] = useState(false);
 
-  const [originalUsers] = useState<UserWithFollowStatus[]>(initialUsers || []);
-
-  const { initializeFollowStatus, followStatus } = useFollowStore();
-
-  const handleSeeMore = () => {
-    setIsMore((prev) => !prev);
-  };
-
-  useEffect(() => {
-    originalUsers.forEach((user) => {
-      initializeFollowStatus(user.id, user.isFollowed);
-    });
-  }, [originalUsers, initializeFollowStatus]);
-
-  const usersWithCurrentStatus = useMemo(() => {
-    return originalUsers.map((user) => ({
-      ...user,
-      isFollowed: followStatus[user.id] ?? user.isFollowed,
-    }));
-  }, [originalUsers, followStatus]);
+  const handleSeeMore = () => setIsMore((prev) => !prev);
 
   return (
     <div className={styles.wrapper}>
@@ -60,23 +40,22 @@ export const YouMightLikeClient = ({
         {isError ? (
           <span className={styles.emptyStateText}>{ERROR_USERS_TEXT}</span>
         ) : (
-          <div className={clsx(styles.users, isMore ? styles.active : '')}>
-            {usersWithCurrentStatus.length === 0 && (
+          <div className={clsx(styles.users, isMore && styles.active)}>
+            {(!initialUsers || initialUsers.length === 0) && (
               <span className={styles.emptyStateText}>{EMPTY_USERS_TEXT}</span>
             )}
 
-            {usersWithCurrentStatus.map((user) => (
+            {initialUsers?.map((user) => (
               <UserSmallCard
                 key={user.id}
                 user={user}
-                isFollowed={user.isFollowed}
                 currentUserId={currentUserId}
               />
             ))}
           </div>
         )}
 
-        {usersWithCurrentStatus.length > 0 && (
+        {initialUsers && initialUsers.length > 0 && (
           <button
             type='button'
             className={styles.showButton}

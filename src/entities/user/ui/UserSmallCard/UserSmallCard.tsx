@@ -1,11 +1,8 @@
-'use client';
-
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
-import { useFollowStore } from '@/features/follow-button/model';
 import { FollowButton } from '@/features/follow-button/ui';
 import { routes } from '@/shared/config/routes';
 
@@ -29,19 +26,14 @@ export const UserSmallCard = ({
   user,
   className,
   isOwnProfile = false,
-  isFollowed,
   currentUserId,
 }: UserSmallCardProps) => {
-  const { getFollowStatus } = useFollowStore();
-
   if (!user) return null;
 
   const { avatar_url, name, id, user_telegram } = user;
   const url = isOwnProfile ? routes.app.profile : `${routes.app.profile}/${id}`;
   const showFollowButton =
     !isOwnProfile && currentUserId && currentUserId !== user.id;
-
-  const actualFollowStatus = getFollowStatus(user.id, isFollowed ?? false);
 
   return (
     <div className={clsx(styles.wrapper, className)}>
@@ -64,11 +56,7 @@ export const UserSmallCard = ({
       </Link>
 
       {showFollowButton && (
-        <FollowButton
-          targetUserId={user.id}
-          isInitialFollow={actualFollowStatus}
-          currentUserId={currentUserId!}
-        />
+        <FollowButton targetUserId={user.id} currentUserId={currentUserId!} />
       )}
     </div>
   );
