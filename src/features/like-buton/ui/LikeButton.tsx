@@ -11,21 +11,25 @@ type LikeButtonProps = {
   isActive: boolean;
   likeQuantity: string;
   userId: string;
+  currentUserId: string;
   postId: string;
   isDisabled: boolean;
+  isGlobal?: boolean;
 };
 
 export const LikeButton = ({
   isActive,
   likeQuantity,
   userId,
+  currentUserId,
   postId,
   isDisabled = false,
+  isGlobal = false,
 }: LikeButtonProps) => {
-  const { toggleLike } = usePosts(userId);
+  const { toggleLike } = usePosts(isGlobal ? 'global' : userId);
 
   const handleLikePost = async () => {
-    await toggleLike.mutateAsync({ userId, postId });
+    await toggleLike.mutateAsync({ userId: currentUserId, postId });
   };
 
   return (

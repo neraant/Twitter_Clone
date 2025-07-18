@@ -17,6 +17,9 @@ export const LikePost = async ({
     .eq('user_id', userId)
     .eq('post_id', postId)
     .single();
+  console.error(userId);
+  console.error(postId);
+  console.error(checkError);
 
   if (checkError && checkError.code !== 'PGRST116') {
     console.error('Check like error:', checkError);
