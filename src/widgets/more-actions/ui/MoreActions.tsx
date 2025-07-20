@@ -21,6 +21,7 @@ type MoreActionsProps = {
 export const MoreActions = ({ onClose }: MoreActionsProps) => {
   const ref = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { theme, setTheme } = useTheme();
   const { handleLogout } = useLogout();
@@ -61,7 +62,15 @@ export const MoreActions = ({ onClose }: MoreActionsProps) => {
           description='Are you sure you wanna logout?'
           actionButtonLabel='Logout'
           onClose={handleCloseModal}
-          onConfirm={handleLogout}
+          onConfirm={async () => {
+            setIsLoading(true);
+            try {
+              await handleLogout();
+            } finally {
+              setIsLoading(false);
+            }
+          }}
+          isLoading={isLoading}
           className='confirmLogout'
         />
       )}

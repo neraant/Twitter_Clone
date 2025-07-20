@@ -7,6 +7,7 @@ import { CANCEL_TEXT } from '@/shared/lib/confirm-modal';
 import { useModalCloseHandler } from '@/shared/lib/hooks';
 
 import { CrossIcon } from '../icon';
+import { Loader } from '../loader';
 import { Overlay } from '../overlay';
 import styles from './ConfirmModal.module.scss';
 
@@ -15,6 +16,7 @@ type ConfirmModalProps = {
   description: string;
   actionButtonLabel: string;
   className?: string;
+  isLoading?: boolean;
   onClose: () => void;
   onConfirm: () => void;
 };
@@ -24,6 +26,7 @@ export const ConfirmModal = ({
   description,
   actionButtonLabel,
   className,
+  isLoading = false,
   onClose,
   onConfirm,
 }: ConfirmModalProps) => {
@@ -55,6 +58,7 @@ export const ConfirmModal = ({
           </button>
           <button onClick={onConfirm} className={styles.actionButton}>
             {actionButtonLabel}
+            {isLoading && <Loader size='18' />}
           </button>
         </div>
       </div>
