@@ -48,6 +48,7 @@ export const LogoutButton = ({ className, children }: LogoutButtonProps) => {
         disabled={isLoading}
         className={clsx(styles.logoutButton, className)}
         ariaLabel='Logout'
+        data-testid='logout-button'
       >
         <span className={styles.logoutButtonText}>{LOGOUT_TEXT}</span>
         {!isLoading && children}

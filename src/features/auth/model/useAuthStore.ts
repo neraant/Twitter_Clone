@@ -162,6 +162,5 @@ export const useAuthStore = create<UseAuthState>((set) => ({
     }
   },
 
-  clearError: () => set({ error: null }),
   updateCurrentUser: (user: User) => set({ user }),
 }));

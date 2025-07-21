@@ -29,6 +29,5 @@ export interface UseAuthState {
   loginWithGoogle: () => Promise<void>;
   signUpWithPassword: (credentials: RegisterCredentials) => Promise<void>;
   logout: () => Promise<void>;
-  clearError: () => void;
   updateCurrentUser: (user: User) => void;
 }

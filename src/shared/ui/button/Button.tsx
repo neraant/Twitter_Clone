@@ -10,7 +10,8 @@ type ButtonProps = {
   disabled?: boolean;
   className?: string;
   type?: ButtonType;
-  ariaLabel: string;
+  ariaLabel?: string;
+  'data-testid'?: string;
   children?: ReactNode;
 };
 
@@ -19,7 +20,8 @@ export const Button = ({
   disabled = false,
   className,
   type = 'button',
-  ariaLabel,
+  ariaLabel = '',
+  'data-testid': dataTestId,
   children,
 }: ButtonProps) => {
   return (
@@ -28,7 +30,8 @@ export const Button = ({
       className={clsx(styles.button, className)}
       disabled={disabled}
       onClick={onClick}
-      aria-label={ariaLabel}
+      aria-label={ariaLabel || undefined}
+      data-testid={dataTestId}
     >
       {children}
     </button>

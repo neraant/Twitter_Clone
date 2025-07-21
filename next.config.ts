@@ -9,7 +9,19 @@ const nextConfig: NextConfig = {
           loader: '@svgr/webpack',
           options: {
             typescript: true,
-            ext: 'tsx',
+            svgo: true,
+            svgoConfig: {
+              plugins: [
+                {
+                  name: 'removeTitle',
+                  active: true,
+                },
+                {
+                  name: 'removeDesc',
+                  active: true,
+                },
+              ],
+            },
           },
         },
       ],
