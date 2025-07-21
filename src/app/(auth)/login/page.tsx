@@ -1,6 +1,3 @@
-import lampImage from '@assets/images/lamp.png';
-import loginBgImage from '@assets/images/login-page-bg.png';
-import personImage from '@assets/images/person.png';
 import { Metadata } from 'next';
 import Image from 'next/image';
 
@@ -14,6 +11,10 @@ export const metadata: Metadata = {
   description: 'This is the login page',
 };
 
+const lampImage = '/images/lamp.png';
+const loginBgImage = '/images/login-page-bg.png';
+const personImage = '/images/person.png';
+
 export default function Login() {
   return (
     <div className={styles.wrapper}>
@@ -22,15 +23,25 @@ export default function Login() {
           <Image
             src={personImage}
             alt='person'
+            width={400}
+            height={400}
             className={styles.personImage}
           />
           <Image
             src={loginBgImage}
             alt='background'
+            width={1440}
+            height={1000}
             priority
             className={styles.bgImage}
           />
-          <Image src={lampImage} alt='lamp' className={styles.lampImage} />
+          <Image
+            src={lampImage}
+            width={200}
+            height={300}
+            alt='lamp'
+            className={styles.lampImage}
+          />
         </div>
 
         <LoginForm />

@@ -1,5 +1,3 @@
-import personImage from '@assets/images/person-with-laptop.png';
-import registerBgImage from '@assets/images/sign-up-page-bg.png';
 import { Metadata } from 'next';
 import Image from 'next/image';
 
@@ -13,6 +11,9 @@ export const metadata: Metadata = {
   description: 'This is the register page',
 };
 
+const personImage = '/images/person-with-laptop.png';
+const registerBgImage = '/images/sign-up-page-bg.png';
+
 export default function Register() {
   return (
     <div className={styles.wrapper}>
@@ -22,6 +23,8 @@ export default function Register() {
             src={registerBgImage}
             alt='background'
             priority
+            width={1440}
+            height={1000}
             className={styles.bgImage}
           />
         </div>
@@ -30,6 +33,8 @@ export default function Register() {
           <Image
             src={personImage}
             alt='person'
+            width={400}
+            height={400}
             className={styles.personImage}
           />
 
