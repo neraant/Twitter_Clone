@@ -11,7 +11,7 @@ interface ProfileBannerClientProps {
   tweetsLength: string | number;
 }
 
-const DefaultBanner = '/images/default-banner.png';
+const DefaultBanner = '/images/default-banner.webp';
 
 export const ProfileBanner = ({
   userName,

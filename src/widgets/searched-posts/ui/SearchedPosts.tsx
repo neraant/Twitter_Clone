@@ -9,7 +9,7 @@ import { NO_RESULTS_TITLE, SKELETON_COUNT } from '../lib';
 import { Gallery } from './Gallery';
 import styles from './SearchedPosts.module.scss';
 
-const DefaultAvatar = '/images/user-avatar.png';
+const DefaultAvatar = '/images/user-avatar.webp';
 
 export const SearchedPosts = () => {
   const isLoading = useSearchPostsStore((state) => state.isLoading);

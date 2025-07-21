@@ -12,7 +12,7 @@ export type UserBigCardProps = {
   user?: UserForProps | null;
 };
 
-const DefaultAvatar = '/images/user-avatar.png';
+const DefaultAvatar = '/images/user-avatar.webp';
 
 export const UserBigCard = ({ user, className }: UserBigCardProps) => {
   if (!user) return null;

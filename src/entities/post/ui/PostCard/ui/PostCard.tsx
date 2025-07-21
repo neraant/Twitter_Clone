@@ -14,7 +14,7 @@ import { Skeleton } from '@/shared/ui/skeleton';
 import styles from './PostCard.module.scss';
 import { PostCardSkeleton } from './PostCardSkeleton';
 
-const DEFAULT_AVATAR = '/images/user-avatar.png';
+const DEFAULT_AVATAR = '/images/user-avatar.webp';
 const LOCATION = 'en-US';
 
 type PostCardProps = {

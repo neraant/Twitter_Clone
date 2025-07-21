@@ -10,7 +10,7 @@ type PostSearchCardProps = {
   href: string;
 };
 
-const DefaultAvatar = '/images/user-avatar.png';
+const DefaultAvatar = '/images/user-avatar.webp';
 
 export const PostSearchCard = ({
   avatar,
