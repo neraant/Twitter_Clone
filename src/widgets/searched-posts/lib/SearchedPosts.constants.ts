@@ -2,12 +2,12 @@ export const SEARCH_RESULTS_TITLE = 'Search results';
 export const NO_RESULTS_TITLE = 'No results were found 😕';
 export const SKELETON_COUNT = 3;
 
-const gallery1 = '/images/gallery_1.png';
-const gallery2 = '/images/gallery_2.png';
-const gallery3 = '/images/gallery_3.png';
-const gallery4 = '/images/gallery_4.png';
-const gallery5 = '/images/gallery_5.png';
-const gallery6 = '/images/gallery_6.png';
+const gallery1 = '/images/gallery_1.webp';
+const gallery2 = '/images/gallery_2.webp';
+const gallery3 = '/images/gallery_3.webp';
+const gallery4 = '/images/gallery_4.webp';
+const gallery5 = '/images/gallery_5.webp';
+const gallery6 = '/images/gallery_6.webp';
 
 export const IMAGES = [
   { src: gallery1, alt: 'Mountains in winter' },

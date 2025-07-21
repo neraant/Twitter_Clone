@@ -20,7 +20,7 @@ export type UserSmallCardProps = {
   currentUserId?: string;
 };
 
-const DefaultAvatar = '/images/user-avatar.png';
+const DefaultAvatar = '/images/user-avatar.webp';
 
 export const UserSmallCard = ({
   user,
