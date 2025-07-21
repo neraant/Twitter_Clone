@@ -25,6 +25,6 @@ export const routes = {
   seo: {
     robots: '/robots.txt',
     sitemap: '/sitemap.xml',
-    ogimage: '/og-image.png',
+    ogimage: '/og-image.webp',
   },
 };

@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: `${BASE_URL}/images/og-image.png`,
+        url: `${BASE_URL}/images/og-image.webp`,
         width: 1200,
         height: 630,
         alt: 'Twitter Clone Login',
@@ -33,13 +33,13 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Login to Twitter Clone',
     description: 'Login to your account and join the conversation ✨',
-    images: [`${BASE_URL}/images/og-image.png`],
+    images: [`${BASE_URL}/images/og-image.webp`],
   },
 };
 
-const lampImage = '/images/lamp.png';
-const loginBgImage = '/images/login-page-bg.png';
-const personImage = '/images/person.png';
+const lampImage = '/images/lamp.webp';
+const loginBgImage = '/images/login-page-bg.webp';
+const personImage = '/images/person.webp';
 
 export default function Login() {
   return (

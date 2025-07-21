@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: `${BASE_URL}/images/og-image.png`,
+        url: `${BASE_URL}/images/og-image.webp`,
         width: 1200,
         height: 630,
         alt: 'Twitter Clone Lists',
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Twitter Clone | Lists',
     description: 'Organize your tweets in lists 📋',
-    images: [`${BASE_URL}/images/og-image.png`],
+    images: [`${BASE_URL}/images/og-image.webp`],
   },
 };
 

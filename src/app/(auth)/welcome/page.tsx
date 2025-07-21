@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: `${BASE_URL}/images/og-image.png`,
+        url: `${BASE_URL}/images/og-image.webp`,
         width: 1200,
         height: 630,
         alt: 'Twitter Clone Welcome',
@@ -35,12 +35,12 @@ export const metadata: Metadata = {
     title: 'Welcome to Twitter Clone',
     description:
       'Welcome to our amazing Twitter Clone! Join thousands of users sharing their thoughts.',
-    images: [`${BASE_URL}/images/og-image.png`],
+    images: [`${BASE_URL}/images/og-image.webp`],
   },
 };
 
-const desktopBanner = '/images/welcome-page-banner-desktop.png';
-const mobileBanner = '/images/welcome-page-banner-mobile.png';
+const desktopBanner = '/images/welcome-page-banner-desktop.webp';
+const mobileBanner = '/images/welcome-page-banner-mobile.webp';
 
 export default function Welcome() {
   return (

@@ -23,7 +23,7 @@ export async function generateMetadata({
 
   const username = user?.name || 'User';
   const bio = user?.bio || 'Check out this user profile on Twitter Clone!';
-  const image = user?.avatar_url || `${BASE_URL}/images/user-avatar.png`;
+  const image = user?.avatar_url || `${BASE_URL}/images/user-avatar.webp`;
 
   return {
     title: `Twitter Clone | ${username}`,

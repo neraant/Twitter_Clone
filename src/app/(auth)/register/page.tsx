@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: `${BASE_URL}/images/og-image.png`,
+        url: `${BASE_URL}/images/og-image.webp`,
         width: 1200,
         height: 630,
         alt: 'Twitter Clone Register',
@@ -33,12 +33,12 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Register to Twitter Clone',
     description: 'Create your account and join thousands of users 🚀',
-    images: [`${BASE_URL}/images/og-image.png`],
+    images: [`${BASE_URL}/images/og-image.webp`],
   },
 };
 
-const personImage = '/images/person-with-laptop.png';
-const registerBgImage = '/images/sign-up-page-bg.png';
+const personImage = '/images/person-with-laptop.webp';
+const registerBgImage = '/images/sign-up-page-bg.webp';
 
 export default function Register() {
   return (

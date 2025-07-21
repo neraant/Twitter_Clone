@@ -119,7 +119,7 @@ export const EditProfileModal = ({ onClose }: EditProfileModalProps) => {
               <div className={clsx(styles.uploaderWrapper, styles.avatar)}>
                 <ProfileImageUploader
                   label='avatar'
-                  imagePreview={avatarPreview ?? '/images/user-avatar.png'}
+                  imagePreview={avatarPreview ?? '/images/user-avatar.webp'}
                   handleChange={handleChangeAvatar}
                   className={styles.avatar}
                 />
@@ -128,7 +128,7 @@ export const EditProfileModal = ({ onClose }: EditProfileModalProps) => {
               <div className={clsx(styles.uploaderWrapper, styles.banner)}>
                 <ProfileImageUploader
                   label='banner'
-                  imagePreview={bannerPreview ?? '/images/default-banner.png'}
+                  imagePreview={bannerPreview ?? '/images/default-banner.webp'}
                   handleChange={handleChangeBanner}
                   className={styles.banner}
                 />

@@ -37,7 +37,7 @@ export async function generateMetadata({
         }))
       : [
           {
-            url: `${BASE_URL}/images/og-image.png`,
+            url: `${BASE_URL}/images/og-image.webp`,
             width: 1200,
             height: 630,
             alt: 'Twitter Clone Default',

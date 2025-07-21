@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const username = user?.name || 'Your Profile';
   const bio = user?.bio || 'See what you’ve been sharing 📝✨';
   const userId = user?.id || '';
-  const image = user?.avatar_url || `${BASE_URL}/images/user-avatar.png`;
+  const image = user?.avatar_url || `${BASE_URL}/images/user-avatar.webp`;
 
   return {
     title: `Twitter Clone | ${username}`,
