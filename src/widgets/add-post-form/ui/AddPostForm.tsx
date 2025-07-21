@@ -12,7 +12,7 @@ import { CircleProgressBar } from '@/shared/ui/progress-bar';
 import { MAX_LENGTH, TEXTAREA_PLACEHOLDER, usePostForm } from '../lib';
 import styles from './AddPostForm.module.scss';
 
-const DefaultAvatar = '/images/user-avatar.png';
+const DefaultAvatar = '/images/user-avatar.webp';
 
 type AddPostFormProps = {
   user: User;

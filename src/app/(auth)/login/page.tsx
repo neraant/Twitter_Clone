@@ -11,9 +11,9 @@ export const metadata: Metadata = {
   description: 'This is the login page',
 };
 
-const lampImage = '/images/lamp.png';
-const loginBgImage = '/images/login-page-bg.png';
-const personImage = '/images/person.png';
+const lampImage = '/images/lamp.webp';
+const loginBgImage = '/images/login-page-bg.webp';
+const personImage = '/images/person.webp';
 
 export default function Login() {
   return (

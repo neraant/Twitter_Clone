@@ -10,8 +10,8 @@ export const metadata: Metadata = {
   description: 'This is the welcome page',
 };
 
-const desktopBanner = '/images/welcome-page-banner-desktop.png';
-const mobileBanner = '/images/welcome-page-banner-mobile.png';
+const desktopBanner = '/images/welcome-page-banner-desktop.webp';
+const mobileBanner = '/images/welcome-page-banner-mobile.webp';
 
 export default function Welcome() {
   return (
