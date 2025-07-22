@@ -162,6 +162,48 @@ export type Database = {
           },
         ];
       };
+      messages: {
+        Row: {
+          created_at: string | null;
+          id: string;
+          read: boolean | null;
+          receiver_id: string | null;
+          sender_id: string | null;
+          text: string | null;
+        };
+        Insert: {
+          created_at?: string | null;
+          id?: string;
+          read?: boolean | null;
+          receiver_id?: string | null;
+          sender_id?: string | null;
+          text?: string | null;
+        };
+        Update: {
+          created_at?: string | null;
+          id?: string;
+          read?: boolean | null;
+          receiver_id?: string | null;
+          sender_id?: string | null;
+          text?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'messages_receiver_id_fkey';
+            columns: ['receiver_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'messages_sender_id_fkey';
+            columns: ['sender_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       posts: {
         Row: {
           author_id: string | null;
@@ -278,6 +320,17 @@ export type Database = {
             referencedColumns: ['id'];
           },
         ];
+      };
+      user_chat_overview: {
+        Row: {
+          avatar_url: string | null;
+          chat_id: string | null;
+          last_message: string | null;
+          last_message_time: string | null;
+          name: string | null;
+          other_user_id: string | null;
+        };
+        Relationships: [];
       };
     };
     Functions: {

@@ -1,0 +1,54 @@
+.userMessageCard {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-ms);
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-md);
+  transition: background 0.3s ease;
+
+  &:hover {
+    background: var(--user-message-hover-bg);
+  }
+
+  .avatar {
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+  }
+
+  .userMessageCardInfo {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .userName {
+      font-weight: var(--font-weight-semibold);
+      font-size: var(--font-size-md);
+      color: var(--dark-text-color);
+      line-height: 1.2;
+    }
+
+    .messageInfo {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xxs);
+
+      .lastMessage {
+        color: var(--last-message-color);
+        font-size: var(--font-size-sm);
+        max-width: calc(100% - 100px);
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      .divider {
+        color: var(--last-message-color);
+        font-size: var(--font-size-sm);
+      }
+      .lastMessageTime {
+        color: var(--last-message-color);
+        font-size: var(--font-size-sm);
+      }
+    }
+  }
+}

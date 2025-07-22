@@ -9,13 +9,13 @@ import { Post } from '@/entities/post/model';
 import { LikeButton } from '@/features/like-buton';
 import { ManagePost } from '@/features/manage-post';
 import { routes } from '@/shared/config/routes';
+import { formatTimeLong } from '@/shared/lib/common';
 import { Skeleton } from '@/shared/ui/skeleton';
 
 import styles from './PostCard.module.scss';
 import { PostCardSkeleton } from './PostCardSkeleton';
 
 const DEFAULT_AVATAR = '/images/user-avatar.webp';
-const LOCATION = 'en-US';
 
 type PostCardProps = {
   post: Post;
@@ -56,15 +56,7 @@ export const PostCard = ({
 
   if (!post || !postId) return <PostCardSkeleton />;
 
-  const formattedTime = created_at
-    ? new Intl.DateTimeFormat(LOCATION, {
-        day: '2-digit',
-        month: 'long',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-      }).format(new Date(created_at))
-    : '';
+  const formattedTime = formatTimeLong(created_at || '');
 
   const imageCount = image_urls?.length || 0;
   const isOwner = currentUserId === author_id;
