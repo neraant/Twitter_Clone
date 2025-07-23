@@ -7,7 +7,7 @@
   button {
     display: none;
     margin: 0 auto;
-    max-width: calc(100% - 32px);
+    max-width: 100%;
 
     @media (max-width: 768px) {
       display: flex;

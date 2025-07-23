@@ -2,7 +2,7 @@
   position: absolute;
   top: var(--spacing-md);
   right: 0;
-  max-width: 140px;
+  max-width: 180px;
   height: fit-content;
   width: 100%;
 
@@ -10,5 +10,37 @@
     position: relative;
     inset: 0;
     max-width: none;
+    padding: 0 var(--spacing-md);
+  }
+
+  .profileAcions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-ms);
+
+    .sendMessage {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: var(--message-incoming-bg);
+      height: 34px;
+      width: 34px;
+      transition: transform 0.3s ease;
+
+      path {
+        fill: var(--dark-text-color);
+      }
+
+      &:hover {
+        transform: translateY(-2px);
+      }
+
+      @media (max-width: 768px) {
+        width: 37px;
+        height: 37px;
+      }
+    }
   }
 }

@@ -1,18 +1,19 @@
 .messageWrapper {
   padding: var(--spacing-sm) var(--spacing-ms);
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: var(--spacing-sm);
-  justify-content: center;
-  width: fit-content;
-  max-width: 80%;
+  justify-content: flex-end;
+  width: 100%;
+  max-width: 100%;
   margin-left: auto;
 
   .messageContent {
     background: var(--message-bg);
     border-radius: var(--radius-lg);
     padding: var(--spacing-sm) var(--spacing-ms);
-    width: 100%;
+    max-width: 80%;
+    min-width: 0;
 
     position: relative;
     display: flex;
@@ -23,14 +24,21 @@
       color: var(--light-text-color);
       line-height: 1.4;
       width: 100%;
-      text-wrap: pretty;
+
+      word-wrap: break-word;
+      overflow-wrap: break-word;
       white-space: pre-wrap;
+      word-break: break-word;
+
+      margin: 0;
+      padding: 0;
     }
 
     .messageTime {
       font-size: var(--font-size-xxs);
       color: var(--message-time);
       margin-left: auto;
+      flex-shrink: 0;
     }
 
     .messageFooter {
@@ -40,17 +48,15 @@
       gap: var(--spacing-xs);
       font-size: var(--font-size-sm);
       color: var(--message-time);
-    }
-
-    .readStatus {
-      display: flex;
-      align-items: center;
+      margin-top: var(--spacing-xs);
+      flex-shrink: 0;
     }
   }
 
   &.incoming {
     margin-right: auto;
     margin-left: 0;
+    justify-content: flex-start;
 
     .messageContent {
       background: var(--message-incoming-bg);
@@ -71,7 +77,8 @@
     border-radius: 50%;
     object-fit: cover;
     object-position: center;
-    margin-top: auto;
-    margin-bottom: var(--spacing-ms);
+    flex-shrink: 0;
+    align-self: flex-end;
+    margin-bottom: var(--spacing-xs);
   }
 }

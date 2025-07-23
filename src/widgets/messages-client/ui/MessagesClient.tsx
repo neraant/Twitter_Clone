@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import { ChatRoom } from '@/entities/message';
 import { UserMessageCard } from '@/entities/user';
 
@@ -6,15 +8,29 @@ import styles from './MessagesClient.module.scss';
 
 type MessagesClientProps = {
   chats: ChatRoom[] | null;
+  currentUserId: string;
 };
 
-export const MessagesClient = ({ chats }: MessagesClientProps) => {
+export const MessagesClient = ({
+  chats,
+  currentUserId,
+}: MessagesClientProps) => {
+  const sortedChats =
+    useMemo(
+      () =>
+        chats?.sort((chat) => {
+          if (chat.other_user_id === currentUserId) return -1;
+          else return 1;
+        }),
+      [chats, currentUserId],
+    ) || [];
+
   return (
     <div className={styles.messagesClient}>
       <p className={styles.headerTitle}>{MESSAGES_TITLE}</p>
 
       <div className={styles.chatsWrapper}>
-        {chats?.map(
+        {sortedChats.map(
           ({
             avatar_url,
             chat_id,
@@ -30,6 +46,7 @@ export const MessagesClient = ({ chats }: MessagesClientProps) => {
               userAvatar={avatar_url!}
               lastMessage={last_message!}
               lastMessageTime={last_message_time!}
+              isCurrentUserChat={other_user_id === currentUserId}
             />
           ),
         )}

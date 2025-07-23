@@ -1,14 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import {
-  FormEvent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
   DEFAULT_THREASHOLD,
@@ -51,22 +44,20 @@ export const MessagesList = ({
   } = selectedUser;
   const { id: currentUserId } = currentUser;
 
+  const [newMessage, setNewMessage] = useState('');
+  const [historicalMessages, setHistoricalMessages] =
+    useState<Message[]>(initialMessages);
+  const [isAtBottom, setIsAtBottom] = useState(true);
+
   const { bottomRef, scrollToBottom } = useChatScroll();
   const {
     messages: realtimeMessages,
     sendMessage,
-    markAsRead,
     isConnected,
   } = useRealTimeChat({
     otherUserId: selectedUserId,
     currentUserId,
   });
-
-  const [newMessage, setNewMessage] = useState('');
-  const [historicalMessages, setHistoricalMessages] =
-    useState<Message[]>(initialMessages);
-  const [isAtBottom, setIsAtBottom] = useState(true);
-  const hasMarkedAsReadRef = useRef(false);
 
   const loadOlderMessages = useCallback(
     async (oldestMessageDate: string) => {
@@ -93,46 +84,19 @@ export const MessagesList = ({
 
   const allMessages = useMemo(() => {
     const mergedMessages = [...historicalMessages, ...realtimeMessages];
-
     const validMessages = mergedMessages.filter(
-      (m): m is Message =>
-        m != null && typeof m === 'object' && 'id' in m && m.id != null,
+      (m): m is Message => m?.id != null,
     );
 
-    const uniqueMessages = validMessages.filter(
-      (message, index, self) =>
-        index === self.findIndex((m) => m.id === message.id),
+    const uniqueMessagesMap = new Map(
+      validMessages.map((msg) => [msg.id, msg]),
     );
+    const uniqueMessages = Array.from(uniqueMessagesMap.values());
 
     return uniqueMessages.sort((a, b) =>
       (a.created_at || '').localeCompare(b.created_at || ''),
     );
   }, [historicalMessages, realtimeMessages]);
-
-  useEffect(() => {
-    if (!isAtBottom) return;
-
-    const unread = allMessages.filter(
-      (m) => !m.read && m.sender_id === selectedUserId,
-    );
-
-    if (unread.length > 0 && !hasMarkedAsReadRef.current) {
-      hasMarkedAsReadRef.current = true;
-      const idsToMark = unread.map((m) => m.id);
-      console.log('call');
-      markAsRead(idsToMark);
-
-      setHistoricalMessages((prev) =>
-        prev.map((msg) =>
-          idsToMark.includes(msg.id) ? { ...msg, read: true } : msg,
-        ),
-      );
-    }
-  }, [allMessages, selectedUserId, markAsRead, isAtBottom]);
-
-  useEffect(() => {
-    restoreScrollPosition();
-  }, [historicalMessages, restoreScrollPosition]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -144,7 +108,7 @@ export const MessagesList = ({
       setIsAtBottom(isNearBottom);
     };
 
-    container.addEventListener('scroll', handleScroll);
+    container.addEventListener('scroll', handleScroll, { passive: true });
     return () => container.removeEventListener('scroll', handleScroll);
   }, [containerRef]);
 
@@ -152,20 +116,18 @@ export const MessagesList = ({
     if (isAtBottom) {
       scrollToBottom();
     }
-  }, [scrollToBottom, allMessages, isAtBottom]);
+  }, [allMessages, isAtBottom, scrollToBottom]);
+
+  useEffect(() => {
+    restoreScrollPosition();
+  }, [historicalMessages, restoreScrollPosition]);
 
   useEffect(() => {
     const main = document.querySelector('main');
     if (main) {
       main.setAttribute('data-layout', 'messages');
+      return () => main.setAttribute('data-layout', 'default');
     }
-
-    return () => {
-      const main = document.querySelector('main');
-      if (main) {
-        main.setAttribute('data-layout', 'default');
-      }
-    };
   }, []);
 
   const handleSendMessage = useCallback(
@@ -184,12 +146,16 @@ export const MessagesList = ({
     scrollToBottom();
   }, [scrollToBottom]);
 
+  const showHasMore =
+    !hasMore && !isLoading && !(currentUserId === selectedUserId);
+
   return (
     <div className={styles.messagesList}>
       <MessagesHeader
         userName={selectedName || ''}
         senderUrl={selectedUrl || ''}
         senderId={selectedUserId}
+        isCurrentUserChat={selectedUserId === currentUserId}
       />
 
       <div className={styles.messagesContainer}>
@@ -201,7 +167,7 @@ export const MessagesList = ({
             </div>
           )}
 
-          {!hasMore && !isLoading && (
+          {showHasMore && (
             <div className={styles.chatStart}>
               <div className={styles.chatStartContent}>
                 <Image
@@ -226,7 +192,7 @@ export const MessagesList = ({
           )}
 
           {allMessages.map((message) => {
-            const { id, created_at, sender_id, text, read } = message;
+            const { id, created_at, sender_id, text } = message;
             const isFromCurrentUser = sender_id === currentUserId;
 
             return (
@@ -237,8 +203,6 @@ export const MessagesList = ({
                   senderUrl={selectedUrl!}
                   time={created_at || ''}
                   isIncoming={!isFromCurrentUser}
-                  isRead={read === true}
-                  showReadStatus={isFromCurrentUser}
                 />
               </div>
             );

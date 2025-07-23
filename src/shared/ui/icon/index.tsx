@@ -1,6 +1,7 @@
 import NotFound404IconSvg from '@assets/icons/404.svg';
 import CurveBackIconSvg from '@assets/icons/back_curve_icon.svg';
 import BackIconSvg from '@assets/icons/back_icon.svg';
+import BookmarkSolidIconSvg from '@assets/icons/bookmark-solid_icon.svg';
 import BookmarksIconSvg from '@assets/icons/bookmarks_icon.svg';
 import CheckIconSvg from '@assets/icons/check_icon.svg';
 import CheckDoubleIconSvg from '@assets/icons/check-double_icon.svg';
@@ -73,3 +74,4 @@ export const DeleteIcon = createIcon(DeleteIconSvg);
 export const SendIcon = createIcon(SendIconSvg);
 export const CheckIcon = createIcon(CheckIconSvg);
 export const CheckDoubleIcon = createIcon(CheckDoubleIconSvg);
+export const BookmarkSolidIcon = createIcon(BookmarkSolidIconSvg);

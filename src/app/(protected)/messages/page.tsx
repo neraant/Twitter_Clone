@@ -38,9 +38,9 @@ export const metadata: Metadata = {
 
 export default async function Messages() {
   try {
-    const chats = await getChatsAction();
+    const { chats, userId: currentUserId } = await getChatsAction();
 
-    return <MessagesClient chats={chats} />;
+    return <MessagesClient chats={chats} currentUserId={currentUserId} />;
   } catch (error) {
     console.error(error);
     throw new Error('Failed to load chats');
