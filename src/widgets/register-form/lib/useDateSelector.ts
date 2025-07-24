@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react';
 
-import { getDaysInMonth, MONTHS } from '../lib';
+import { MONTHS } from '@/shared/lib/validations';
+
+import { getDaysInMonth } from '../lib';
 
 const currentYear = new Date().getFullYear();
 const YEARS = Array.from({ length: currentYear - 1900 + 1 }, (_, i) =>

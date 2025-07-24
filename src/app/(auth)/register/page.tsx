@@ -11,8 +11,8 @@ export const metadata: Metadata = {
   description: 'This is the register page',
 };
 
-const personImage = '/images/person-with-laptop.png';
-const registerBgImage = '/images/sign-up-page-bg.png';
+const personImage = '/images/person-with-laptop.webp';
+const registerBgImage = '/images/sign-up-page-bg.webp';
 
 export default function Register() {
   return (

@@ -17,7 +17,7 @@ export default function Welcome() {
   return (
     <div className={styles.wrapper}>
       <picture className={styles.picture}>
-        <source srcSet={mobileBanner} media='(max-width: 620px)' />
+        <source srcSet={mobileBanner} media='(max-width: $breakpoint-sm)' />
         <Image
           src={desktopBanner}
           alt='banner'

@@ -19,7 +19,6 @@ export const LogoutButton = () => {
       router.replace(routes.auth.signUpMain);
     } catch (error) {
       console.error('Error while logout: ', error);
-    } finally {
     }
   };
 

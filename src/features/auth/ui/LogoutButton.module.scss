@@ -1,17 +1,18 @@
 @use '@styles/_mixins.scss' as *;
+@use '@styles/_variables.scss' as *;
 
 .button {
   @include flex-center;
 
   position: relative;
-  font-weight: var(--font-weight-bold);
-  font-size: var(--font-size-md-plus);
+  font-weight: $font-weight-bold;
+  font-size: $font-size-md-plus;
   color: var(--light-text-color);
-  padding: var(--spacing-md) 0;
-  border-radius: var(--radius-2xl);
+  padding: $spacing-md 0;
+  border-radius: $radius-2xl;
   max-width: 230px;
   min-width: 230px;
-  gap: var(--spacing-sm);
+  gap: $spacing-sm;
 
   opacity: 0.6;
   transition: all 0.2s ease-in-out;
