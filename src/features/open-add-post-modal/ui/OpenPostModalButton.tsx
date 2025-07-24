@@ -11,12 +11,12 @@ import { NEW_TWEET_BUTTON_TEXT } from '../lib';
 import styles from './OpenPostModalButton.module.scss';
 
 export const OpenPostModalButton = () => {
-  const [isModalOpen, setiIModalOpened] = useState(false);
+  const [isModalOpen, setIsModalOpened] = useState(false);
   useLockBodyScroll(isModalOpen);
 
-  const handleOpenModal = () => setiIModalOpened(true);
+  const handleOpenModal = () => setIsModalOpened(true);
 
-  const handleCloseModal = () => setiIModalOpened(false);
+  const handleCloseModal = () => setIsModalOpened(false);
 
   return (
     <>

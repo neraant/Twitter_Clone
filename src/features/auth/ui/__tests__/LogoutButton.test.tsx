@@ -70,7 +70,7 @@ describe('LogoutButton: ', () => {
     expect(screen.getByText('Child')).toBeInTheDocument();
   });
 
-  test('opens modal on button click', () => {
+  it('opens modal on button click', () => {
     render(<LogoutButton>Test Child</LogoutButton>);
 
     const logoutButton = screen.getByTestId('logout-button');

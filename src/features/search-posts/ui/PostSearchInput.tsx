@@ -29,6 +29,7 @@ export const PostSearchInput = () => {
       placeholder={SEARCH_PLACEHOLDER}
       value={query}
       onChange={handleChange}
+      dataTestId='search-input'
     />
   );
 };

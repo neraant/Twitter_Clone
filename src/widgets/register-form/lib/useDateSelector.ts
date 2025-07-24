@@ -23,23 +23,27 @@ export const useDateSelector = () => {
   };
 
   const handleSelectMonth = (month: string) => {
-    const days = getDaysInMonth(month, selected.year);
-    const newDay = days.includes(selected.day) ? selected.day : '';
-    setSelected((prev) => ({
-      ...prev,
-      month,
-      day: newDay,
-    }));
+    setSelected((prev) => {
+      const days = getDaysInMonth(month, prev.year);
+      const newDay = days.includes(prev.day) ? prev.day : '';
+      return {
+        ...prev,
+        month,
+        day: newDay,
+      };
+    });
   };
 
   const handleSelectYear = (year: string) => {
-    const days = getDaysInMonth(selected.month, year);
-    const newDay = days.includes(selected.day) ? selected.day : '';
-    setSelected((prev) => ({
-      ...prev,
-      year,
-      day: newDay,
-    }));
+    setSelected((prev) => {
+      const days = getDaysInMonth(prev.month, year);
+      const newDay = days.includes(prev.day) ? prev.day : '';
+      return {
+        ...prev,
+        year,
+        day: newDay,
+      };
+    });
   };
 
   const formatDate = ({

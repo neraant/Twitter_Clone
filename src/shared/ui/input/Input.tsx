@@ -9,6 +9,7 @@ type InputProps = {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   value?: string;
   className?: string;
+  dataTestId?: string;
 };
 
 export const Input = ({
@@ -16,6 +17,7 @@ export const Input = ({
   onChange,
   value,
   className,
+  dataTestId = '',
 }: InputProps) => {
   return (
     <div className={styles.wrapper}>
@@ -26,6 +28,7 @@ export const Input = ({
         value={value}
         className={clsx(styles.input, className)}
         type='text'
+        data-testid={dataTestId}
       />
     </div>
   );

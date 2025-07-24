@@ -16,7 +16,7 @@ export const usePostsDebounce = ({
   setLoading,
 }: usePostsDebounceProps) => {
   useEffect(() => {
-    if (value.trim() !== '' && setLoading) {
+    if (typeof value === 'string' && value.trim() !== '' && setLoading) {
       setLoading(true);
     }
 

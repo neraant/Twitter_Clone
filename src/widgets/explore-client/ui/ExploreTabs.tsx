@@ -25,6 +25,7 @@ export const ExploreTabs = ({ activeTab, onTabSelect }: ExploreTabsProps) => {
       ))}
 
       <span
+        data-testid='indicator-line'
         className={styles.currentLine}
         style={{
           transform: `translateX(${activeTab * 100}%)`,
