@@ -1,6 +1,12 @@
 'use client';
 
-import { ChangeEvent, useEffect, useState } from 'react';
+import {
+  ChangeEvent,
+  FocusEvent,
+  KeyboardEvent,
+  useEffect,
+  useState,
+} from 'react';
 
 const PHONE_PREFIX = '+375';
 const MAX_PHONE_LENGTH = 19;
@@ -8,25 +14,30 @@ const MIN_CURSOR_POSITION = PHONE_PREFIX.length;
 
 const formatPhoneNumber = (input: string): string => {
   const digits = input.replace(/\D/g, '');
+
+  if (digits.length <= 3) return PHONE_PREFIX;
+
   let formatted = PHONE_PREFIX;
 
-  if (digits.length > 3) {
-    const operatorCode = digits.substring(3, 5);
-    formatted += `(${operatorCode}`;
-    if (digits.length > 5) {
-      formatted += ')';
-      const firstPart = digits.substring(5, 8);
-      formatted += `-${firstPart}`;
-      if (digits.length > 8) {
-        const secondPart = digits.substring(8, 10);
-        formatted += `-${secondPart}`;
-        if (digits.length > 10) {
-          const finalPart = digits.substring(10, 12);
-          formatted += `-${finalPart}`;
-        }
-      }
-    }
-  }
+  const operatorCode = digits.substring(3, 5);
+  formatted += `(${operatorCode}`;
+
+  if (digits.length <= 5) return formatted;
+
+  formatted += ')';
+
+  const firstPart = digits.substring(5, 8);
+  formatted += `-${firstPart}`;
+
+  if (digits.length <= 8) return formatted;
+
+  const secondPart = digits.substring(8, 10);
+  formatted += `-${secondPart}`;
+
+  if (digits.length <= 10) return formatted;
+
+  const finalPart = digits.substring(10, 12);
+  formatted += `-${finalPart}`;
 
   return formatted;
 };
@@ -65,7 +76,7 @@ export const usePhoneInput = (
     }
   };
 
-  const handlePhoneFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+  const handlePhoneFocus = (e: FocusEvent<HTMLInputElement>) => {
     if (!displayValue) {
       setDisplayValue(PHONE_PREFIX);
       const syntheticEvent = {
@@ -89,7 +100,7 @@ export const usePhoneInput = (
     }, 0);
   };
 
-  const handlePhoneKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handlePhoneKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement;
     const cursorPosition = target.selectionStart || 0;
     if (

@@ -1,7 +1,5 @@
 export const TITLE = 'Log in to Twitter';
-
 export const BUTTON_LABEL = 'Log In';
-
 export const SIGN_UP_LINK = 'Sign up to Twitter';
 
 export const PLACEHOLDERS = {
