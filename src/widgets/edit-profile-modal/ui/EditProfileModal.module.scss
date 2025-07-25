@@ -1,31 +1,32 @@
+@use '@styles/_variables.scss' as *;
 @use '@styles/_mixins.scss' as *;
 
 .modalWrapper {
   @include modal-animation;
   position: relative;
-  padding: var(--spacing-xl);
-  padding-bottom: var(--spacing-5xl);
+  padding: $spacing-xl;
+  padding-bottom: $spacing-5xl;
   background: var(--color-bg);
-  border-radius: var(--radius-lg);
+  border-radius: $radius-lg;
   width: 100%;
   max-width: 600px;
   max-height: 80vh;
   display: flex;
   flex-direction: column;
 
-  @media (max-width: 768px) {
-    width: calc(100% - var(--spacing-md) * 2);
+  @media (max-width: $breakpoint-md) {
+    width: calc(100% - $spacing-md * 2);
     max-width: none;
-    padding: var(--spacing-lg);
-    padding-bottom: var(--spacing-4xl);
+    padding: $spacing-lg;
+    padding-bottom: $spacing-4xl;
   }
 
   .uploadersWrapper {
     display: flex;
     align-items: center;
-    gap: var(--spacing-xl);
-    margin-bottom: var(--spacing-md);
-    margin-top: var(--spacing-xl);
+    gap: $spacing-xl;
+    margin-bottom: $spacing-md;
+    margin-top: $spacing-xl;
 
     .uploaderWrapper {
       width: 100%;
@@ -37,7 +38,7 @@
       object-fit: cover;
     }
     .banner {
-      border-radius: var(--radius-lg);
+      border-radius: $radius-lg;
       width: 100%;
       max-width: none;
       object-fit: cover;
@@ -46,49 +47,49 @@
 
   .closeButton {
     position: absolute;
-    top: var(--spacing-xl);
-    right: var(--spacing-2xl);
+    top: $spacing-xl;
+    right: $spacing-2xl;
 
-    @media (max-width: 768px) {
-      top: calc(var(--spacing-lg) + 3px);
-      right: calc(var(--spacing-lg) + 5px);
+    @media (max-width: $breakpoint-md) {
+      top: calc(#{$spacing-lg} + 3px);
+      right: calc(#{$spacing-lg} + 5px);
     }
   }
 
   .modalContent {
     flex-grow: 1;
     overflow-y: auto;
-    padding-right: var(--spacing-xxs);
+    padding-right: $spacing-xxs;
     scrollbar-width: thin;
   }
 
   .changePasswordButton {
     color: var(--primary-color);
-    font-weight: var(--font-weight-semibold);
-    font-size: var(--font-size-md);
+    font-weight: $font-weight-semibold;
+    font-size: $font-size-md;
   }
 
   .title {
     display: inline-block;
-    font-size: var(--font-size-lg-plus);
-    font-weight: var(--font-weight-medium);
-    margin-bottom: var(--spacing-lg);
+    font-size: $font-size-lg-plus;
+    font-weight: $font-weight-medium;
+    margin-bottom: $spacing-lg;
   }
 
   .subtitle {
     display: inline-block;
-    font-size: var(--font-size-lg);
-    font-weight: var(--font-weight-medium);
-    margin-bottom: var(--spacing-md);
-    margin-top: var(--spacing-md);
+    font-size: $font-size-lg;
+    font-weight: $font-weight-medium;
+    margin-bottom: $spacing-md;
+    margin-top: $spacing-md;
   }
 
   .input {
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: $spacing-lg;
     input {
-      padding-right: var(--spacing-lg);
-      @media (max-width: 768px) {
-        padding-right: var(--spacing-md);
+      padding-right: $spacing-lg;
+      @media (max-width: $breakpoint-md) {
+        padding-right: $spacing-md;
       }
     }
   }
@@ -98,22 +99,22 @@
     bottom: -18px;
     padding-left: 6px;
     left: 0;
-    font-weight: var(--font-weight-semibold);
-    font-size: var(--font-size-xs);
+    font-weight: $font-weight-semibold;
+    font-size: $font-size-xs;
     color: var(--error-color);
     pointer-events: none;
     white-space: nowrap;
 
-    @media (max-width: 480px) {
-      font-size: var(--font-size-xxs);
+    @media (max-width: $breakpoint-xs) {
+      font-size: $font-size-xxs;
     }
   }
 
   .genderWrapper {
     position: relative;
-    margin-bottom: var(--spacing-xl);
+    margin-bottom: $spacing-xl;
     .genderLabel {
-      font-size: var(--font-size-md);
+      font-size: $font-size-md;
       color: var(--dark-text-color);
       opacity: 0.6;
     }
@@ -129,8 +130,8 @@
     left: 0;
     width: 100%;
     background: var(--color-bg);
-    padding: var(--spacing-md);
-    border-radius: var(--radius-lg);
+    padding: $spacing-md;
+    border-radius: $radius-lg;
     z-index: 10;
 
     .submitButton {

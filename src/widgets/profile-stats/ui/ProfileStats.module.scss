@@ -1,51 +1,54 @@
+@use '@styles/_variables.scss' as *;
+@use '@styles/_mixins.scss' as *;
+
 .wrapper {
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: var(--spacing-md);
+  gap: $spacing-md;
 
   button {
     display: none;
     margin: 0 auto;
     max-width: 100%;
 
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
       display: flex;
     }
   }
 
   .skeletonButton {
     display: none;
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
       display: inline-block;
-      margin-left: var(--spacing-md);
-      width: calc(100% - var(--spacing-md) * 2) !important;
+      margin-left: $spacing-md;
+      width: calc(100% - #{$spacing-md} * 2) !important;
     }
   }
 
-  @media (max-width: 768px) {
-    padding-bottom: var(--spacing-xl-plus);
+  @media (max-width: $breakpoint-md) {
+    padding-bottom: $spacing-xl-plus;
   }
 }
 
 .statsWrapper {
-  padding: 0 var(--spacing-md);
-  padding-bottom: var(--spacing-xl-plus);
+  padding: 0 $spacing-md;
+  padding-bottom: $spacing-xl-plus;
   display: flex;
   align-items: center;
-  gap: var(--spacing-md);
+  gap: $spacing-md;
 
-  @media (max-width: 768px) {
-    padding: 0 var(--spacing-md);
+  @media (max-width: $breakpoint-md) {
+    padding: 0 $spacing-md;
   }
 
   .statsText {
     cursor: pointer;
-    font-weight: var(--font-weight-bold);
-    font-size: var(--font-size-md-plus);
+    font-weight: $font-weight-bold;
+    font-size: $font-size-md-plus;
 
     span {
-      font-weight: var(--font-weight-regular);
+      font-weight: $font-weight-regular;
       opacity: 0.6;
       transition: all 0.3s ease-in-out;
 

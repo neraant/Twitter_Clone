@@ -1,0 +1,41 @@
+@use '@styles/_mixins.scss' as *;
+@use '@styles/_variables.scss' as *;
+
+.button {
+  @include flex-center;
+
+  gap: $spacing-sm;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-lg;
+  color: var(--sign-button-color);
+  background: var(--sign-button-bg);
+  padding: $spacing-md;
+  border-radius: $radius-3xl;
+  width: 100%;
+  border: 1px solid var(--sign-button-bg);
+  transition:
+    color 0.3s ease-in-out,
+    background 0.3s ease-in-out;
+
+  &:not([disabled]):hover {
+    background: transparent;
+    color: var(--sign-button-bg);
+  }
+
+  @media (max-width: $breakpoint-md) {
+    font-size: $font-size-md-plus;
+  }
+
+  .loader {
+    animation: rotation 1s linear infinite;
+  }
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

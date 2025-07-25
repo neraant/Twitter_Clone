@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { ReactNode } from 'react';
 
@@ -22,20 +24,19 @@ export const SignTypeButton = ({
 
   if (href && !disabled) {
     return (
-      <>
-        <Link href={href} className={className}>
-          {label}
-        </Link>
-      </>
+      <Link href={href} className={className} aria-label={label}>
+        {label}
+      </Link>
     );
   }
 
   return (
     <button
+      type='button'
       onClick={onClick}
       disabled={disabled}
       className={className}
-      aria-label='sign'
+      aria-label={label}
     >
       {children}
       {label}

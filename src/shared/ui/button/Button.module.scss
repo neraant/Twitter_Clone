@@ -1,17 +1,18 @@
 @use '@styles/_mixins.scss' as *;
+@use '@styles/_variables.scss' as *;
 
 .button {
   @include flex-center;
 
   position: relative;
-  gap: var(--spacing-sm);
+  gap: $spacing-sm;
   width: 100%;
   background: var(--primary-color);
-  padding: var(--spacing-md) 0;
-  border-radius: var(--radius-xl);
+  padding: $spacing-md 0;
+  border-radius: $radius-xl;
   text-align: center;
-  font-size: var(--font-size-md-plus);
-  font-weight: var(--font-weight-bold);
+  font-size: $font-size-md-plus;
+  font-weight: $font-weight-bold;
   color: var(--light-text-color);
   transition: background 0.3s ease-in-out;
 
@@ -24,11 +25,11 @@
     pointer-events: none;
   }
 
-  @media (max-width: 768px) {
-    font-size: var(--font-size-md-plus);
+  @media (max-width: $breakpoint-md) {
+    font-size: $font-size-md-plus;
   }
-  @media (max-width: 768px) {
-    font-size: var(--font-size-sm);
-    padding: var(--spacing-ms) 0;
+  @media (max-width: $breakpoint-md) {
+    font-size: $font-size-sm;
+    padding: $spacing-ms 0;
   }
 }
