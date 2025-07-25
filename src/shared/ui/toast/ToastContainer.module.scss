@@ -1,0 +1,76 @@
+@use '@styles/_variables.scss' as *;
+
+.container {
+  position: fixed;
+  bottom: $spacing-md;
+  right: $spacing-md;
+  z-index: 100;
+  width: 100%;
+  max-width: 345px;
+}
+
+.toast {
+  cursor: pointer;
+  display: flex;
+  align-items: start;
+  gap: $spacing-md;
+  background: var(--toast-bg);
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  width: 100%;
+  animation: fadeIn 0.3s ease-out forwards;
+  backdrop-filter: blur(3px);
+  margin-top: $spacing-xxs;
+
+  &.fadeOut {
+    animation: fadeOut 0.3s ease-in forwards;
+  }
+}
+
+.success {
+  border: 1px solid var(--border-success-color);
+}
+
+.error {
+  border: 1px solid var(--border-error-color);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xxs;
+  width: 100%;
+}
+
+.title {
+  font-weight: $font-weight-semibold;
+  font-size: $font-size-sm;
+  color: var(--toast-title-color);
+}
+
+.body {
+  font-size: $font-size-xxs;
+  color: var(--toast-description-color);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}

@@ -1,0 +1,26 @@
+@use '@styles/_mixins.scss' as *;
+@use '@styles/_variables.scss' as *;
+
+.footer {
+  background: var(--color-bg);
+  width: 100%;
+  margin-top: auto;
+
+  .footerInner {
+    @include flex-center;
+
+    gap: $spacing-lg;
+    flex-wrap: wrap;
+    margin-top: auto;
+    padding: $spacing-xl 0;
+  }
+
+  .link {
+    font-size: $font-size-xs;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      opacity: 0.6;
+    }
+  }
+}

@@ -1,0 +1,89 @@
+@use '@styles/_variables.scss' as *;
+
+.form {
+  max-width: 690px;
+  padding: $spacing-xl $spacing-2xl;
+  margin: auto 0;
+  overflow-y: auto;
+
+  @media (max-width: $breakpoint-sm) {
+    padding: $spacing-lg;
+    padding-top: $spacing-2xl;
+  }
+
+  .logo {
+    margin-bottom: $spacing-2xl;
+
+    @media (max-width: $breakpoint-sm) {
+      margin-bottom: $spacing-xl;
+    }
+  }
+
+  .title {
+    font-size: $font-size-4xl;
+    font-weight: $font-weight-black;
+    margin-bottom: $spacing-2xl;
+
+    @media (max-width: $breakpoint-3xl) {
+      font-size: $font-size-3xl;
+      margin-bottom: $spacing-lg;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+      font-size: $font-size-xl;
+      margin-bottom: $spacing-ms;
+    }
+  }
+  .subtitle {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-black;
+    margin-bottom: $spacing-3xl;
+
+    @media (max-width: $breakpoint-3xl) {
+      font-size: $font-size-xl;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+      font-size: $font-size-lg;
+      margin-bottom: $spacing-xl;
+    }
+  }
+
+  .buttonsWrapper {
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+    margin-bottom: $spacing-xl;
+
+    @media (max-width: $breakpoint-3xl) {
+      gap: $spacing-md;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+      margin-bottom: $spacing-xl;
+    }
+  }
+
+  .infoText {
+    margin-bottom: $spacing-lg;
+    font-size: $font-size-md;
+    max-width: 370px;
+
+    @media (max-width: $breakpoint-3xl) {
+      font-size: $font-size-ms;
+      margin-bottom: $spacing-sm;
+    }
+  }
+  .link {
+    color: var(--primary-color);
+  }
+
+  .haveAccountText {
+    font-size: $font-size-md;
+
+    @media (max-width: $breakpoint-3xl) {
+      font-size: $font-size-ms;
+    }
+  }
+}

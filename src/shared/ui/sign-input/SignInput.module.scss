@@ -1,0 +1,59 @@
+@use '@styles/_mixins.scss' as *;
+@use '@styles/_variables.scss' as *;
+
+.inputWrapper {
+  width: 100%;
+  position: relative;
+
+  .input {
+    font-size: $font-size-md-plus;
+    font-weight: $font-weight-regular;
+    border: 1px solid var(--border-input-color);
+    border-radius: $radius-md;
+    padding: $spacing-lg;
+    padding-right: calc(#{$spacing-2xl} + 5px);
+    color: var(--dark-text-color);
+    width: 100%;
+
+    &::placeholder {
+      color: var(--dark-text-color);
+      opacity: 0.6;
+    }
+
+    @media (max-width: $breakpoint-md) {
+      padding: $spacing-md;
+      padding-right: calc(#{$spacing-2xl} + 5px);
+      font-size: $font-size-ms;
+    }
+  }
+
+  .passwordButton {
+    @include flex-center;
+
+    position: absolute;
+    top: 50%;
+    right: $spacing-lg;
+    transform: translateY(-50%);
+    filter: brightness(0.75);
+    transition: all 0.2s ease-in-out;
+
+    &.active {
+      filter: brightness(0.2);
+    }
+  }
+
+  .errorMessage {
+    position: absolute;
+    bottom: -18px;
+    left: 0;
+    font-weight: $font-weight-semibold;
+    font-size: $font-size-xs;
+    color: var(--error-color);
+    padding: 0 6px;
+    pointer-events: none;
+
+    @media (max-width: 480px) {
+      font-size: $font-size-xxs;
+    }
+  }
+}

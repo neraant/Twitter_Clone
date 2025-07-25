@@ -1,0 +1,40 @@
+@use '@styles/_variables.scss' as *;
+
+.wrapper {
+  width: 100%;
+  display: flex;
+
+  @media (max-width: $breakpoint-lg) {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .picture {
+    @media (max-width: $breakpoint-sm) {
+      width: 100%;
+    }
+
+    .banner {
+      width: 100dvw;
+      max-width: 50dvw;
+      object-fit: cover;
+      object-position: center;
+      height: 100%;
+      max-height: calc(100dvh - 80px);
+      min-height: 860px;
+
+      @media (max-width: $breakpoint-lg) {
+        display: none;
+        min-height: auto;
+        max-width: none;
+        width: auto;
+      }
+
+      @media (max-width: $breakpoint-sm) {
+        display: inline-block;
+        width: 100%;
+        min-height: 170px;
+      }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+@use '@styles/_mixins.scss' as *;
+@use '@styles/_variables.scss' as *;
+
+.button {
+  @include flex-center;
+
+  gap: $spacing-xs;
+  color: var(--dark-font-color);
+  width: 100%;
+  min-height: 62px;
+  border-radius: $radius-xl;
+  border: 1px solid var(--border-sign-type-color);
+  cursor: pointer;
+
+  font-size: $font-size-lg;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    border: 1px solid var(--border-sign-type-hover-color);
+  }
+
+  @media (max-width: $breakpoint-3xl) {
+    min-height: auto;
+    padding: $spacing-ms 0;
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    font-size: $font-size-md;
+    min-height: 50px;
+  }
+}
+
+.disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+}

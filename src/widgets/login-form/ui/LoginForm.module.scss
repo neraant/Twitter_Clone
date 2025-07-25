@@ -1,0 +1,80 @@
+@use '@styles/_mixins.scss' as *;
+@use '@styles/_variables.scss' as *;
+
+.form {
+  max-width: 630px;
+  margin-left: auto;
+  padding: $spacing-3xl;
+  padding-bottom: calc(#{$spacing-5xl} * 2);
+  background: var(--login-form-bg);
+  border-radius: $radius-lg;
+  backdrop-filter: blur(3px);
+  box-shadow: 0px 0px 5px 0px var(--login-shadow-color);
+
+  @media (max-width: $breakpoint-xl) {
+    padding: $spacing-2xl;
+    padding-bottom: calc(#{$spacing-2xl} * 2);
+  }
+
+  @media (max-width: $breakpoint-md-lg) {
+    @include flex-center;
+
+    flex-direction: column;
+    box-shadow: none;
+    backdrop-filter: inherit;
+    max-width: none;
+    width: 100%;
+    padding: 0;
+  }
+
+  .logo {
+    margin-bottom: $spacing-xl;
+  }
+  .title {
+    margin-bottom: $spacing-xl;
+    font-weight: $font-weight-black;
+    font-size: $font-size-2xl;
+    color: var(--dark-text-color);
+
+    @media (max-width: $breakpoint-md-lg) {
+      text-align: center;
+    }
+    @media (max-width: $breakpoint-md) {
+      font-size: $font-size-xl;
+    }
+  }
+  .inputWrapper {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: $spacing-2xl;
+    gap: $spacing-lg-plus;
+
+    @media (max-width: $breakpoint-md-lg) {
+      width: 100%;
+    }
+    @media (max-width: 480px) {
+      margin-bottom: $spacing-xl;
+    }
+  }
+  .signUp {
+    display: flex;
+    justify-self: end;
+    margin-top: $spacing-xl;
+    font-size: $font-size-md-plus;
+    font-weight: $font-weight-regular;
+    color: var(--primary-color);
+    transition: opacity 0.2s ease-in-out;
+
+    &:hover {
+      opacity: 0.7;
+    }
+
+    @media (max-width: $breakpoint-md-lg) {
+      margin-left: auto;
+    }
+
+    @media (max-width: $breakpoint-md) {
+      font-size: $font-size-ms;
+    }
+  }
+}
