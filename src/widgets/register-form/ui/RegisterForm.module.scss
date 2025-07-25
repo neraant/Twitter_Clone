@@ -1,19 +1,20 @@
 @use '@styles/_mixins.scss' as *;
+@use '@styles/_variables.scss' as *;
 
 .form {
   max-width: 750px;
-  padding: var(--spacing-2xl);
+  padding: $spacing-2xl;
   background: var(--login-form-bg);
-  border-radius: var(--radius-lg);
+  border-radius: $radius-lg-plus;
   backdrop-filter: blur(3px);
   box-shadow: 0px 0px 5px 0px var(--login-shadow-color);
 
-  @media (max-width: 1060px) {
-    padding: var(--spacing-2xl);
-    padding-bottom: calc(var(--spacing-2xl) * 2);
+  @media (max-width: $breakpoint-xl) {
+    padding: $spacing-2xl;
+    padding-bottom: calc(#{$spacing-2xl} * 2);
   }
 
-  @media (max-width: 860px) {
+  @media (max-width: $breakpoint-md-lg) {
     @include flex-center;
 
     flex-direction: column;
@@ -28,39 +29,39 @@
   .logo {
     display: block;
     margin: auto;
-    margin-bottom: var(--spacing-lg-plus);
+    margin-bottom: $spacing-lg-plus;
   }
   .title {
-    margin-bottom: var(--spacing-lg-plus);
-    font-weight: var(--font-weight-black);
-    font-size: var(--font-size-2xl);
+    margin-bottom: $spacing-lg-plus;
+    font-weight: $font-weight-black;
+    font-size: $font-size-2xl;
     color: var(--dark-text-color);
 
-    @media (max-width: 860px) {
+    @media (max-width: $breakpoint-md-lg) {
       text-align: center;
     }
-    @media (max-width: 768px) {
-      font-size: var(--font-size-xl);
+    @media (max-width: $breakpoint-md) {
+      font-size: $font-size-xl;
     }
   }
   .inputWrapper {
     display: flex;
     flex-direction: column;
-    margin-bottom: var(--spacing-xl);
-    gap: var(--spacing-lg-plus);
+    margin-bottom: $spacing-xl;
+    gap: $spacing-lg-plus;
 
-    @media (max-width: 860px) {
+    @media (max-width: $breakpoint-md-lg) {
       width: 100%;
     }
-    @media (max-width: 480px) {
-      margin-bottom: var(--spacing-xl);
+    @media (max-width: $breakpoint-xs) {
+      margin-bottom: $spacing-xl;
     }
   }
   .useGoogleButton {
     display: inline-block;
-    margin-bottom: var(--spacing-md);
-    font-size: var(--font-size-md-plus);
-    font-weight: var(--font-weight-regular);
+    margin-bottom: $spacing-md;
+    font-size: $font-size-md-plus;
+    font-weight: $font-weight-regular;
     color: var(--primary-color);
     transition: opacity 0.2s ease-in-out;
     margin-right: auto;
@@ -69,23 +70,23 @@
       opacity: 0.7;
     }
 
-    @media (max-width: 768px) {
-      font-size: var(--font-size-md);
+    @media (max-width: $breakpoint-md) {
+      font-size: $font-size-md;
     }
   }
 
   .ageTitle {
-    margin-bottom: var(--spacing-xl);
-    font-weight: var(--font-weight-bold);
+    margin-bottom: $spacing-xl;
+    font-weight: $font-weight-bold;
     color: var(--dark-text-color);
-    font-size: var(--font-size-md-plus);
+    font-size: $font-size-md-plus;
     margin-right: auto;
   }
 
   .ageText {
-    margin-bottom: var(--spacing-md);
+    margin-bottom: $spacing-md;
     color: var(--dark-text-color);
-    font-size: var(--font-size-md);
+    font-size: $font-size-md;
     opacity: 0.6;
   }
 
@@ -93,11 +94,11 @@
     width: 100%;
     display: flex;
     align-items: center;
-    gap: var(--spacing-lg);
-    margin-bottom: var(--spacing-xl);
+    gap: $spacing-lg;
+    margin-bottom: $spacing-xl;
 
-    @media (max-width: 860px) {
-      gap: var(--spacing-lg-plus);
+    @media (max-width: $breakpoint-md-lg) {
+      gap: $spacing-lg-plus;
       flex-direction: column;
     }
 
@@ -111,14 +112,14 @@
         position: absolute;
         bottom: -18px;
         left: 0;
-        font-weight: var(--font-weight-semibold);
-        font-size: var(--font-size-xs);
+        font-weight: $font-weight-semibold;
+        font-size: $font-size-xs;
         color: var(--error-color);
         padding: 0px 6px;
         pointer-events: none;
 
-        @media (max-width: 480px) {
-          font-size: var(--font-size-xxs);
+        @media (max-width: $breakpoint-xs) {
+          font-size: $font-size-xxs;
         }
       }
     }

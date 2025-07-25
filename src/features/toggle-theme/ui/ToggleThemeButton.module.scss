@@ -1,9 +1,12 @@
+@use '@styles/_variables.scss' as *;
+@use '@styles/_mixins.scss' as *;
+
 .toggleWrapper {
   width: 52px;
   height: 32px;
   background-color: var(--color-bg);
   border: 2px solid var(--toggle-color);
-  border-radius: var(--radius-lg-plus);
+  border-radius: $radius-lg-plus;
   position: relative;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
