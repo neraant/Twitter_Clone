@@ -1,96 +1,73 @@
+@use '@styles/_variables.scss' as *;
 @use '@styles/_mixins.scss' as *;
 
-.confirmModal {
-  @include modal-animation-with-translate;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  max-width: 430px;
-  padding: var(--spacing-xl);
-  background: var(--color-bg);
-  box-shadow: 0px 0px 5px 0px var(--login-shadow-color);
-  border-radius: var(--radius-lg);
-  display: flex;
-  gap: var(--spacing-xl);
-  flex-direction: column;
-  align-items: center;
+.closeButton {
+  position: absolute;
+  top: $spacing-md;
+  right: $spacing-md;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  path {
+    fill: var(--primary-color);
+  }
+}
+
+.title {
+  display: inline-block;
+  font-size: $font-size-lg-plus;
+  font-weight: $font-weight-bold;
 
   @media (max-width: 580px) {
-    max-width: calc(100dvw - 40px);
-    gap: var(--spacing-lg);
+    font-size: $font-size-lg;
+  }
+}
+
+.description {
+  font-size: $font-size-md;
+  opacity: 0.8;
+
+  @media (max-width: 580px) {
+    font-size: $font-size-sm;
+  }
+}
+
+.buttonWrapper {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  width: 100%;
+
+  button {
+    padding: $spacing-md 0;
+    border-radius: $radius-lg;
+    flex: 1;
+    font-weight: $font-weight-semibold;
+    font-size: $font-size-md;
+    transition: all 0.3s ease-in-out;
   }
 
-  .closeButton {
-    position: absolute;
-    top: var(--spacing-md);
-    right: var(--spacing-md);
-    transition: all 0.3s ease-in-out;
+  .cancelButton {
+    background: var(--error-color);
+    border: 1px solid transparent;
+    color: var(--light-text-color);
 
     &:hover {
-      opacity: 0.7;
-    }
-
-    path {
-      fill: var(--primary-color);
+      color: var(--error-color);
+      background: transparent;
+      border: 1px solid var(--error-color);
     }
   }
 
-  .title {
-    display: inline-block;
-    font-size: var(--font-size-lg-plus);
-    font-weight: var(--font-weight-bold);
+  .actionButton {
+    color: var(--dark-text-color);
+    outline: 1px solid var(--border-sign-type-color);
 
-    @media (max-width: 580px) {
-      font-size: var(--font-size-lg);
-    }
-  }
-
-  .description {
-    font-size: var(--font-size-md);
-    opacity: 0.8;
-    text-align: center;
-
-    @media (max-width: 580px) {
-      font-size: var(--font-size-sm);
-    }
-  }
-
-  .buttonWrapper {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-    width: 100%;
-
-    button {
-      padding: var(--spacing-md) 0;
-      border-radius: var(--radius-lg);
-      flex: 1;
-      font-weight: var(--font-weight-semibold);
-      font-size: var(--font-size-md);
-      transition: all 0.3s ease-in-out;
-    }
-
-    .cancelButton {
-      background: var(--error-color);
-      border: 1px solid transparent;
-      color: var(--light-text-color);
-
-      &:hover {
-        color: var(--error-color);
-        background: transparent;
-        border: 1px solid var(--error-color);
-      }
-    }
-
-    .actionButton {
-      color: var(--dark-text-color);
-      outline: 1px solid var(--border-sign-type-color);
-
-      &:hover {
-        outline: 1px solid var(--border-input-color);
-      }
+    &:hover {
+      outline: 1px solid var(--border-input-color);
     }
   }
 }

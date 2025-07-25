@@ -1,21 +1,24 @@
-.newTweetButton {
-  margin-bottom: var(--spacing-md);
+@use '@styles/_variables.scss' as *;
+@use '@styles/_mixins.scss' as *;
 
-  @media (max-width: 1280px) {
+.newTweetButton {
+  margin-bottom: $spacing-md;
+
+  @media (max-width: $breakpoint-3xl) {
     height: 100%;
     width: 100%;
     max-width: 40px;
     max-height: 40px;
     margin: 0 auto;
-    margin-bottom: var(--spacing-md);
+    margin-bottom: $spacing-md;
   }
 
-  @media (max-width: 768px) {
-    display: none;
+  @media (max-width: $breakpoint-md) {
+    display: none !important;
   }
 
   .newTweetText {
-    @media (max-width: 1280px) {
+    @media (max-width: $breakpoint-3xl) {
       display: none;
     }
   }
@@ -23,7 +26,7 @@
   .plusIcon {
     display: none;
 
-    @media (max-width: 1280px) {
+    @media (max-width: $breakpoint-3xl) {
       display: flex;
       path {
         fill: var(--light-text-color);
