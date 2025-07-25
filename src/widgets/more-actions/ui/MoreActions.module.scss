@@ -1,4 +1,5 @@
 @use '@styles/_mixins.scss' as *;
+@use '@styles/_variables.scss' as *;
 
 .actionsWrapper {
   @include modal-animation;
@@ -8,15 +9,15 @@
   bottom: calc(100% + 10px);
   z-index: 100;
   background: var(--color-bg);
-  border-radius: var(--radius-lg);
+  border-radius: $radius-lg;
   box-shadow: 0px 0px 5px 0px var(--login-shadow-color);
   width: 300px;
 
-  @media (max-width: 1280px) {
+  @media (max-width: $breakpoint-3xl) {
     left: calc(100% + 10px);
     bottom: 0;
   }
-  @media (max-width: 768px) {
+  @media (max-width: $breakpoint-md) {
     left: auto;
     right: 0;
     bottom: calc(100% + 10px);
@@ -35,7 +36,7 @@
     width: 100%;
   }
   .actionListItem {
-    padding: var(--spacing-xs);
+    padding: $spacing-xs;
     &:not(:last-child) {
       border-bottom: 1px solid var(--border-color);
     }
@@ -43,14 +44,14 @@
   .actionButton {
     display: flex;
     align-items: center;
-    gap: var(--spacing-md);
+    gap: $spacing-md;
 
-    font-size: var(--font-size-sm);
-    padding: var(--spacing-lg);
+    font-size: $font-size-sm;
+    padding: $spacing-lg;
     width: 100%;
     text-align: left;
     background: transparent;
-    border-radius: var(--radius-md);
+    border-radius: $radius-md;
     transition: all 0.3s ease-in-out;
     color: var(--dark-text-color);
 
@@ -58,8 +59,8 @@
       background: var(--post-hover-bg);
     }
 
-    @media (max-width: 768px) {
-      padding: var(--spacing-md);
+    @media (max-width: $breakpoint-md) {
+      padding: $spacing-md;
     }
   }
 }

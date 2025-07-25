@@ -1,3 +1,5 @@
+@use '@styles/_variables.scss' as *;
+
 .header {
   height: 0;
   width: 0;
@@ -11,11 +13,11 @@
   background: var(--color-bg);
   border-bottom: 1px solid var(--border-color);
 
-  @media (max-width: 768px) {
+  @media (max-width: $breakpoint-md) {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--spacing-md) var(--spacing-lg);
+    padding: $spacing-md $spacing-lg;
     height: 60px;
     width: 100%;
     pointer-events: all;
@@ -34,6 +36,6 @@
   .headerList {
     display: flex;
     align-items: center;
-    gap: var(--spacing-md);
+    gap: $spacing-md;
   }
 }

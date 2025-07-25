@@ -1,4 +1,4 @@
-import { MONTHS } from './registerForm.constants';
+import { MONTHS } from '@/shared/lib/validations';
 
 export const getDaysInMonth = (month: string, year: string): string[] => {
   const monthIndex = MONTHS.indexOf(month);

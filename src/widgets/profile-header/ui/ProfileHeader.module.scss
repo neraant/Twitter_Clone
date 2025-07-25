@@ -1,11 +1,14 @@
+@use '@styles/_variables.scss' as *;
+@use '@styles/_mixins.scss' as *;
+
 .wrapper {
-  padding: 0 var(--spacing-md);
+  padding: 0 $spacing-md;
 
   .hideUnder768 {
     display: inline-block;
-    margin-top: var(--spacing-md);
+    margin-top: $spacing-md;
 
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
       margin: 0;
       text-align: center;
       display: none;
@@ -18,7 +21,7 @@
   display: flex;
   justify-content: space-between;
 
-  @media (max-width: 768px) {
+  @media (max-width: $breakpoint-md) {
     flex-direction: column;
     justify-content: start;
   }

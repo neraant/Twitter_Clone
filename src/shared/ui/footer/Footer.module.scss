@@ -1,4 +1,5 @@
 @use '@styles/_mixins.scss' as *;
+@use '@styles/_variables.scss' as *;
 
 .footer {
   background: var(--color-bg);
@@ -8,14 +9,14 @@
   .footerInner {
     @include flex-center;
 
-    gap: var(--spacing-lg);
+    gap: $spacing-lg;
     flex-wrap: wrap;
     margin-top: auto;
-    padding: var(--spacing-xl) 0;
+    padding: $spacing-xl 0;
   }
 
   .link {
-    font-size: var(--font-size-xs);
+    font-size: $font-size-xs;
     transition: all 0.2s ease-in-out;
 
     &:hover {

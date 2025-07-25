@@ -2,7 +2,9 @@
 
 import { useMemo, useState } from 'react';
 
-import { getDaysInMonth, MONTHS } from '../lib';
+import { MONTHS } from '@/shared/lib/validations';
+
+import { getDaysInMonth } from '../lib';
 
 export const START_YEAR = 1900;
 

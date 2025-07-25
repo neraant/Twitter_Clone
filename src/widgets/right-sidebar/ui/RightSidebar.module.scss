@@ -1,3 +1,5 @@
+@use '@styles/_variables.scss' as *;
+
 .sidebar {
   width: 100%;
   max-width: 400px;
@@ -10,11 +12,11 @@
   background: var(--color-bg);
   overflow-y: auto;
 
-  @media (max-width: 1400px) {
+  @media (max-width: $breakpoint-4xl) {
     max-width: 350px;
   }
 
-  @media (max-width: 960px) {
+  @media (max-width: $breakpoint-lg) {
     display: none;
   }
 
@@ -22,17 +24,17 @@
     display: flex;
     flex-direction: column;
     min-height: 100%;
-    padding: var(--spacing-xl);
+    padding: $spacing-xl;
 
-    @media (max-width: 1400px) {
-      padding: var(--spacing-lg);
+    @media (max-width: $breakpoint-4xl) {
+      padding: $spacing-lg;
     }
   }
 
   .infoText {
     margin-top: auto;
     text-align: center;
-    font-size: var(--font-size-md);
+    font-size: $font-size-md;
     color: var(--dark-text-color);
     opacity: 0.6;
   }
