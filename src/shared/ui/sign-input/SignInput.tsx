@@ -50,11 +50,11 @@ export const SignInput = forwardRef<HTMLInputElement, SignInputProps>(
       handlePhoneFocus,
     } = usePhoneInput(value, onChange);
 
-    const inputType = isPassword
-      ? showPassword
-        ? 'text'
-        : 'password'
-      : 'text';
+    let inputType = 'text';
+
+    if (isPassword) {
+      inputType = showPassword ? 'text' : 'password';
+    }
 
     const phoneHandlers = isPhone
       ? {

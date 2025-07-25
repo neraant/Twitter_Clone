@@ -5,6 +5,7 @@ import { useRef, useState } from 'react';
 
 import { ProfileImageUploader } from '@/features/image-uploader';
 import { useImageUpload, useModalCloseHandler } from '@/shared/lib/hooks';
+import { GENDER_OPTIONS } from '@/shared/lib/validations';
 import { Button } from '@/shared/ui/button/Button';
 import { DropDownList } from '@/shared/ui/dropdown-list/DropDownList';
 import { CrossIcon } from '@/shared/ui/icon';
@@ -17,7 +18,6 @@ import {
   ADDITIONAL_INFO_TITLE,
   CHANGE_PASSWORD_BUTTON,
   EDIT_TITLE,
-  GENDER_OPTIONS,
   LABELS,
   SAVE_BUTTON_LABEL,
   useEditProfileForm,

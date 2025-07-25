@@ -1,12 +1,14 @@
+@use '@styles/_variables.scss' as *;
+
 .wrapper {
   background-image: url('');
-  padding: var(--spacing-2xl);
+  padding: $spacing-2xl;
 
-  @media (max-width: 860px) {
-    margin-top: var(--spacing-2xl);
+  @media (max-width: $breakpoint-md-lg) {
+    margin-top: $spacing-2xl;
   }
-  @media (max-width: 768px) {
-    margin-top: var(--spacing-5xl);
+  @media (max-width: $breakpoint-md) {
+    margin-top: $spacing-5xl;
     padding: 0;
   }
 
@@ -19,7 +21,7 @@
     height: 100%;
     overflow: hidden;
 
-    @media (max-width: 860px) {
+    @media (max-width: $breakpoint-md-lg) {
       position: relative;
       left: auto;
       top: auto;
@@ -30,15 +32,15 @@
 
     .personImage {
       position: absolute;
-      bottom: calc(var(--spacing-2xl) + 60px);
+      bottom: calc(#{$spacing-2xl} + 60px);
       right: 60dvw;
       z-index: -1;
 
-      @media (max-width: 1060px) {
+      @media (max-width: $breakpoint-xl) {
         right: 65dvw;
       }
 
-      @media (max-width: 860px) {
+      @media (max-width: $breakpoint-md-lg) {
         position: relative;
         right: auto;
         bottom: auto;
@@ -48,7 +50,7 @@
         margin-left: auto;
       }
 
-      @media (max-width: 768px) {
+      @media (max-width: $breakpoint-md) {
         max-height: 350px;
       }
     }
@@ -59,7 +61,7 @@
       object-fit: cover;
       z-index: -2;
 
-      @media (max-width: 860px) {
+      @media (max-width: $breakpoint-md-lg) {
         display: none;
       }
     }
@@ -67,16 +69,16 @@
       position: absolute;
       z-index: -1;
       right: 75dvw;
-      top: var(--spacing-2xl);
+      top: $spacing-2xl;
 
-      @media (max-width: 860px) {
+      @media (max-width: $breakpoint-md-lg) {
         top: -150px;
         right: 25vw;
         max-width: 92px;
         object-fit: contain;
       }
 
-      @media (max-width: 480px) {
+      @media (max-width: $breakpoint-xs) {
         right: 40vw;
       }
     }
