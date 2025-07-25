@@ -7,7 +7,7 @@ import { User } from '@/entities/user';
 import { AddTweetButton } from '@/features/add-tweet-button';
 import { PostImageUploader } from '@/features/image-uploader/ui';
 import { MAX_VERCEL_SIZE } from '@/shared/lib/image';
-import { POST_MAX_LEN } from '@/shared/lib/validations';
+import { MAX_POST_LEN } from '@/shared/lib/validations';
 import { CircleProgressBar } from '@/shared/ui/progress-bar';
 
 import { TEXTAREA_PLACEHOLDER, usePostForm } from '../lib';
@@ -39,7 +39,7 @@ export const AddPostForm = ({ user }: AddPostFormProps) => {
 
   const content = watch('content') || '';
   const contentLength = content.length;
-  const isOverLimit = contentLength >= POST_MAX_LEN;
+  const isOverLimit = contentLength >= MAX_POST_LEN;
 
   if (!user) return null;
 
@@ -59,7 +59,7 @@ export const AddPostForm = ({ user }: AddPostFormProps) => {
             {...register('content')}
             placeholder={TEXTAREA_PLACEHOLDER}
             className={styles.textarea}
-            maxLength={POST_MAX_LEN}
+            maxLength={MAX_POST_LEN}
             rows={3}
           />
 
@@ -68,7 +68,7 @@ export const AddPostForm = ({ user }: AddPostFormProps) => {
               [styles.errorText]: isOverLimit,
             })}
           >
-            {contentLength}/{POST_MAX_LEN}{' '}
+            {contentLength}/{MAX_POST_LEN}{' '}
           </p>
 
           <p className={styles.maxVercelSize}>

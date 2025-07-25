@@ -39,6 +39,15 @@ export const VALIDATION_MESSAGES = {
     YEAR_REQUIRED: 'Birth year is required',
     MIN_AGE_ERROR: `You must be at least ${MIN_AGE} y.o.`,
   },
+  TELEGRAM: {
+    INVALID: 'Telegram name is invalid',
+  },
+  BIO: {
+    LENGTH: 'Maximum length is 200 symbold',
+  },
+  GENDER: {
+    INVALID: 'Gender is invalid',
+  },
   POST: {
     REQUIRED_CONTENT: 'Content is required',
     MAX_LENGTH_MESSAGE: 'Max content length is 500',
