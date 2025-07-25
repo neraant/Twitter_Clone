@@ -1,13 +1,14 @@
+@use '@styles/_variables.scss' as *;
+
 .wrapper {
   display: flex;
   align-items: center;
-  gap: var(--spacing-lg);
+  gap: $spacing-lg;
 
   .icon {
-    width: 100%;
-    height: 100%;
-    max-width: 50px;
-    max-height: 50px;
+    flex-shrink: 0;
+    height: 50px;
+    width: 50px;
     object-fit: cover;
     border-radius: 50%;
     box-shadow: 0px 0px 5px 0px var(--login-shadow-color);
@@ -19,8 +20,8 @@
     gap: 2px;
 
     .name {
-      font-size: var(--font-size-md-plus);
-      font-weight: var(--font-weight-semibold);
+      font-size: $font-size-md-plus;
+      font-weight: $font-weight-semibold;
       color: var(--dark-text-color);
       white-space: nowrap;
       overflow: hidden;
@@ -28,8 +29,8 @@
       max-width: 110px;
     }
     .subname {
-      font-weight: var(--font-weight-light);
-      font-size: var(--font-size-sm);
+      font-weight: $font-weight-thin;
+      font-size: $font-size-sm;
       color: var(--dark-text-color);
       white-space: nowrap;
       overflow: hidden;

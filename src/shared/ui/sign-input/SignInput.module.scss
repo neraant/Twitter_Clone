@@ -1,16 +1,17 @@
 @use '@styles/_mixins.scss' as *;
+@use '@styles/_variables.scss' as *;
 
 .inputWrapper {
   width: 100%;
   position: relative;
 
   .input {
-    font-size: var(--font-size-md-plus);
-    font-weight: var(--font-weight-regular);
+    font-size: $font-size-md-plus;
+    font-weight: $font-weight-regular;
     border: 1px solid var(--border-input-color);
-    border-radius: var(--radius-md);
-    padding: var(--spacing-lg);
-    padding-right: calc(var(--spacing-2xl) + 5px);
+    border-radius: $radius-md;
+    padding: $spacing-lg;
+    padding-right: calc(#{$spacing-2xl} + 5px);
     color: var(--dark-text-color);
     width: 100%;
 
@@ -19,10 +20,10 @@
       opacity: 0.6;
     }
 
-    @media (max-width: 768px) {
-      padding: var(--spacing-md);
-      padding-right: calc(var(--spacing-2xl) + 5px);
-      font-size: var(--font-size-ms);
+    @media (max-width: $breakpoint-md) {
+      padding: $spacing-md;
+      padding-right: calc(#{$spacing-2xl} + 5px);
+      font-size: $font-size-ms;
     }
   }
 
@@ -31,7 +32,7 @@
 
     position: absolute;
     top: 50%;
-    right: var(--spacing-lg);
+    right: $spacing-lg;
     transform: translateY(-50%);
     filter: brightness(0.75);
     transition: all 0.2s ease-in-out;
@@ -45,14 +46,14 @@
     position: absolute;
     bottom: -18px;
     left: 0;
-    font-weight: var(--font-weight-semibold);
-    font-size: var(--font-size-xs);
+    font-weight: $font-weight-semibold;
+    font-size: $font-size-xs;
     color: var(--error-color);
-    padding: 0px 6px;
+    padding: 0 6px;
     pointer-events: none;
 
     @media (max-width: 480px) {
-      font-size: var(--font-size-xxs);
+      font-size: $font-size-xxs;
     }
   }
 }

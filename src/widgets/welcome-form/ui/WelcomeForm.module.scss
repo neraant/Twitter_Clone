@@ -1,49 +1,51 @@
+@use '@styles/_variables.scss' as *;
+
 .form {
   max-width: 690px;
-  padding: var(--spacing-xl) var(--spacing-2xl);
+  padding: $spacing-xl $spacing-2xl;
   margin: auto 0;
   overflow-y: auto;
 
-  @media (max-width: 620px) {
-    padding: var(--spacing-lg);
-    padding-top: var(--spacing-2xl);
+  @media (max-width: $breakpoint-sm) {
+    padding: $spacing-lg;
+    padding-top: $spacing-2xl;
   }
 
   .logo {
-    margin-bottom: var(--spacing-2xl);
+    margin-bottom: $spacing-2xl;
 
-    @media (max-width: 620px) {
-      margin-bottom: var(--spacing-xl);
+    @media (max-width: $breakpoint-sm) {
+      margin-bottom: $spacing-xl;
     }
   }
 
   .title {
-    font-size: var(--font-size-4xl);
-    font-weight: var(--font-weight-black);
-    margin-bottom: var(--spacing-2xl);
+    font-size: $font-size-4xl;
+    font-weight: $font-weight-black;
+    margin-bottom: $spacing-2xl;
 
-    @media (max-width: 1280px) {
-      font-size: var(--font-size-3xl);
-      margin-bottom: var(--spacing-lg);
+    @media (max-width: $breakpoint-3xl) {
+      font-size: $font-size-3xl;
+      margin-bottom: $spacing-lg;
     }
 
-    @media (max-width: 620px) {
-      font-size: var(--font-size-xl);
-      margin-bottom: var(--spacing-ms);
+    @media (max-width: $breakpoint-sm) {
+      font-size: $font-size-xl;
+      margin-bottom: $spacing-ms;
     }
   }
   .subtitle {
-    font-size: var(--font-size-2xl);
-    font-weight: var(--font-weight-black);
-    margin-bottom: var(--spacing-3xl);
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-black;
+    margin-bottom: $spacing-3xl;
 
-    @media (max-width: 1280px) {
-      font-size: var(--font-size-xl);
+    @media (max-width: $breakpoint-3xl) {
+      font-size: $font-size-xl;
     }
 
-    @media (max-width: 620px) {
-      font-size: var(--font-size-lg);
-      margin-bottom: var(--spacing-xl);
+    @media (max-width: $breakpoint-sm) {
+      font-size: $font-size-lg;
+      margin-bottom: $spacing-xl;
     }
   }
 
@@ -51,26 +53,26 @@
     max-width: 400px;
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-lg);
-    margin-bottom: var(--spacing-xl);
+    gap: $spacing-lg;
+    margin-bottom: $spacing-xl;
 
-    @media (max-width: 1280px) {
-      gap: var(--spacing-md);
+    @media (max-width: $breakpoint-3xl) {
+      gap: $spacing-md;
     }
 
-    @media (max-width: 620px) {
-      margin-bottom: var(--spacing-xl);
+    @media (max-width: $breakpoint-sm) {
+      margin-bottom: $spacing-xl;
     }
   }
 
   .infoText {
-    margin-bottom: var(--spacing-lg);
-    font-size: var(--font-size-md);
+    margin-bottom: $spacing-lg;
+    font-size: $font-size-md;
     max-width: 370px;
 
-    @media (max-width: 1280px) {
-      font-size: var(--font-size-ms);
-      margin-bottom: var(--spacing-sm);
+    @media (max-width: $breakpoint-3xl) {
+      font-size: $font-size-ms;
+      margin-bottom: $spacing-sm;
     }
   }
   .link {
@@ -78,10 +80,10 @@
   }
 
   .haveAccountText {
-    font-size: var(--font-size-md);
+    font-size: $font-size-md;
 
-    @media (max-width: 1280px) {
-      font-size: var(--font-size-ms);
+    @media (max-width: $breakpoint-3xl) {
+      font-size: $font-size-ms;
     }
   }
 }

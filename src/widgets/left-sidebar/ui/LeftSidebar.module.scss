@@ -1,4 +1,5 @@
 @use '@styles/_mixins.scss' as *;
+@use '@styles/_variables.scss' as *;
 
 .sidebar {
   width: 100%;
@@ -11,15 +12,15 @@
   z-index: 100;
   background: var(--color-bg);
 
-  @media (max-width: 1400px) {
+  @media (max-width: $breakpoint-4xl) {
     max-width: 300px;
   }
 
-  @media (max-width: 1280px) {
+  @media (max-width: $breakpoint-3xl) {
     max-width: fit-content;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: $breakpoint-md) {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -38,14 +39,14 @@
   .content {
     display: flex;
     flex-direction: column;
-    padding: var(--spacing-xl);
+    padding: $spacing-xl;
     min-height: 100%;
 
-    @media (max-width: 1280px) {
-      padding: var(--spacing-md);
+    @media (max-width: $breakpoint-3xl) {
+      padding: $spacing-md;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
       flex-direction: row;
       width: 100%;
       max-width: none;
@@ -57,13 +58,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: var(--spacing-xl-plus);
+    margin-bottom: $spacing-xl-plus;
     width: 100%;
     max-width: 40px;
 
-    @media (max-width: 1280px) {
+    @media (max-width: $breakpoint-3xl) {
       margin: 0 auto;
-      margin-bottom: var(--spacing-xl-plus);
+      margin-bottom: $spacing-xl-plus;
 
       svg {
         max-width: 32px;
@@ -71,15 +72,15 @@
       }
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
       display: none;
     }
   }
 
   .nav {
-    margin-bottom: var(--spacing-xl-plus);
+    margin-bottom: $spacing-xl-plus;
 
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
       margin: 0 auto;
       width: 100%;
     }
@@ -87,18 +88,18 @@
     .list {
       display: flex;
       flex-direction: column;
-      gap: var(--spacing-lg-plus);
+      gap: $spacing-lg-plus;
 
-      @media (max-width: 1280px) {
-        gap: var(--spacing-lg);
+      @media (max-width: $breakpoint-3xl) {
+        gap: $spacing-lg;
         align-items: center;
       }
 
-      @media (max-width: 768px) {
+      @media (max-width: $breakpoint-md) {
         flex-direction: row;
         justify-content: space-between;
         width: 100%;
-        padding: 0 var(--spacing-lg);
+        padding: 0 $spacing-lg;
         gap: 0;
       }
 
@@ -110,21 +111,21 @@
       max-width: fit-content;
       position: relative;
 
-      @media (max-width: 1280px) {
+      @media (max-width: $breakpoint-3xl) {
         @include flex-center;
       }
 
       .listLink {
         display: flex;
         align-items: center;
-        gap: var(--spacing-sm);
+        gap: $spacing-sm;
         text-decoration: none;
 
         &:hover .linkText::after {
           width: 100%;
         }
 
-        @media (max-width: 1280px) {
+        @media (max-width: $breakpoint-3xl) {
           justify-content: center;
         }
       }
@@ -135,7 +136,7 @@
         align-items: center;
         justify-content: center;
 
-        @media (max-width: 1280px) {
+        @media (max-width: $breakpoint-3xl) {
           width: 24px;
           height: 24px;
         }
@@ -143,8 +144,8 @@
 
       .linkText {
         position: relative;
-        font-size: var(--font-size-md-plus);
-        font-weight: var(--font-weight-semibold);
+        font-size: $font-size-md-plus;
+        font-weight: $font-weight-semibold;
         color: var(--dark-text-color);
         transition: color 0.3s ease-in-out;
 
@@ -159,7 +160,7 @@
           transition: width 0.3s ease-in-out;
         }
 
-        @media (max-width: 1280px) {
+        @media (max-width: $breakpoint-3xl) {
           display: none;
         }
       }
@@ -181,23 +182,23 @@
   }
 
   .newTweetButton {
-    margin-bottom: var(--spacing-md);
+    margin-bottom: $spacing-md;
 
-    @media (max-width: 1280px) {
+    @media (max-width: $breakpoint-3xl) {
       height: 100%;
       width: 100%;
       max-width: 40px;
       max-height: 40px;
       margin: 0 auto;
-      margin-bottom: var(--spacing-md);
+      margin-bottom: $spacing-md;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
       display: none;
     }
 
     .newTweetText {
-      @media (max-width: 1280px) {
+      @media (max-width: $breakpoint-3xl) {
         display: none;
       }
     }
@@ -205,7 +206,7 @@
     .plusIcon {
       display: none;
 
-      @media (max-width: 1280px) {
+      @media (max-width: $breakpoint-3xl) {
         display: flex;
         path {
           fill: var(--light-text-color);
@@ -216,16 +217,16 @@
 
   .user {
     margin-top: auto;
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: $spacing-lg;
 
     span {
-      @media (max-width: 1280px) {
+      @media (max-width: $breakpoint-3xl) {
         display: none;
       }
     }
 
     a {
-      @media (max-width: 1280px) {
+      @media (max-width: $breakpoint-3xl) {
         gap: 0;
         height: 100%;
         width: 100%;
@@ -234,28 +235,28 @@
       }
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
       display: none;
     }
   }
 
   .userSkeleton {
     margin-top: auto;
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: $spacing-lg;
 
-    @media (max-width: 1280px) {
+    @media (max-width: $breakpoint-3xl) {
       max-width: 40px;
       max-height: 40px;
       border-radius: 50%;
       overflow: hidden;
     }
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
       display: none;
     }
   }
 
   .logoutButton {
-    @media (max-width: 1280px) {
+    @media (max-width: $breakpoint-3xl) {
       margin: 0 auto;
       height: 100%;
       width: 100%;
@@ -263,13 +264,13 @@
       max-height: 40px;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
       display: none;
     }
 
     span {
       display: flex;
-      @media (max-width: 1280px) {
+      @media (max-width: $breakpoint-3xl) {
         display: none;
       }
     }
@@ -277,7 +278,7 @@
     .logoutButtonIcon {
       display: none;
 
-      @media (max-width: 1280px) {
+      @media (max-width: $breakpoint-3xl) {
         display: flex;
       }
 
@@ -288,7 +289,7 @@
   }
 
   .hideBelow768 {
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
       display: none !important;
     }
   }

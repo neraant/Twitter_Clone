@@ -1,3 +1,5 @@
+@use '@styles/_variables.scss' as *;
+
 .main {
   display: flex;
   justify-content: space-between;
@@ -5,20 +7,20 @@
   margin-left: 360px;
   margin-right: 400px;
 
-  @media (max-width: 1400px) {
+  @media (max-width: $breakpoint-4xl) {
     margin-left: 300px;
     margin-right: 350px;
   }
 
-  @media (max-width: 1280px) {
+  @media (max-width: $breakpoint-3xl) {
     margin-left: 82px;
   }
 
-  @media (max-width: 960px) {
+  @media (max-width: $breakpoint-lg) {
     margin-right: 0;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: $breakpoint-md) {
     margin-left: 0;
     padding-top: 60px;
     padding-bottom: 70px;
