@@ -7,9 +7,10 @@ import { User } from '@/entities/user';
 import { AddTweetButton } from '@/features/add-tweet-button';
 import { PostImageUploader } from '@/features/image-uploader/ui';
 import { MAX_VERCEL_SIZE } from '@/shared/lib/image';
+import { MAX_POST_LEN } from '@/shared/lib/validations';
 import { CircleProgressBar } from '@/shared/ui/progress-bar';
 
-import { MAX_LENGTH, TEXTAREA_PLACEHOLDER, usePostForm } from '../lib';
+import { TEXTAREA_PLACEHOLDER, usePostForm } from '../lib';
 import styles from './AddPostForm.module.scss';
 
 const DefaultAvatar = '/images/user-avatar.webp';
@@ -38,7 +39,7 @@ export const AddPostForm = ({ user }: AddPostFormProps) => {
 
   const content = watch('content') || '';
   const contentLength = content.length;
-  const isOverLimit = contentLength >= MAX_LENGTH;
+  const isOverLimit = contentLength >= MAX_POST_LEN;
 
   if (!user) return null;
 
@@ -58,7 +59,7 @@ export const AddPostForm = ({ user }: AddPostFormProps) => {
             {...register('content')}
             placeholder={TEXTAREA_PLACEHOLDER}
             className={styles.textarea}
-            maxLength={MAX_LENGTH}
+            maxLength={MAX_POST_LEN}
             rows={3}
           />
 
@@ -67,7 +68,7 @@ export const AddPostForm = ({ user }: AddPostFormProps) => {
               [styles.errorText]: isOverLimit,
             })}
           >
-            {contentLength}/{MAX_LENGTH}{' '}
+            {contentLength}/{MAX_POST_LEN}{' '}
           </p>
 
           <p className={styles.maxVercelSize}>

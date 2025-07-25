@@ -1,4 +1,5 @@
 @use '@styles/_mixins.scss' as *;
+@use '@styles/_variables.scss' as *;
 
 .container {
   max-width: 1290px;
@@ -11,23 +12,23 @@
 
   flex-direction: column;
   justify-content: space-between;
-  padding: var(--spacing-2xl) 0;
+  padding: $spacing-2xl 0;
   min-height: 100dvh;
 
   .titles {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--spacing-md);
+    gap: $spacing-md;
 
     .title {
-      font-weight: var(--font-weight-black);
+      font-weight: $font-weight-black;
       font-size: var(--font-size-3xl-plus);
       color: var(--dark-text-color);
     }
     .subtitle {
-      font-weight: var(--font-weight-bold);
-      font-size: var(--font-size-lg-plus);
+      font-weight: $font-weight-bold;
+      font-size: $font-size-lg-plus;
       color: var(--dark-text-color);
     }
   }
@@ -41,8 +42,8 @@
     position: relative;
     display: flex;
     align-items: center;
-    gap: var(--spacing-xs);
-    font-size: var(--font-size-lg-plus);
+    gap: $spacing-xs;
+    font-size: $font-size-lg-plus;
     color: var(--dark-text-color);
     transition: opacity 0.3s ease-in-out;
 

@@ -1,8 +1,11 @@
+@use '@styles/_variables.scss' as *;
+@use '@styles/_mixins.scss' as *;
+
 .button {
-  padding: var(--spacing-ms);
-  border-radius: var(--radius-2xl);
+  padding: $spacing-ms;
+  border-radius: $radius-xl;
   border: 1px solid var(--border-color);
-  font-size: var(--font-size-md-plus);
+  font-size: $font-size-md-plus;
   transition: border 0.3s ease-in-out;
   width: 100%;
   align-items: center;

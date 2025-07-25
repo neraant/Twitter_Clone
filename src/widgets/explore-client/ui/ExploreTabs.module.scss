@@ -1,10 +1,13 @@
+@use '@styles/_mixins.scss' as *;
+@use '@styles/_variables.scss' as *;
+
 .tabsList {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--spacing-md);
-  margin-top: var(--spacing-lg);
+  gap: $spacing-md;
+  margin-top: $spacing-lg;
   width: 100%;
 
   .currentLine {
@@ -19,10 +22,10 @@
   }
 
   .tubButton {
-    padding: var(--spacing-md) 0;
+    padding: $spacing-md 0;
     flex: 1;
-    font-size: var(--font-size-md);
-    font-weight: var(--font-weight-medium);
+    font-size: $font-size-md;
+    font-weight: $font-weight-medium;
     background: none;
     border: none;
     cursor: pointer;

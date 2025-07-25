@@ -1,12 +1,12 @@
-import { InferType, object, string } from 'yup';
+import * as yup from 'yup';
+
+import { emailSchema } from '@/shared/lib/validations';
 
 import { LOGIN_SCHEMA } from './loginForm.constants';
 
-export const loginSchema = object({
-  email: string()
-    .required(LOGIN_SCHEMA.EMAIL.REQUIRED)
-    .email(LOGIN_SCHEMA.EMAIL.INVALID_FORMAT),
-  password: string(),
+export const loginSchema = yup.object({
+  email: emailSchema.required(LOGIN_SCHEMA.EMAIL.REQUIRED),
+  password: yup.string(),
 });
 
-export type LoginFormData = InferType<typeof loginSchema>;
+export type LoginFormData = yup.InferType<typeof loginSchema>;
