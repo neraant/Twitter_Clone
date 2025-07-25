@@ -1,21 +1,24 @@
+@use '@styles/_mixins.scss' as *;
+@use '@styles/_variables.scss' as *;
+
 .messageInput {
   display: flex;
   align-items: center;
-  gap: var(--spacing-ms);
+  gap: $spacing-ms;
   align-items: center;
-  padding: var(--spacing-ms);
+  padding: $spacing-ms;
 
-  @media (max-width: 768px) {
+  @media (max-width: $breakpoint-md) {
     margin-bottom: 56px;
   }
 
   .input {
     width: 100%;
-    font-size: var(--font-size-md);
+    font-size: $font-size-md;
     color: var(--dark-text-color);
     background: var(--input-message-bg);
-    border-radius: var(--radius-lg-plus);
-    padding: var(--spacing-ms) var(--spacing-md);
+    border-radius: $radius-lg-plus;
+    padding: $spacing-ms $spacing-md;
     border: none;
     outline: none;
     resize: none;

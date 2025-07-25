@@ -30,7 +30,7 @@
       --main-margin-left: 0;
       --main-margin-right: 0;
 
-      @media (max-width: 768px) {
+      @media (max-width: $breakpoint-md) {
         max-height: calc(100dvh - 120px);
         overflow: hidden;
       }

@@ -13,13 +13,13 @@
     position: relative;
     inset: 0;
     max-width: none;
-    padding: 0 var(--spacing-md);
+    padding: 0 $spacing-md;
   }
 
   .profileAcions {
     display: flex;
     align-items: center;
-    gap: var(--spacing-ms);
+    gap: $spacing-ms;
 
     .sendMessage {
       flex-shrink: 0;
@@ -40,7 +40,7 @@
         transform: translateY(-2px);
       }
 
-      @media (max-width: 768px) {
+      @media (max-width: $breakpoint-md) {
         width: 37px;
         height: 37px;
       }

@@ -1,9 +1,12 @@
+@use '@styles/_mixins.scss' as *;
+@use '@styles/_variables.scss' as *;
+
 .userMessageCard {
   display: flex;
   align-items: center;
-  gap: var(--spacing-ms);
-  padding: var(--spacing-sm);
-  border-radius: var(--radius-md);
+  gap: $spacing-ms;
+  padding: $spacing-sm;
+  border-radius: $radius-md;
   transition: background 0.3s ease;
 
   &:hover {
@@ -38,8 +41,8 @@
     width: 100%;
 
     .userName {
-      font-weight: var(--font-weight-semibold);
-      font-size: var(--font-size-md);
+      font-weight: $font-weight-semibold;
+      font-size: $font-size-md;
       color: var(--dark-text-color);
       line-height: 1.2;
     }
@@ -47,11 +50,11 @@
     .messageInfo {
       display: flex;
       align-items: center;
-      gap: var(--spacing-xxs);
+      gap: $spacing-xxs;
 
       .lastMessage {
         color: var(--last-message-color);
-        font-size: var(--font-size-sm);
+        font-size: $font-size-sm;
         max-width: calc(100% - 100px);
         overflow: hidden;
         white-space: nowrap;
@@ -59,11 +62,11 @@
       }
       .divider {
         color: var(--last-message-color);
-        font-size: var(--font-size-sm);
+        font-size: $font-size-sm;
       }
       .lastMessageTime {
         color: var(--last-message-color);
-        font-size: var(--font-size-sm);
+        font-size: $font-size-sm;
       }
     }
   }
