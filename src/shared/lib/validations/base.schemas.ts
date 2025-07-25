@@ -2,11 +2,16 @@ import * as yup from 'yup';
 
 import { isValidAge } from './isValidAge.utils';
 import {
+  BIO_MAX_LEN,
+  GENDER_OPTIONS,
+  MAX_POST_LEN,
+  MIN_POST_LEN,
   NAME_MAX_LENGTH,
   NAME_MIN_LENGTH,
   PASSWORD_MAX_LENGTH,
   PASSWORD_MIN_LENGTH,
   PHONE_REGEX,
+  TELEGRAM_NAME_REGEX,
 } from './validation.constants';
 import { VALIDATION_MESSAGES } from './validation.messages';
 
@@ -42,3 +47,22 @@ export const birthYearSchema = yup
     const { birthDay, birthMonth } = this.parent;
     return isValidAge(value, birthMonth, birthDay);
   });
+
+export const telegramSchema = yup.string().matches(TELEGRAM_NAME_REGEX, {
+  message: VALIDATION_MESSAGES.TELEGRAM.INVALID,
+  excludeEmptyString: true,
+});
+
+export const bioSchema = yup
+  .string()
+  .max(BIO_MAX_LEN, VALIDATION_MESSAGES.BIO.LENGTH);
+
+export const genderShema = yup
+  .string()
+  .oneOf(GENDER_OPTIONS, VALIDATION_MESSAGES.GENDER.INVALID);
+
+export const postShema = yup
+  .string()
+  .trim()
+  .min(MIN_POST_LEN, VALIDATION_MESSAGES.POST.REQUIRED_CONTENT)
+  .max(MAX_POST_LEN, VALIDATION_MESSAGES.POST.MAX_LENGTH_MESSAGE);

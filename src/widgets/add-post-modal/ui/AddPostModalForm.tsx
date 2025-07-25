@@ -6,10 +6,11 @@ import { useEffect } from 'react';
 import { AddTweetButton } from '@/features/add-tweet-button';
 import { PostImageUploader } from '@/features/image-uploader/ui';
 import { MAX_VERCEL_SIZE } from '@/shared/lib/image';
+import { MAX_POST_LEN } from '@/shared/lib/validations';
 import { CircleProgressBar } from '@/shared/ui/progress-bar';
 import { usePostForm } from '@/widgets/add-post-form/lib';
 
-import { MAX_LENGTH, TEXTAREA_PLACEHOLDER } from '../lib';
+import { TEXTAREA_PLACEHOLDER } from '../lib';
 import styles from './AddPostModalForm.module.scss';
 
 type AddPostModalFormProps = {
@@ -48,7 +49,7 @@ export const AddPostModalForm = ({
 
   const content = watch('content') || '';
   const contentLength = content.length;
-  const isOverLimit = contentLength >= MAX_LENGTH;
+  const isOverLimit = contentLength >= MAX_POST_LEN;
 
   useEffect(() => {
     onFormDataChange?.({ content, previews });
@@ -64,7 +65,7 @@ export const AddPostModalForm = ({
             {...register('content')}
             placeholder={TEXTAREA_PLACEHOLDER}
             className={styles.textarea}
-            maxLength={MAX_LENGTH}
+            maxLength={MAX_POST_LEN}
             rows={3}
           />
 
@@ -73,7 +74,7 @@ export const AddPostModalForm = ({
               [styles.errorText]: isOverLimit,
             })}
           >
-            {contentLength}/{MAX_LENGTH}
+            {contentLength}/{MAX_POST_LEN}
           </p>
 
           <p className={styles.maxVercelSize}>
