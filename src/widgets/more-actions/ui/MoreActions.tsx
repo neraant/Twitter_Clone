@@ -1,3 +1,5 @@
+'use client';
+
 import { useRef, useState } from 'react';
 
 import { useClickOutside, useLogout } from '@/shared/lib/hooks';
@@ -30,7 +32,6 @@ export const MoreActions = ({ onClose }: MoreActionsProps) => {
         break;
       }
       case THEME_ACTION: {
-        // toggle theme logic
         onClose();
         break;
       }

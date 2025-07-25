@@ -1,11 +1,13 @@
 import { create } from 'zustand';
 
+import { User } from '@/entities/user';
 import { createClient } from '@/shared/api/supabase/client';
 
 import { loginWithPassword as loginWithPasswordRequest } from '../api';
 import { signInWithGoogle } from '../api/googleAuth';
 import { logout as logoutApi } from '../api/logout';
 import { signUpWithPassword } from '../api/signUpWithPassword';
+import { buildUserFromAuth } from '../lib';
 import {
   LoginCredentials,
   RegisterCredentials,
@@ -32,36 +34,40 @@ export const useAuthStore = create<UseAuthState>((set) => ({
         data: { user: authUser },
         error: authError,
       } = await supabase.auth.getUser();
+
+      if (authError && authError.message?.includes('refresh_token_not_found')) {
+        set({ isLoadingInitialize: false });
+        return;
+      }
+
       if (authError) throw authError;
 
-      if (!authUser) return;
+      if (!authUser) {
+        set({ isLoadingInitialize: false });
+        return;
+      }
 
       const { data: profile, error: profileError } = await supabase
         .from('users')
         .select('*')
         .eq('id', authUser.id)
-        .single();
+        .maybeSingle();
 
-      if (profileError) throw profileError;
+      if (profileError) {
+        console.error('Profile fetch error:', profileError);
+        throw profileError;
+      }
 
-      const user = {
-        id: authUser.id,
-        email: authUser.email!,
-        name: profile.name ?? authUser.email!,
-        avatar_url: profile.avatar_url ?? authUser.user_metadata?.avatar_url,
-        phone_number: profile.phone_number,
-        date_of_birth: profile.date_of_birth,
-        created_at: profile.created_at,
-        updated_at: profile.updated_at,
-        followers_count: profile.followers_count,
-        following_count: profile.following_count,
-      };
+      const user = buildUserFromAuth(authUser, profile);
 
       set({ user, isAuth: true });
     } catch (err) {
-      set({
-        error: err instanceof Error ? err.message : 'Ошибка инициализации',
-      });
+      const error = err as Error;
+      if (!error.message?.includes('refresh_token_not_found')) {
+        set({
+          error: error.message || 'Initialization error',
+        });
+      }
     } finally {
       set({ isLoadingInitialize: false });
     }
@@ -71,21 +77,20 @@ export const useAuthStore = create<UseAuthState>((set) => ({
     set({ isLoadingLogin: true, error: null });
     try {
       const { data } = await loginWithPasswordRequest(credentials);
-      const user = data.user;
-      if (user) {
-        const authUser = {
-          id: user.id,
-          email: user.email!,
-          name: user.user_metadata?.full_name || user.email!,
-          avatar_url: user.user_metadata?.avatar_url,
-          phone_number: user.user_metadata?.phone,
-          date_of_birth: user.user_metadata?.date_of_birth,
-          created_at: user.user_metadata?.created_at,
-          updated_at: user.user_metadata?.updated_at,
-          followers_count: user.user_metadata?.followers_count,
-          following_count: user.user_metadata?.following_count,
-        };
-        set({ user: authUser, isAuth: true });
+      const authUser = data.user;
+      if (authUser) {
+        const supabase = createClient();
+        const { data: profile, error: profileError } = await supabase
+          .from('users')
+          .select('*')
+          .eq('id', authUser.id)
+          .maybeSingle();
+
+        if (profileError) throw profileError;
+
+        const user = buildUserFromAuth(authUser, profile);
+
+        set({ user, isAuth: true });
       }
     } catch (error) {
       let message = 'Login error';
@@ -122,21 +127,18 @@ export const useAuthStore = create<UseAuthState>((set) => ({
     set({ isLoadingSignUp: true, error: null });
     try {
       const { data } = await signUpWithPassword(credentials);
-      const user = data.user;
-      if (user) {
-        const authUser = {
-          id: user.id,
-          email: user.email!,
-          name: user.user_metadata?.full_name || user.email!,
-          avatar_url: user.user_metadata?.avatar_url,
-          phone_number: user.user_metadata?.phone,
-          date_of_birth: user.user_metadata?.date_of_birth,
-          created_at: user.user_metadata?.created_at,
-          updated_at: user.user_metadata?.updated_at,
-          followers_count: user.user_metadata?.followers_count,
-          following_count: user.user_metadata?.following_count,
-        };
-        set({ user: authUser, isAuth: true });
+      const authUser = data.user;
+      if (authUser) {
+        const supabase = createClient();
+        const { data: profile } = await supabase
+          .from('users')
+          .select('*')
+          .eq('id', authUser.id)
+          .maybeSingle();
+
+        const user = buildUserFromAuth(authUser, profile);
+
+        set({ user, isAuth: true });
       }
     } catch (error) {
       set({
@@ -161,4 +163,5 @@ export const useAuthStore = create<UseAuthState>((set) => ({
   },
 
   clearError: () => set({ error: null }),
+  updateCurrentUser: (user: User) => set({ user }),
 }));
