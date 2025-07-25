@@ -1,0 +1,70 @@
+@use '@styles/_mixins.scss' as *;
+@use '@styles/_variables.scss' as *;
+
+.container {
+  max-width: 1290px;
+  padding: 0px 15px;
+  margin: 0 auto;
+  width: 100%;
+}
+.wrapper {
+  @include flex-center;
+
+  flex-direction: column;
+  justify-content: space-between;
+  padding: $spacing-2xl 0;
+  min-height: 100dvh;
+
+  .titles {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-md;
+
+    .title {
+      font-weight: $font-weight-black;
+      font-size: var(--font-size-3xl-plus);
+      color: var(--dark-text-color);
+    }
+    .subtitle {
+      font-weight: $font-weight-bold;
+      font-size: $font-size-lg-plus;
+      color: var(--dark-text-color);
+    }
+  }
+  .icon {
+    width: 100%;
+    height: 100%;
+    max-width: 650px;
+    max-height: 290px;
+  }
+  .link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+    font-size: $font-size-lg-plus;
+    color: var(--dark-text-color);
+    transition: opacity 0.3s ease-in-out;
+
+    &::after {
+      content: '';
+      width: 100%;
+      height: 2px;
+      background: var(--dark-text-color);
+      position: absolute;
+      left: 2px;
+      bottom: -3px;
+    }
+
+    &:hover {
+      opacity: 0.7;
+    }
+
+    svg {
+      path {
+        stroke: var(--dark-text-color);
+      }
+    }
+  }
+}

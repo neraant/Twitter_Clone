@@ -1,7 +1,10 @@
+// @use '@styles/_variables.scss' as *;
+
 $radius-xs: 2px;
 $radius-sm: 4px;
 $radius-md: 6px;
 $radius-lg: 12px;
+$radius-lg-plus: 24px;
 $radius-xl: 42px;
 $radius-2xl: 60px;
 $radius-3xl: 76px;
@@ -15,6 +18,7 @@ $spacing-md: 16px;
 $spacing-lg: 20px;
 $spacing-lg-plus: 28px;
 $spacing-xl: 32px;
+$spacing-xl-plus: 40px;
 $spacing-2xl: 50px;
 $spacing-3xl: 65px;
 $spacing-5xl: 90px;
@@ -47,3 +51,4 @@ $breakpoint-lg: 960px;
 $breakpoint-xl: 1060px;
 $breakpoint-xxl: 1200px;
 $breakpoint-3xl: 1280px;
+$breakpoint-4xl: 1400px;

@@ -1,0 +1,41 @@
+@use '@styles/_variables.scss' as *;
+
+.sidebar {
+  width: 100%;
+  max-width: 400px;
+  border-left: 1px solid var(--border-color);
+  height: 100dvh;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 100;
+  background: var(--color-bg);
+  overflow-y: auto;
+
+  @media (max-width: $breakpoint-4xl) {
+    max-width: 350px;
+  }
+
+  @media (max-width: $breakpoint-lg) {
+    display: none;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    padding: $spacing-xl;
+
+    @media (max-width: $breakpoint-4xl) {
+      padding: $spacing-lg;
+    }
+  }
+
+  .infoText {
+    margin-top: auto;
+    text-align: center;
+    font-size: $font-size-md;
+    color: var(--dark-text-color);
+    opacity: 0.6;
+  }
+}

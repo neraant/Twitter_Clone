@@ -22,9 +22,9 @@ export default function Register() {
           <Image
             src={registerBgImage}
             alt='background'
-            priority
             width={1440}
             height={1000}
+            priority
             className={styles.bgImage}
           />
         </div>

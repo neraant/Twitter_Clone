@@ -10,5 +10,12 @@ export const routes = {
   },
   app: {
     home: '/home',
+    explore: '/explore',
+    notifications: '/notifications',
+    messages: '/messages',
+    bookmarks: '/bookmarks',
+    lists: '/lists',
+    profile: '/profile',
+    more: '/more',
   },
 };

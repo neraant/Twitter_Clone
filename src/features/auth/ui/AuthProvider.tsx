@@ -1,33 +1,18 @@
 'use client';
 
-import { ReactNode, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
-import { createClient } from '@/shared/api/supabase/client';
+import { useAuthStore } from '@/features/auth/model';
 
-import { useAuth } from '../model';
-
-interface AuthProviderProps {
-  children: ReactNode;
-}
-
-export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const initialize = useAuth((state) => state.initialize);
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const initialize = useAuthStore((state) => state.initialize);
+  const hasInitialized = useRef(false);
 
   useEffect(() => {
-    initialize();
-
-    const supabase = createClient();
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event) => {
-      if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
-        await initialize();
-      } else if (event === 'SIGNED_OUT') {
-        useAuth.setState({ user: null, isAuth: false, isLoading: false });
-      }
-    });
-
-    return () => subscription.unsubscribe();
+    if (!hasInitialized.current) {
+      hasInitialized.current = true;
+      initialize();
+    }
   }, [initialize]);
 
   return <>{children}</>;

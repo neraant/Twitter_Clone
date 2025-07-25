@@ -1,0 +1,1 @@
+export { PostSearchCard } from './PostSearchCard';

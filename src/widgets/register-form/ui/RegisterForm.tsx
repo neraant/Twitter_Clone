@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { SignButton, useAuth } from '@/features/auth';
+import { SignButton, useAuthStore } from '@/features/auth';
 import { routes } from '@/shared/config/routes';
 import { useToast } from '@/shared/lib/toast/useToast';
 import { DropDownList } from '@/shared/ui/dropdown-list/DropDownList';
@@ -63,8 +63,8 @@ export const RegisterForm = () => {
 
   const { showToast } = useToast();
 
-  const signUpWithPassword = useAuth((state) => state.signUpWithPassword);
-  const isLoading = useAuth((state) => state.isLoading);
+  const signUpWithPassword = useAuthStore((state) => state.signUpWithPassword);
+  const isLoading = useAuthStore((state) => state.isLoadingSignUp);
 
   const onSubmit = async (data: RegisterFormData) => {
     try {

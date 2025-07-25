@@ -1,0 +1,39 @@
+@use '@styles/_mixins.scss' as *;
+@use '@styles/_variables.scss' as *;
+
+.followButton {
+  @include flex-center;
+
+  user-select: none;
+  position: relative;
+  gap: $spacing-sm;
+  width: 100%;
+  max-width: 80px;
+  background: var(--primary-color);
+  padding: $spacing-sm 0;
+  border-radius: $radius-lg-plus;
+  text-align: center;
+  font-size: $font-size-md-plus;
+  font-weight: $font-weight-medium;
+  color: var(--light-text-color);
+  transition: background 0.3s ease-in-out;
+  margin-left: auto;
+
+  &:hover {
+    background: var(--primary-color-hover);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  @media (max-width: $breakpoint-4xl) {
+    padding: $spacing-sm 0;
+    font-size: $font-size-md;
+    max-width: 80px;
+  }
+  @media (max-width: $breakpoint-md) {
+    font-size: $font-size-md-plus;
+  }
+}

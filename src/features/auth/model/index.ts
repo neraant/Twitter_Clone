@@ -1,2 +1,2 @@
-export { useAuth } from './store';
-export * from './types';
+export * from './auth.types';
+export { useAuthStore } from './useAuthStore';
