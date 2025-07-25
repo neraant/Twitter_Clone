@@ -37,7 +37,6 @@ export const MoreActions = ({ onClose }: MoreActionsProps) => {
         break;
       }
       case THEME_ACTION: {
-        // toggle theme logic
         onClose();
         break;
       }

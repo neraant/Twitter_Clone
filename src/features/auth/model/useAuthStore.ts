@@ -51,7 +51,7 @@ export const useAuthStore = create<UseAuthState>((set) => ({
         .from('users')
         .select('*')
         .eq('id', authUser.id)
-        .single();
+        .maybeSingle();
 
       if (profileError) {
         console.error('Profile fetch error:', profileError);
@@ -84,7 +84,7 @@ export const useAuthStore = create<UseAuthState>((set) => ({
           .from('users')
           .select('*')
           .eq('id', authUser.id)
-          .single();
+          .maybeSingle();
 
         if (profileError) throw profileError;
 
@@ -134,7 +134,7 @@ export const useAuthStore = create<UseAuthState>((set) => ({
           .from('users')
           .select('*')
           .eq('id', authUser.id)
-          .single();
+          .maybeSingle();
 
         const user = buildUserFromAuth(authUser, profile);
 
