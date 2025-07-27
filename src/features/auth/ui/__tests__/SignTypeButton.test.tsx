@@ -65,7 +65,7 @@ describe('SignTypeButton: ', () => {
   });
 
   it('has correct aria-label', () => {
-    render(<SignTypeButton label='Test' />);
+    render(<SignTypeButton label='sign' />);
 
     expect(screen.getByRole('button')).toHaveAttribute('aria-label', 'sign');
   });

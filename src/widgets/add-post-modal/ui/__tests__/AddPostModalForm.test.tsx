@@ -1,8 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 
-import { User } from '@/entities/user';
-
-import { AddPostForm } from '../AddPostForm';
+import { AddPostModalForm } from '../AddPostModalForm';
 
 jest.mock('@/features/add-tweet-button', () => ({
   AddTweetButton: ({ isLoading }: { isLoading: boolean }) => (
@@ -17,10 +15,12 @@ jest.mock('@/features/image-uploader/ui', () => ({
     children,
     handleChange,
     onRemove,
+    previewItems,
   }: {
     children: React.ReactNode;
     handleChange: (files: FileList) => void;
     onRemove: (index: number) => void;
+    previewItems: Array<{ url: string }>;
   }) => (
     <div data-testid='image-uploader'>
       <input
@@ -31,6 +31,7 @@ jest.mock('@/features/image-uploader/ui', () => ({
       <button data-testid='remove-image' onClick={() => onRemove(0)}>
         Remove
       </button>
+      <div data-testid='preview-count'>{previewItems.length}</div>
       {children}
     </div>
   ),
@@ -39,22 +40,6 @@ jest.mock('@/features/image-uploader/ui', () => ({
 jest.mock('@/shared/ui/progress-bar', () => ({
   CircleProgressBar: ({ progress }: { progress: number }) => (
     <div data-testid='progress-bar'>Progress: {progress}%</div>
-  ),
-}));
-
-jest.mock('next/image', () => ({
-  __esModule: true,
-  default: ({
-    src,
-    alt,
-    className,
-  }: {
-    src: string;
-    alt: string;
-    className: string;
-  }) => (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img src={src} alt={alt} className={className} data-testid='user-avatar' />
   ),
 }));
 
@@ -68,8 +53,8 @@ const mockUsePostForm = {
   watch: jest.fn(() => ''),
   removeImage: jest.fn(),
   handleChange: jest.fn(),
-  previewItems: [],
   previews: [],
+  previewItems: [],
   imagesSize: 0,
   isSubmitting: false,
   imageError: '',
@@ -78,8 +63,11 @@ const mockUsePostForm = {
   uploadProgress: 0,
 };
 
-jest.mock('../../lib', () => ({
+jest.mock('@/widgets/add-post-form/lib', () => ({
   usePostForm: jest.fn(() => mockUsePostForm),
+}));
+
+jest.mock('../../lib', () => ({
   TEXTAREA_PLACEHOLDER: "What's happening?",
 }));
 
@@ -91,54 +79,42 @@ jest.mock('@/shared/lib/image', () => ({
   MAX_VERCEL_SIZE: 5,
 }));
 
-describe('AddPostForm', () => {
-  const mockUser: User = {
-    id: '1',
-    name: 'John Doe',
-    email: 'john@example.com',
-    avatar_url: 'https://example.com/avatar.jpg',
-    created_at: '2023-01-01T00:00:00Z',
-    banner_url: null,
-    bio: null,
-    date_of_birth: null,
-    followers_count: 0,
-    following_count: 0,
-    gender: null,
-    phone_number: null,
-    updated_at: null,
-    user_telegram: null,
+describe('AddPostModalForm', () => {
+  const defaultProps = {
+    userId: 'user-123',
+    onSuccess: jest.fn(),
+    onFormDataChange: jest.fn(),
   };
 
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should render form with user avatar and textarea', () => {
-    render(<AddPostForm user={mockUser} />);
+  it('should render form with textarea and controls', () => {
+    render(<AddPostModalForm {...defaultProps} />);
 
-    expect(screen.getByTestId('user-avatar')).toBeInTheDocument();
     expect(screen.getByRole('textbox')).toBeInTheDocument();
     expect(screen.getByTestId('add-tweet-button')).toBeInTheDocument();
+    expect(screen.getByTestId('image-uploader')).toBeInTheDocument();
   });
 
-  it('should render default avatar when user has no avatar_url', () => {
-    const userWithoutAvatar = { ...mockUser, avatar_url: null };
-    render(<AddPostForm user={userWithoutAvatar} />);
-
-    const avatar = screen.getByTestId('user-avatar');
-    expect(avatar).toHaveAttribute('src', '/images/user-avatar.webp');
-  });
-
-  it('should return null when user is not provided', () => {
+  it('should return null when userId is not provided', () => {
     const { container } = render(
-      <AddPostForm user={null as unknown as User} />,
+      <AddPostModalForm {...defaultProps} userId='' />,
     );
     expect(container.firstChild).toBeNull();
   });
 
-  it('should display character counter', () => {
+  it('should display character counter with default empty content', () => {
+    mockUsePostForm.watch.mockReturnValue('');
+    render(<AddPostModalForm {...defaultProps} />);
+
+    expect(screen.getByText('0/280')).toBeInTheDocument();
+  });
+
+  it('should display character counter with content', () => {
     mockUsePostForm.watch.mockReturnValue('Hello world');
-    render(<AddPostForm user={mockUser} />);
+    render(<AddPostModalForm {...defaultProps} />);
 
     expect(screen.getByText('11/280')).toBeInTheDocument();
   });
@@ -147,49 +123,61 @@ describe('AddPostForm', () => {
     const longContent = 'a'.repeat(285);
     mockUsePostForm.watch.mockReturnValue(longContent);
 
-    render(<AddPostForm user={mockUser} />);
+    render(<AddPostModalForm {...defaultProps} />);
 
     const counter = screen.getByText('285/280');
     expect(counter).toHaveClass('errorText');
   });
 
   it('should display image size information', () => {
-    mockUsePostForm.imagesSize = 2;
-    render(<AddPostForm user={mockUser} />);
+    mockUsePostForm.imagesSize = 3;
+    render(<AddPostModalForm {...defaultProps} />);
 
-    expect(screen.getByText('(2MB/5MB per image)')).toBeInTheDocument();
+    expect(screen.getByText('(3MB/5MB per image)')).toBeInTheDocument();
   });
 
   it('should show progress bar when uploading', () => {
     mockUsePostForm.isUploading = true;
-    mockUsePostForm.uploadProgress = 50;
+    mockUsePostForm.uploadProgress = 75;
 
-    render(<AddPostForm user={mockUser} />);
+    render(<AddPostModalForm {...defaultProps} />);
 
     expect(screen.getByTestId('progress-bar')).toBeInTheDocument();
-    expect(screen.getByText('Progress: 50%')).toBeInTheDocument();
+    expect(screen.getByText('Progress: 75%')).toBeInTheDocument();
   });
 
   it('should not show progress bar when not uploading', () => {
     mockUsePostForm.isUploading = false;
 
-    render(<AddPostForm user={mockUser} />);
+    render(<AddPostModalForm {...defaultProps} />);
 
     expect(screen.queryByTestId('progress-bar')).not.toBeInTheDocument();
   });
 
   it('should display content error message', () => {
     mockUsePostForm.errors = {
-      content: { message: 'Content is required' },
+      content: { message: 'Content is too long' },
     };
 
-    render(<AddPostForm user={mockUser} />);
+    render(<AddPostModalForm {...defaultProps} />);
 
-    expect(screen.getByText('Content is required')).toBeInTheDocument();
+    expect(screen.getByText('Content is too long')).toBeInTheDocument();
+  });
+
+  it('should prioritize content error over image error', () => {
+    mockUsePostForm.errors = {
+      content: { message: 'Content error' },
+    };
+    mockUsePostForm.imageError = 'Image error';
+
+    render(<AddPostModalForm {...defaultProps} />);
+
+    expect(screen.getByText('Content error')).toBeInTheDocument();
+    expect(screen.queryByText('Image error')).not.toBeInTheDocument();
   });
 
   it('should handle form submission', () => {
-    render(<AddPostForm user={mockUser} />);
+    render(<AddPostModalForm {...defaultProps} />);
 
     const form = screen.getByRole('textbox').closest('form');
     fireEvent.submit(form!);
@@ -197,8 +185,36 @@ describe('AddPostForm', () => {
     expect(mockUsePostForm.handleSubmit).toHaveBeenCalled();
   });
 
+  it('should call onFormDataChange when content changes', () => {
+    const onFormDataChange = jest.fn();
+    mockUsePostForm.watch.mockReturnValue('New content');
+    mockUsePostForm.previewItems = [{ url: 'image1.jpg' } as never];
+
+    render(
+      <AddPostModalForm
+        {...defaultProps}
+        onFormDataChange={onFormDataChange}
+      />,
+    );
+
+    expect(onFormDataChange).toHaveBeenCalledWith({
+      content: 'New content',
+      previewItems: [{ url: 'image1.jpg' }],
+    });
+  });
+
+  it('should pass isSubmitting state to AddTweetButton', () => {
+    mockUsePostForm.isSubmitting = true;
+
+    render(<AddPostModalForm {...defaultProps} />);
+
+    const button = screen.getByTestId('add-tweet-button');
+    expect(button).toBeDisabled();
+    expect(screen.getByText('Loading...')).toBeInTheDocument();
+  });
+
   it('should handle image removal', () => {
-    render(<AddPostForm user={mockUser} />);
+    render(<AddPostModalForm {...defaultProps} />);
 
     const removeButton = screen.getByTestId('remove-image');
     fireEvent.click(removeButton);
@@ -206,13 +222,20 @@ describe('AddPostForm', () => {
     expect(mockUsePostForm.removeImage).toHaveBeenCalledWith(0);
   });
 
-  it('should pass isSubmitting state to AddTweetButton', () => {
-    mockUsePostForm.isSubmitting = true;
+  it('should pass previewItems to PostImageUploader', () => {
+    mockUsePostForm.previewItems = [
+      { url: 'image1.jpg' },
+      { url: 'image2.jpg' },
+    ] as never;
 
-    render(<AddPostForm user={mockUser} />);
+    render(<AddPostModalForm {...defaultProps} />);
 
-    const button = screen.getByTestId('add-tweet-button');
-    expect(button).toBeDisabled();
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    expect(screen.getByTestId('preview-count')).toHaveTextContent('2');
+  });
+
+  it('should work without optional props', () => {
+    render(<AddPostModalForm userId='user-123' />);
+
+    expect(screen.getByRole('textbox')).toBeInTheDocument();
   });
 });

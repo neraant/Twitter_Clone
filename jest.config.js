@@ -38,28 +38,33 @@ module.exports = {
     '/node_modules/(?!(isows|@supabase|@supabase/realtime-js)/)',
     '^.+\\.module\\.(css|sass|scss)$',
   ],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '\\.constants\\.ts$',
+    '\\.constants\\.tsx$',
+  ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  // collectCoverageFrom: [
-  //   '<rootDir>/src/**/*.{ts,tsx}',
+  collectCoverageFrom: [
+    '<rootDir>/src/**/*.{ts,tsx}',
 
-  //   '!<rootDir>/src/app/**',
-  //   '!<rootDir>/src/assets/**',
-  //   '!<rootDir>/src/styles/**',
+    '!<rootDir>/src/app/**',
+    '!<rootDir>/src/assets/**',
+    '!<rootDir>/src/styles/**',
 
-  //   '!<rootDir>/src/**/index.{ts,tsx}',
-  //   '!<rootDir>/src/**/middleware.{ts,tsx}',
+    '!<rootDir>/src/**/index.{ts,tsx}',
+    '!<rootDir>/src/**/middleware.{ts,tsx}',
 
-  //   '!<rootDir>/src/**/*.types.ts',
-  //   '!<rootDir>/src/**/*.constants.ts',
-  //   '!<rootDir>/src/**/*.schema.ts',
+    '!<rootDir>/src/**/*.types.ts',
+    '!<rootDir>/src/**/*.constants.ts',
+    '!<rootDir>/src/**/*.schema.ts',
 
-  //   '!<rootDir>/src/**/*Skeleton.tsx',
-  //   '!<rootDir>/src/**/*Loader.tsx',
-  //   '!<rootDir>/src/**/*Loading.tsx',
+    '!<rootDir>/src/**/*Skeleton.tsx',
+    '!<rootDir>/src/**/*Loader.tsx',
+    '!<rootDir>/src/**/*Loading.tsx',
 
-  //   '!<rootDir>/src/**/*.svg',
+    '!<rootDir>/src/**/*.svg',
 
-  //   '!<rootDir>/src/**/*.test.{ts,tsx}',
-  //   '!<rootDir>/src/**/__tests__/**',
-  // ],
+    '!<rootDir>/src/**/*.test.{ts,tsx}',
+    '!<rootDir>/src/**/__tests__/**',
+  ],
 };

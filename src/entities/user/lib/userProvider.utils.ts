@@ -21,5 +21,10 @@ export const hasGoogleProvider = async () => {
     data: { user },
   } = await supabase.auth.getUser();
 
-  return user?.identities?.some((identity) => identity.provider === 'google');
+  if (!user || !user.identities) return undefined;
+
+  return (
+    user.identities.some((identity) => identity.provider === 'google') ||
+    undefined
+  );
 };

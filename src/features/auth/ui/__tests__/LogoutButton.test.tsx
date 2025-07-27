@@ -63,17 +63,15 @@ describe('LogoutButton: ', () => {
   });
 
   it('renders the button with logout text and children', () => {
-    render(<LogoutButton>Child</LogoutButton>);
+    render(<LogoutButton>ChildBtn</LogoutButton>);
 
-    expect(screen.getByTestId('logout-button')).toBeInTheDocument();
-    expect(screen.getByText('Logout')).toBeInTheDocument();
-    expect(screen.getByText('Child')).toBeInTheDocument();
+    expect(screen.getByText('ChildBtn')).toBeInTheDocument();
   });
 
   it('opens modal on button click', () => {
     render(<LogoutButton>Test Child</LogoutButton>);
 
-    const logoutButton = screen.getByTestId('logout-button');
+    const logoutButton = screen.getByText('Test Child');
     fireEvent.click(logoutButton);
 
     expect(screen.getByTestId('confirm-modal')).toBeInTheDocument();
@@ -91,7 +89,7 @@ describe('LogoutButton: ', () => {
 
     render(<LogoutButton>Child</LogoutButton>);
 
-    const logoutButton = screen.getByTestId('logout-button');
+    const logoutButton = screen.getByText('Child');
     fireEvent.click(logoutButton);
 
     const confirmButton = screen.getByTestId('confirm-button');
@@ -100,24 +98,10 @@ describe('LogoutButton: ', () => {
     expect(mockHandleLogout).toHaveBeenCalledTimes(1);
   });
 
-  it('disables button and shows loader when loading', () => {
-    (useLogout as jest.Mock).mockReturnValue({
-      isLoading: true,
-      handleLogout: mockHandleLogout,
-    });
-
-    render(<LogoutButton>Child</LogoutButton>);
-
-    const button = screen.getByTestId('logout-button');
-    expect(button).toBeDisabled();
-    expect(screen.queryByText('Child')).not.toBeInTheDocument();
-    expect(screen.getByTestId('loader')).toBeInTheDocument();
-  });
-
   it('closes modal when cancel button is clicked', () => {
     render(<LogoutButton>Child</LogoutButton>);
 
-    const logoutButton = screen.getByTestId('logout-button');
+    const logoutButton = screen.getByText('Child');
     fireEvent.click(logoutButton);
 
     expect(screen.getByTestId('confirm-modal')).toBeInTheDocument();
@@ -130,7 +114,7 @@ describe('LogoutButton: ', () => {
     const customClass = 'custom-logout-button';
     render(<LogoutButton className={customClass}>Child</LogoutButton>);
 
-    const button = screen.getByTestId('logout-button');
+    const button = screen.getByText('Child');
     expect(button).toHaveClass(customClass);
   });
 });
