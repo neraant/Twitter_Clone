@@ -2,16 +2,11 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { ImagePreview } from '@/entities/post';
 import { useImageUpload } from '@/shared/lib/hooks';
 import { MB } from '@/shared/lib/image';
 
 import { MAX_IMAGES } from './addPostForm.constants';
-
-interface ImagePreview {
-  id: string;
-  file: File;
-  url: string;
-}
 
 export const usePostImages = () => {
   const [imageItems, setImageItems] = useState<ImagePreview[]>([]);

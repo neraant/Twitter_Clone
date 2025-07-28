@@ -1,12 +1,12 @@
 'use client';
 
 import clsx from 'clsx';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 import { Post } from '@/entities/post';
 import { PostCard } from '@/entities/post/ui/PostCard/ui/PostCard';
 import { useAuthStore } from '@/features/auth';
-import { useModalCloseHandler } from '@/shared/lib/hooks';
+import { useModal } from '@/shared/lib/hooks';
 import { CrossIcon } from '@/shared/ui/icon';
 import { Overlay } from '@/shared/ui/overlay';
 
@@ -23,13 +23,16 @@ type AddPostModalProps = {
 };
 
 export const AddPostModal = ({ onClose }: AddPostModalProps) => {
-  const modalRef = useRef<HTMLDivElement>(null);
   const [previewData, setPreviewData] = useState<{
     content: string;
     previews: string[];
   }>({ content: '', previews: [] });
 
-  const { isClosing, handleClose } = useModalCloseHandler(modalRef, onClose);
+  const {
+    isClosing,
+    handleClose,
+    ref: modalRef,
+  } = useModal<HTMLDivElement>({ onClose });
   const user = useAuthStore((state) => state.user);
 
   if (!user) return null;

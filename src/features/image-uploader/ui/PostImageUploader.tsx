@@ -2,15 +2,11 @@ import clsx from 'clsx';
 import Image, { StaticImageData } from 'next/image';
 import { ChangeEvent, ReactNode } from 'react';
 
+import { ImagePreview } from '@/entities/post';
 import { CrossIcon, ImageIcon } from '@/shared/ui/icon';
 
+import { getImageKey, getImageSrc } from '../lib/getImageOptions.utils';
 import styles from './PostImageUploader.module.scss';
-
-interface ImagePreview {
-  id: string;
-  file: File;
-  url: string;
-}
 
 type PostImageUploaderProps = {
   label: string;
@@ -51,18 +47,11 @@ export const PostImageUploader = ({
         </div>
       </label>
 
-      {items && items.length > 0 && (
+      {items?.length ? (
         <div className={styles.previewImages}>
           {items.map((item, index) => {
-            const src =
-              typeof item === 'string'
-                ? item
-                : 'url' in item
-                  ? item.url
-                  : (item as StaticImageData);
-            const key = previewItems
-              ? previewItems[index]?.id
-              : `${src}-${index}`;
+            const src = getImageSrc(item);
+            const key = getImageKey(item, index, previewItems);
 
             return (
               <div key={key} className={styles.imageWrapper}>
@@ -84,7 +73,7 @@ export const PostImageUploader = ({
             );
           })}
         </div>
-      )}
+      ) : null}
     </div>
   );
 };

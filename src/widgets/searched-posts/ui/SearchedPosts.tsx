@@ -4,12 +4,11 @@ import { PostSearchCard } from '@/entities/post/ui/PostSearchCard';
 import { UserSmallCardSkeleton } from '@/entities/user/ui/UserSmallCard/UserSmallCardSkeleton';
 import { PostSearchInput } from '@/features/search-posts';
 import { useSearchPostsStore } from '@/features/search-posts/model';
+import { DEFAULT_AVATAR } from '@/shared/lib/common';
 
 import { NO_RESULTS_TITLE, SKELETON_COUNT } from '../lib';
 import { Gallery } from './Gallery';
 import styles from './SearchedPosts.module.scss';
-
-const DefaultAvatar = '/images/user-avatar.webp';
 
 export const SearchedPosts = () => {
   const isLoading = useSearchPostsStore((state) => state.isLoading);
@@ -51,7 +50,7 @@ export const SearchedPosts = () => {
                 key={id}
                 content={content!}
                 name={author_name!}
-                avatar={author_avatar ?? DefaultAvatar}
+                avatar={author_avatar ?? DEFAULT_AVATAR}
                 href={`post/${id}`}
               />
             ))}
