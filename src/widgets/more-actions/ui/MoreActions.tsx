@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 import {
   useClickOutside,
@@ -17,7 +17,6 @@ type MoreActionsProps = {
 };
 
 export const MoreActions = ({ onClose }: MoreActionsProps) => {
-  const ref = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { handleLogout } = useLogout();
@@ -46,7 +45,9 @@ export const MoreActions = ({ onClose }: MoreActionsProps) => {
     }
   };
 
-  useClickOutside(ref, isModalOpen ? () => {} : onClose);
+  const ref = useClickOutside<HTMLDivElement>({
+    handleOnClickOutside: isModalOpen ? () => {} : onClose,
+  });
   useLockBodyScroll(isModalOpen);
 
   return (

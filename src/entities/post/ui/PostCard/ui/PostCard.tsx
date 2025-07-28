@@ -9,13 +9,11 @@ import { Post } from '@/entities/post/model';
 import { LikeButton } from '@/features/like-buton';
 import { ManagePost } from '@/features/manage-post';
 import { routes } from '@/shared/config/routes';
+import { DEFAULT_AVATAR, formatTimeLong } from '@/shared/lib/common';
 import { Skeleton } from '@/shared/ui/skeleton';
 
 import styles from './PostCard.module.scss';
 import { PostCardSkeleton } from './PostCardSkeleton';
-
-const DEFAULT_AVATAR = '/images/user-avatar.webp';
-const LOCATION = 'en-US';
 
 type PostCardProps = {
   post: Post;
@@ -56,17 +54,11 @@ export const PostCard = ({
 
   if (!post || !postId) return <PostCardSkeleton />;
 
-  const formattedTime = created_at
-    ? new Intl.DateTimeFormat(LOCATION, {
-        day: '2-digit',
-        month: 'long',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-      }).format(new Date(created_at))
-    : '';
+  const formattedTime = formatTimeLong(created_at || '');
 
   const imageCount = image_urls?.length || 0;
+  const hasImages = image_urls && !!imageCount;
+
   const isOwner = currentUserId === author_id;
 
   return (
@@ -100,12 +92,11 @@ export const PostCard = ({
           )}
         </div>
 
+        {/* Оставляем ссылку на пост вокруг контента и изображений */}
         <Link href={`${routes.app.post}/${postId}`}>
           <p className={styles.postContentText}>{content}</p>
-        </Link>
 
-        {image_urls && image_urls.length > 0 && (
-          <Link href={`${routes.app.post}/${postId}`}>
+          {hasImages && (
             <div
               className={clsx(
                 styles.postImages,
@@ -114,7 +105,7 @@ export const PostCard = ({
               data-count={imageCount}
             >
               {image_urls.map((src, index) => (
-                <div key={src} className={styles.imageWrapper}>
+                <div key={`${src}-${index}`} className={styles.imageWrapper}>
                   {loadingImages[index] && (
                     <Skeleton
                       className={clsx(
@@ -132,7 +123,7 @@ export const PostCard = ({
                       width: '100%',
                       height: '100%',
                     }}
-                    priority={isFirst}
+                    priority={isFirst && index === 0} // оптимизируем priority только для первого изображения
                     alt={`post image ${index + 1}`}
                     onLoad={() => onImageLoad(index)}
                     className={clsx(
@@ -144,8 +135,8 @@ export const PostCard = ({
                 </div>
               ))}
             </div>
-          </Link>
-        )}
+          )}
+        </Link>
 
         <LikeButton
           isActive={!!is_liked}

@@ -2,6 +2,8 @@
 
 import { createClient } from '@/shared/api/supabase/server';
 
+import { SEARCH_POSTS_LIMIT } from '../lib';
+
 export const searchPosts = async (searchTerm: string) => {
   const supabase = await createClient();
 
@@ -13,7 +15,7 @@ export const searchPosts = async (searchTerm: string) => {
     .eq('is_deleted', false)
     .or(`content.ilike.%${searchTerm}%,author_name.ilike.%${searchTerm}%`)
     .order('created_at', { ascending: false })
-    .limit(10);
+    .limit(SEARCH_POSTS_LIMIT);
 
   if (error) throw new Error('Failed search');
 

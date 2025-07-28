@@ -2,6 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
+import { FIVE_MINUTES_IN_MS } from '@/entities/post/lib';
 import { useToast } from '@/shared/lib/toast';
 
 import {
@@ -9,7 +10,9 @@ import {
   isFollowingAction,
   unfollowUserAction,
 } from '../api/followActions';
-import { useFollowStore } from '../model';
+import { CallbacksParams, MutationResult, useFollowStore } from '../model';
+import { createMutationCallbacks } from './follow.utils';
+import { FOLLOW_QUERY_KEYS } from './followButton.constants';
 
 type UseFollowProps = {
   targetUserId: string;
@@ -21,67 +24,39 @@ export const useFollow = ({ targetUserId, currentUserId }: UseFollowProps) => {
   const { showToast } = useToast();
   const { setUserLoading, isUserLoading } = useFollowStore();
 
+  const queryKey = [FOLLOW_QUERY_KEYS.isFollowing, targetUserId, currentUserId];
+
   const { data: isFollowed, isLoading: isQueryLoading } = useQuery({
-    queryKey: ['isFollowing', targetUserId, currentUserId],
+    queryKey,
     queryFn: () => isFollowingAction(targetUserId, currentUserId),
     enabled: !!targetUserId && !!currentUserId,
-    staleTime: 5 * 60 * 1000,
+    staleTime: FIVE_MINUTES_IN_MS,
   });
 
-  const followMutation = useMutation({
+  const followMutation = useMutation<MutationResult, Error, void>({
     mutationFn: () => followUserAction(targetUserId, currentUserId),
-    onMutate: async () => {
-      await queryClient.cancelQueries({
-        queryKey: ['isFollowing', targetUserId, currentUserId],
-      });
-
-      queryClient.setQueryData(
-        ['isFollowing', targetUserId, currentUserId],
-        true,
-      );
-    },
-    onSuccess: () => {
-      showToast('Success', 'Followed', 'success');
-
-      queryClient.invalidateQueries({
-        queryKey: ['isFollowing', targetUserId, currentUserId],
-      });
-    },
-    onError: () => {
-      showToast('Error', 'Failed to follow', 'error');
-
-      queryClient.setQueryData(
-        ['isFollowing', targetUserId, currentUserId],
-        false,
-      );
-    },
+    ...createMutationCallbacks({
+      queryClient,
+      queryKey,
+      showToast,
+      successMessage: 'Followed',
+      errorMessage: 'Failed to follow',
+      optimisticValue: true,
+      revertValue: false,
+    } as CallbacksParams),
   });
 
-  const unfollowMutation = useMutation({
+  const unfollowMutation = useMutation<MutationResult, Error, void>({
     mutationFn: () => unfollowUserAction(targetUserId, currentUserId),
-    onMutate: async () => {
-      await queryClient.cancelQueries({
-        queryKey: ['isFollowing', targetUserId, currentUserId],
-      });
-
-      queryClient.setQueryData(
-        ['isFollowing', targetUserId, currentUserId],
-        false,
-      );
-    },
-    onSuccess: () => {
-      showToast('Success', 'Unfollowed', 'success');
-      queryClient.invalidateQueries({
-        queryKey: ['isFollowing', targetUserId, currentUserId],
-      });
-    },
-    onError: () => {
-      showToast('Error', 'Failed to unfollow', 'error');
-      queryClient.setQueryData(
-        ['isFollowing', targetUserId, currentUserId],
-        true,
-      );
-    },
+    ...createMutationCallbacks({
+      queryClient,
+      queryKey,
+      showToast,
+      successMessage: 'Unfollowed',
+      errorMessage: 'Failed to unfollow',
+      optimisticValue: false,
+      revertValue: true,
+    } as CallbacksParams),
   });
 
   const handleClick = () => {
