@@ -1,7 +1,7 @@
 'use client';
 
 import clsx from 'clsx';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { hasEmailProvider } from '@/entities/user/lib';
 import { ChangePasswordButton } from '@/features/change-password';
@@ -9,7 +9,7 @@ import {
   changePasswordWithEmailAction,
   changePasswordWithGoogleAction,
 } from '@/features/change-password/api';
-import { useModalCloseHandler } from '@/shared/lib/hooks';
+import { useModal } from '@/shared/lib/hooks';
 import { useToast } from '@/shared/lib/toast';
 import { CrossIcon } from '@/shared/ui/icon';
 import { Loader } from '@/shared/ui/loader';
@@ -25,14 +25,14 @@ type ChangePasswordModalProps = {
 };
 
 export const ChangePasswordModal = ({ onClose }: ChangePasswordModalProps) => {
-  const modalRef = useRef<HTMLFormElement | null>(null);
   const [isEmailUser, setIsEmailUser] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { isClosing, handleClose, handleClickOutside } = useModalCloseHandler(
-    modalRef,
-    onClose,
-  );
+  const {
+    isClosing,
+    handleClose,
+    ref: modalRef,
+  } = useModal<HTMLFormElement>({ onClose });
 
   const { handleSubmit, register, errors } = usePasswordForm(isEmailUser);
 
@@ -46,52 +46,65 @@ export const ChangePasswordModal = ({ onClose }: ChangePasswordModalProps) => {
     checkUserType();
   }, []);
 
-  const onSubmit = async (formData: changePasswordFormData) => {
-    const { currentPassword, changePassword } = formData;
-    console.log('formData:', formData);
-    console.log('isEmailUser:', isEmailUser);
+  const validateEmailPassword = (
+    currentPassword: string,
+    changePassword: string,
+  ) => {
+    if (!currentPassword) {
+      showToast('Error', 'Current password is required', 'error');
+      return false;
+    }
+    if (currentPassword === changePassword) {
+      showToast(
+        'Error',
+        'New password must be different from current password',
+        'error',
+      );
+      return false;
+    }
+    return true;
+  };
+
+  const handleEmailPasswordChange = async (
+    currentPassword: string,
+    changePassword: string,
+  ) => {
+    const { success, message } = await changePasswordWithEmailAction(
+      currentPassword,
+      changePassword,
+    );
+    showToast(
+      success ? 'Success' : 'Error',
+      message,
+      success ? 'success' : 'error',
+    );
+    if (success) handleClose();
+  };
+
+  const handleGooglePasswordChange = async (changePassword: string) => {
+    const { success, message } =
+      await changePasswordWithGoogleAction(changePassword);
+    showToast(
+      success ? 'Success' : 'Error',
+      message,
+      success ? 'success' : 'error',
+    );
+    if (success) handleClose();
+  };
+
+  const onSubmit = async ({
+    currentPassword,
+    changePassword,
+  }: changePasswordFormData) => {
     try {
       setIsLoading(true);
       if (isEmailUser) {
-        if (!currentPassword) {
-          showToast('Error', 'Current password is required', 'error');
-          return;
-        }
-
-        if (currentPassword === changePassword) {
-          showToast(
-            'Error',
-            'New password must be different from current password',
-            'error',
-          );
-          return;
-        }
-
-        const { success, message } = await changePasswordWithEmailAction(
-          currentPassword,
-          changePassword!,
-        );
-
-        if (success) {
-          showToast('Success', message, 'success');
-          handleClose();
-        } else {
-          showToast('Error', message, 'error');
-        }
+        if (!validateEmailPassword(currentPassword!, changePassword!)) return;
+        await handleEmailPasswordChange(currentPassword!, changePassword!);
       } else {
-        const { success, message } = await changePasswordWithGoogleAction(
-          changePassword!,
-        );
-
-        if (success) {
-          showToast('Success', message, 'success');
-          handleClose();
-        } else {
-          showToast('Error', message, 'error');
-        }
+        await handleGooglePasswordChange(changePassword!);
       }
     } catch (error) {
-      console.error(error);
       const errorMessage =
         error instanceof Error ? error.message : 'An unexpected error occurred';
       showToast('Error', errorMessage, 'error');
@@ -101,7 +114,7 @@ export const ChangePasswordModal = ({ onClose }: ChangePasswordModalProps) => {
   };
 
   return (
-    <Overlay isClosing={isClosing} onClickOutside={handleClickOutside}>
+    <Overlay isClosing={isClosing} onClickOutside={handleClose}>
       <form
         ref={modalRef}
         className={clsx(

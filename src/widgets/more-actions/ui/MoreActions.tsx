@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 import { useTheme } from '@/features/toggle-theme/lib';
 import {
@@ -19,7 +19,6 @@ type MoreActionsProps = {
 };
 
 export const MoreActions = ({ onClose }: MoreActionsProps) => {
-  const ref = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { theme, setTheme } = useTheme();
@@ -50,7 +49,9 @@ export const MoreActions = ({ onClose }: MoreActionsProps) => {
     }
   };
 
-  useClickOutside(ref, isModalOpen ? () => {} : onClose);
+  const ref = useClickOutside<HTMLDivElement>({
+    handleOnClickOutside: isModalOpen ? () => {} : onClose,
+  });
   useLockBodyScroll(isModalOpen);
 
   return (
