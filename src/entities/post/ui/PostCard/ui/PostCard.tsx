@@ -5,17 +5,16 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 
+import { POSTS_QUERY_KEYS } from '@/entities/post/lib';
 import { Post } from '@/entities/post/model';
 import { LikeButton } from '@/features/like-buton';
 import { ManagePost } from '@/features/manage-post';
 import { routes } from '@/shared/config/routes';
-import { formatTimeLong } from '@/shared/lib/common';
+import { DEFAULT_AVATAR, formatTimeLong } from '@/shared/lib/common';
 import { Skeleton } from '@/shared/ui/skeleton';
 
 import styles from './PostCard.module.scss';
 import { PostCardSkeleton } from './PostCardSkeleton';
-
-const DEFAULT_AVATAR = '/images/user-avatar.webp';
 
 type PostCardProps = {
   post: Post;
@@ -59,6 +58,8 @@ export const PostCard = ({
   const formattedTime = formatTimeLong(created_at || '');
 
   const imageCount = image_urls?.length || 0;
+  const hasImages = image_urls && !!imageCount;
+
   const isOwner = currentUserId === author_id;
 
   return (
@@ -92,17 +93,10 @@ export const PostCard = ({
           )}
         </div>
 
-        {isPreview ? (
+        <Link href={`${routes.app.post}/${postId}`}>
           <p className={styles.postContentText}>{content}</p>
-        ) : (
-          <Link href={`${routes.app.post}/${postId}`}>
-            <p className={styles.postContentText}>{content}</p>
-          </Link>
-        )}
 
-        {image_urls &&
-          image_urls.length > 0 &&
-          (isPreview ? (
+          {hasImages && (
             <div
               className={clsx(
                 styles.postImages,
@@ -125,8 +119,11 @@ export const PostCard = ({
                     width={0}
                     height={0}
                     sizes='100vw'
-                    style={{ width: '100%', height: '100%' }}
-                    priority={isFirst}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                    }}
+                    priority={isFirst && index === 0}
                     alt={`post image ${index + 1}`}
                     onLoad={() => onImageLoad(index)}
                     className={clsx(
@@ -138,45 +135,8 @@ export const PostCard = ({
                 </div>
               ))}
             </div>
-          ) : (
-            <Link href={`${routes.app.post}/${postId}`}>
-              <div
-                className={clsx(
-                  styles.postImages,
-                  image_urls.length === 1 && styles.singleImageWrapper,
-                )}
-                data-count={imageCount}
-              >
-                {image_urls.map((src, index) => (
-                  <div key={`${src}-${index}`} className={styles.imageWrapper}>
-                    {loadingImages[index] && (
-                      <Skeleton
-                        className={clsx(
-                          styles.imageSkeleton,
-                          image_urls.length === 1 && styles.singleImageSkeleton,
-                        )}
-                      />
-                    )}
-                    <Image
-                      src={src}
-                      width={0}
-                      height={0}
-                      sizes='100vw'
-                      style={{ width: '100%', height: '100%' }}
-                      priority={isFirst}
-                      alt={`post image ${index + 1}`}
-                      onLoad={() => onImageLoad(index)}
-                      className={clsx(
-                        styles.postImage,
-                        image_urls.length === 1 && styles.singleImage,
-                        loadingImages[index] && styles.loading,
-                      )}
-                    />
-                  </div>
-                ))}
-              </div>
-            </Link>
-          ))}
+          )}
+        </Link>
 
         <LikeButton
           isActive={!!is_liked}
@@ -185,7 +145,7 @@ export const PostCard = ({
           currentUserId={currentUserId}
           postId={postId}
           isDisabled={isPreview}
-          isGlobal={isPreview || currentUserId === 'global'}
+          isGlobal={isPreview || currentUserId === POSTS_QUERY_KEYS.GLOBAL}
         />
       </div>
     </article>

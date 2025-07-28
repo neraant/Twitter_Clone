@@ -2,6 +2,8 @@ import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { DEFAULT_AVATAR } from '@/shared/lib/common';
+
 import { User } from '../../model';
 import styles from './UserBigCard.module.scss';
 
@@ -11,8 +13,6 @@ export type UserBigCardProps = {
   className?: string;
   user?: UserForProps | null;
 };
-
-const DefaultAvatar = '/images/user-avatar.webp';
 
 export const UserBigCard = ({ user, className }: UserBigCardProps) => {
   if (!user) return null;
@@ -26,7 +26,7 @@ export const UserBigCard = ({ user, className }: UserBigCardProps) => {
   return (
     <div className={clsx(styles.wrapper, className)}>
       <Image
-        src={avatar_url || DefaultAvatar}
+        src={avatar_url || DEFAULT_AVATAR}
         alt='avatar'
         width={180}
         height={180}

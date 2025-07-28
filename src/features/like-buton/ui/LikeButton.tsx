@@ -2,7 +2,7 @@
 
 import clsx from 'clsx';
 
-import { usePosts } from '@/entities/post/lib';
+import { POSTS_QUERY_KEYS, usePosts } from '@/entities/post/lib';
 import { LikeActiveIcon, LikeNonActiveIcon } from '@/shared/ui/icon';
 
 import styles from './LikeButton.module.scss';
@@ -26,7 +26,7 @@ export const LikeButton = ({
   isDisabled = false,
   isGlobal = false,
 }: LikeButtonProps) => {
-  const { toggleLike } = usePosts(isGlobal ? 'global' : userId);
+  const { toggleLike } = usePosts(isGlobal ? POSTS_QUERY_KEYS.GLOBAL : userId);
 
   const handleLikePost = async () => {
     await toggleLike.mutateAsync({ userId: currentUserId, postId });

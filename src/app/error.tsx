@@ -8,11 +8,11 @@ import { CurveBackIcon, NotFound404Icon } from '@/shared/ui/icon';
 
 import styles from './not-found.module.scss';
 
-export default function Error({
-  error,
-}: {
+type ErrorPageProps = {
   error: Error & { digest?: string };
-}) {
+};
+
+export default function Error({ error }: ErrorPageProps) {
   useEffect(() => {
     console.error(error);
   }, [error]);

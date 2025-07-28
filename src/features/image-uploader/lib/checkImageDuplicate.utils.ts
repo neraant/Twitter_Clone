@@ -17,10 +17,11 @@ export const checkDuplicateImage = async (
   imageBuffer: Buffer,
 ): Promise<DuplicateResult> => {
   try {
-    const supabase = await createClient();
-
-    const imageHash = await createImageHash(imageBuffer);
-    const perceptualHash = await createPerceptualHash(imageBuffer);
+    const [supabase, imageHash, perceptualHash] = await Promise.all([
+      createClient(),
+      createImageHash(imageBuffer),
+      createPerceptualHash(imageBuffer),
+    ]);
 
     const { data: userPosts } = await supabase
       .from('posts')

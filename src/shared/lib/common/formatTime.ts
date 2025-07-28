@@ -1,4 +1,4 @@
-const LOCATION = 'en-US';
+import { LOCATION } from './common.constants';
 
 export const formatTimeLong = (inputTime: string) => {
   return inputTime

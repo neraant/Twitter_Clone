@@ -2,7 +2,7 @@
 
 import { createClient } from '@/shared/api/supabase/server';
 
-import { POSTS_LIMIT } from '../lib';
+import { POSTS_LIMIT, POSTS_QUERY_KEYS } from '../lib';
 import { GetUserPostsPaginatedReturnType } from '../model';
 
 export const getAllPostsPaginated = async (
@@ -20,7 +20,7 @@ export const getAllPostsPaginated = async (
       .order('created_at', { ascending: false })
       .limit(limit);
 
-    if (userId && userId !== 'global') {
+    if (userId && userId !== POSTS_QUERY_KEYS.GLOBAL) {
       query = query.eq('author_id', userId);
     }
 
