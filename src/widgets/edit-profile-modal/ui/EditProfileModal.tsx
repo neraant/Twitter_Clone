@@ -1,10 +1,11 @@
 'use client';
 
 import clsx from 'clsx';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 import { ProfileImageUploader } from '@/features/image-uploader';
-import { useImageUpload, useModalCloseHandler } from '@/shared/lib/hooks';
+import { DEFAULT_AVATAR, DEFAULT_BANNER } from '@/shared/lib/common';
+import { useImageUpload, useModal } from '@/shared/lib/hooks';
 import { GENDER_OPTIONS } from '@/shared/lib/validations';
 import { Button } from '@/shared/ui/button/Button';
 import { DropDownList } from '@/shared/ui/dropdown-list/DropDownList';
@@ -29,13 +30,13 @@ type EditProfileModalProps = {
 };
 
 export const EditProfileModal = ({ onClose }: EditProfileModalProps) => {
-  const modalRef = useRef<HTMLFormElement | null>(null);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
-  const { isClosing, handleClose, handleClickOutside } = useModalCloseHandler(
-    modalRef,
-    onClose,
-  );
+  const {
+    isClosing,
+    handleClose,
+    ref: modalRef,
+  } = useModal<HTMLFormElement>({ onClose, isActive: !isPasswordModalOpen });
 
   const {
     user,
@@ -85,7 +86,7 @@ export const EditProfileModal = ({ onClose }: EditProfileModalProps) => {
 
   return (
     <>
-      <Overlay isClosing={isClosing} onClickOutside={handleClickOutside}>
+      <Overlay isClosing={isClosing} onClickOutside={handleClose}>
         <form
           ref={modalRef}
           className={clsx(styles.modalWrapper, isClosing && styles.closing)}
@@ -119,7 +120,7 @@ export const EditProfileModal = ({ onClose }: EditProfileModalProps) => {
               <div className={clsx(styles.uploaderWrapper, styles.avatar)}>
                 <ProfileImageUploader
                   label='avatar'
-                  imagePreview={avatarPreview ?? '/images/user-avatar.webp'}
+                  imagePreview={avatarPreview ?? DEFAULT_AVATAR}
                   handleChange={handleChangeAvatar}
                   className={styles.avatar}
                 />
@@ -128,7 +129,7 @@ export const EditProfileModal = ({ onClose }: EditProfileModalProps) => {
               <div className={clsx(styles.uploaderWrapper, styles.banner)}>
                 <ProfileImageUploader
                   label='banner'
-                  imagePreview={bannerPreview ?? '/images/default-banner.webp'}
+                  imagePreview={bannerPreview ?? DEFAULT_BANNER}
                   handleChange={handleChangeBanner}
                   className={styles.banner}
                 />

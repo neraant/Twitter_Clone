@@ -1,26 +1,36 @@
 'use client';
 
 import {
-  InfiniteData,
   useInfiniteQuery,
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
-import { useEffect, useRef } from 'react';
 
 import { createPostAction } from '@/features/add-tweet-button';
 import { LikePost } from '@/features/like-buton/api';
 import { deletePostAction } from '@/features/manage-post/api';
+import { useInfiniteScroll } from '@/shared/lib/hooks/useInfiniteScroll';
 
 import { getAllPostsPaginated } from '../api';
-import { CreatePostPayload, GetUserPostsPaginatedReturnType } from '../model';
+import {
+  CreatePostPayload,
+  PostsInfiniteQueryConfig,
+  PostsQueryData,
+} from '../model';
+import { FIVE_MINUTES_IN_MS, POSTS_QUERY_KEYS } from './post.constants';
+import { updatePostsData } from './updatePostsData.utils';
 
 export const usePosts = (userId: string) => {
   const queryClient = useQueryClient();
-  const lastRef = useRef<HTMLDivElement | null>(null);
 
-  const queryKey = ['posts', userId];
-  const globalKey = ['posts', 'global'];
+  const queryKey: PostsInfiniteQueryConfig['TQueryKey'] = [
+    POSTS_QUERY_KEYS.POSTS,
+    userId,
+  ];
+  const globalKey: PostsInfiniteQueryConfig['TQueryKey'] = [
+    POSTS_QUERY_KEYS.POSTS,
+    POSTS_QUERY_KEYS.GLOBAL,
+  ];
 
   const {
     data,
@@ -31,71 +41,48 @@ export const usePosts = (userId: string) => {
     isFetching,
     fetchNextPage,
   } = useInfiniteQuery<
-    GetUserPostsPaginatedReturnType,
-    Error,
-    InfiniteData<GetUserPostsPaginatedReturnType>,
-    typeof queryKey,
-    string | null
+    PostsInfiniteQueryConfig['TQueryFnData'],
+    PostsInfiniteQueryConfig['TError'],
+    PostsInfiniteQueryConfig['TData'],
+    PostsInfiniteQueryConfig['TQueryKey'],
+    PostsInfiniteQueryConfig['TPageParam']
   >({
     queryKey,
     queryFn: ({ pageParam }) => getAllPostsPaginated(pageParam ?? null, userId),
     getNextPageParam: (lastPage) => lastPage.nextCursor,
     initialPageParam: null,
-    staleTime: 5 * 60 * 1000,
+    staleTime: FIVE_MINUTES_IN_MS,
   });
 
   const posts = data?.pages.flatMap((page) => page.posts) || [];
 
-  useEffect(() => {
-    if (!lastRef.current) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && hasNextPage && !isLoadingMore) {
-          fetchNextPage();
-        }
-      },
-      { threshold: 0.1 },
-    );
-
-    observer.observe(lastRef.current);
-    return () => observer.disconnect();
-  }, [fetchNextPage, hasNextPage, isLoadingMore]);
+  const { lastElementRef } = useInfiniteScroll({
+    hasNextPage,
+    isLoadingMore,
+    fetchNextPage,
+    threshold: 0.1,
+  });
 
   const toggleLike = useMutation({
     mutationFn: LikePost,
     onMutate: async ({ userId, postId }) => {
-      await queryClient.cancelQueries({ queryKey });
-      await queryClient.cancelQueries({ queryKey: globalKey });
+      await Promise.all([
+        queryClient.cancelQueries({ queryKey }),
+        queryClient.cancelQueries({ queryKey: globalKey }),
+      ]);
 
-      const prevData = queryClient.getQueryData<typeof data>(queryKey);
-      const prevGlobalData = queryClient.getQueryData<typeof data>(globalKey);
+      const prevData = queryClient.getQueryData<PostsQueryData>(queryKey);
+      const prevGlobalData =
+        queryClient.getQueryData<PostsQueryData>(globalKey);
 
-      const updatePostsData = (old: typeof data | undefined) => {
-        if (!old) return old;
-        return {
-          ...old,
-          pages: old.pages.map((page) => ({
-            ...page,
-            posts: page.posts.map((post) =>
-              post.id === postId
-                ? {
-                    ...post,
-                    is_liked: !post.is_liked,
-                    likes_count: post.is_liked
-                      ? Math.max((post.likes_count || 0) - 1, 0)
-                      : (post.likes_count || 0) + 1,
-                  }
-                : post,
-            ),
-          })),
-        };
-      };
+      queryClient.setQueryData(queryKey, (old: PostsQueryData) =>
+        updatePostsData({ oldData: old, postId }),
+      );
 
-      queryClient.setQueryData(queryKey, updatePostsData);
-
-      if (userId !== 'global') {
-        queryClient.setQueryData(globalKey, updatePostsData);
+      if (userId !== POSTS_QUERY_KEYS.GLOBAL) {
+        queryClient.setQueryData(globalKey, (old: PostsQueryData) =>
+          updatePostsData({ oldData: old, postId }),
+        );
       }
 
       return { prevData, prevGlobalData };
@@ -104,13 +91,13 @@ export const usePosts = (userId: string) => {
       if (context?.prevData) {
         queryClient.setQueryData(queryKey, context.prevData);
       }
-      if (context?.prevGlobalData && userId !== 'global') {
+      if (context?.prevGlobalData && userId !== POSTS_QUERY_KEYS.GLOBAL) {
         queryClient.setQueryData(globalKey, context.prevGlobalData);
       }
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey });
-      if (userId !== 'global') {
+      if (userId !== POSTS_QUERY_KEYS.GLOBAL) {
         queryClient.invalidateQueries({ queryKey: globalKey });
       }
     },
@@ -120,17 +107,20 @@ export const usePosts = (userId: string) => {
     unknown,
     Error,
     CreatePostPayload,
-    { prevData: typeof data; prevGlobalData: typeof data }
+    { prevData: PostsQueryData; prevGlobalData: PostsQueryData }
   >({
     mutationFn: createPostAction,
     onMutate: async (newPost) => {
-      await queryClient.cancelQueries({ queryKey });
-      await queryClient.cancelQueries({ queryKey: globalKey });
+      await Promise.all([
+        queryClient.cancelQueries({ queryKey }),
+        queryClient.cancelQueries({ queryKey: globalKey }),
+      ]);
 
-      const prevData = queryClient.getQueryData<typeof data>(queryKey);
-      const prevGlobalData = queryClient.getQueryData<typeof data>(globalKey);
+      const prevData = queryClient.getQueryData<PostsQueryData>(queryKey);
+      const prevGlobalData =
+        queryClient.getQueryData<PostsQueryData>(globalKey);
 
-      queryClient.setQueryData(queryKey, (old: typeof data | undefined) => {
+      queryClient.setQueryData(queryKey, (old: PostsQueryData | undefined) => {
         if (!old) {
           return {
             pages: [{ posts: [newPost], nextCursor: null }],
@@ -147,23 +137,26 @@ export const usePosts = (userId: string) => {
         };
       });
 
-      if (userId !== 'global') {
-        queryClient.setQueryData(globalKey, (old: typeof data | undefined) => {
-          if (!old) {
+      if (userId !== POSTS_QUERY_KEYS.GLOBAL) {
+        queryClient.setQueryData(
+          globalKey,
+          (old: PostsQueryData | undefined) => {
+            if (!old) {
+              return {
+                pages: [{ posts: [newPost], nextCursor: null }],
+                pageParams: [null],
+              };
+            }
             return {
-              pages: [{ posts: [newPost], nextCursor: null }],
-              pageParams: [null],
+              ...old,
+              pages: [
+                { ...old.pages[0], posts: [newPost, ...old.pages[0].posts] },
+                ...old.pages.slice(1),
+              ],
+              pageParams: old.pageParams,
             };
-          }
-          return {
-            ...old,
-            pages: [
-              { ...old.pages[0], posts: [newPost, ...old.pages[0].posts] },
-              ...old.pages.slice(1),
-            ],
-            pageParams: old.pageParams,
-          };
-        });
+          },
+        );
       }
 
       return { prevData, prevGlobalData };
@@ -186,17 +179,20 @@ export const usePosts = (userId: string) => {
     unknown,
     Error,
     string,
-    { prevData: typeof data; prevGlobalData: typeof data }
+    { prevData: PostsQueryData; prevGlobalData: PostsQueryData }
   >({
     mutationFn: deletePostAction,
     onMutate: async (postId) => {
-      await queryClient.cancelQueries({ queryKey });
-      await queryClient.cancelQueries({ queryKey: globalKey });
+      await Promise.all([
+        queryClient.cancelQueries({ queryKey }),
+        queryClient.cancelQueries({ queryKey: globalKey }),
+      ]);
 
-      const prevData = queryClient.getQueryData<typeof data>(queryKey);
-      const prevGlobalData = queryClient.getQueryData<typeof data>(globalKey);
+      const prevData = queryClient.getQueryData<PostsQueryData>(queryKey);
+      const prevGlobalData =
+        queryClient.getQueryData<PostsQueryData>(globalKey);
 
-      queryClient.setQueryData(queryKey, (old: typeof data | undefined) => {
+      queryClient.setQueryData(queryKey, (old: PostsQueryData | undefined) => {
         if (!old) return old;
         return {
           ...old,
@@ -207,17 +203,20 @@ export const usePosts = (userId: string) => {
         };
       });
 
-      if (userId !== 'global') {
-        queryClient.setQueryData(globalKey, (old: typeof data | undefined) => {
-          if (!old) return old;
-          return {
-            ...old,
-            pages: old.pages.map((page) => ({
-              ...page,
-              posts: page.posts.filter((post) => post.id !== postId),
-            })),
-          };
-        });
+      if (userId !== POSTS_QUERY_KEYS.GLOBAL) {
+        queryClient.setQueryData(
+          globalKey,
+          (old: PostsQueryData | undefined) => {
+            if (!old) return old;
+            return {
+              ...old,
+              pages: old.pages.map((page) => ({
+                ...page,
+                posts: page.posts.filter((post) => post.id !== postId),
+              })),
+            };
+          },
+        );
       }
 
       return { prevData, prevGlobalData };
@@ -238,7 +237,7 @@ export const usePosts = (userId: string) => {
 
   return {
     posts,
-    lastRef,
+    lastRef: lastElementRef,
     hasNextPage,
     isLoadingMore,
     isLoading,

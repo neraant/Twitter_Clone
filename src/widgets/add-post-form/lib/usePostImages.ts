@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { ImagePreview } from '@/entities/post/ui/PostCard';
+import { ImagePreview } from '@/entities/post';
 import { useImageUpload } from '@/shared/lib/hooks';
 import { MB } from '@/shared/lib/image';
 

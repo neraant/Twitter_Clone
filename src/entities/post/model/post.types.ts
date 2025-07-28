@@ -1,3 +1,5 @@
+import { InfiniteData } from '@tanstack/react-query';
+
 export type Post = {
   id?: string | null;
   author_id: string | null;
@@ -32,19 +34,18 @@ export const enum PostFetchingMode {
   user = 'user',
 }
 
-export interface PostsState {
-  allPosts: Post[];
-  userPosts: { [userId: string]: Post[] };
-  myPosts: Post[];
+export type PostsInfiniteQueryConfig = {
+  TQueryFnData: GetUserPostsPaginatedReturnType;
+  TError: Error;
+  TData: InfiniteData<GetUserPostsPaginatedReturnType>;
+  TQueryKey: readonly string[];
+  TPageParam: string | null;
+};
 
-  addPost: (post: Post, mode: PostFetchingMode, userId?: string) => void;
-  removePost: (postId: string, userId?: string) => void;
-  likePost: (postId: string, userId?: string) => void;
-  unlikePost: (postId: string, userId?: string) => void;
-  setAllPosts: (posts: Post[] | ((prev: Post[]) => Post[])) => void;
-  setUserPosts: (
-    userId: string,
-    posts: Post[] | ((prev: Post[]) => Post[]),
-  ) => void;
-  setMyPosts: (posts: Post[] | ((prev: Post[]) => Post[])) => void;
-}
+export type PostsQueryData = PostsInfiniteQueryConfig['TData'] | undefined;
+
+export type ImagePreview = {
+  id: string;
+  file: File;
+  url: string;
+};
