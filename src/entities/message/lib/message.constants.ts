@@ -1,0 +1,2 @@
+export const INITIAL_MESSAGES_LIMIT = 50;
+export const DEFAULT_THREASHOLD = 100;

@@ -1,5 +1,10 @@
 import { Metadata } from 'next';
 
+import { getChatsAction } from '@/entities/message';
+import { MessagesClient } from '@/widgets/messages-client';
+
+export const dynamic = 'force-dynamic';
+
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
 export const metadata: Metadata = {
@@ -32,9 +37,12 @@ export const metadata: Metadata = {
 };
 
 export default async function Messages() {
-  return (
-    <div>
-      <h1>Messages</h1>
-    </div>
-  );
+  try {
+    const { chats, userId: currentUserId } = await getChatsAction();
+
+    return <MessagesClient chats={chats} currentUserId={currentUserId} />;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Failed to load chats');
+  }
 }

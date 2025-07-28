@@ -1,5 +1,6 @@
 import Image from 'next/image';
 
+import { DEFAULT_BANNER } from '@/shared/lib/common';
 import { BackButton } from '@/shared/ui/back-button';
 
 import { TWEET, TWEETS, UNNAMED_USER } from '../lib';
@@ -10,8 +11,6 @@ interface ProfileBannerClientProps {
   userBanner: string | null;
   tweetsLength: string | number;
 }
-
-const DefaultBanner = '/images/default-banner.webp';
 
 export const ProfileBanner = ({
   userName,
@@ -32,7 +31,7 @@ export const ProfileBanner = ({
       </div>
 
       <Image
-        src={userBanner || DefaultBanner}
+        src={userBanner || DEFAULT_BANNER}
         className={styles.bannerImage}
         alt='banner'
         width={650}

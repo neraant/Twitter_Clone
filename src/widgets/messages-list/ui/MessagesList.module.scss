@@ -1,0 +1,167 @@
+@use '@styles/_mixins.scss' as *;
+@use '@styles/_variables.scss' as *;
+
+.messagesList {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+
+  .messagesHeaderWrapper {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    padding: $spacing-md $spacing-md;
+    border-bottom: 1px solid var(--border-color);
+
+    @media (max-width: $breakpoint-md) {
+      padding: $spacing-sm $spacing-md;
+      margin-top: 60px;
+    }
+
+    .currentUserChatAvatar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--primary-color);
+      flex-shrink: 0;
+      margin-left: $spacing-md;
+      margin-right: $spacing-ms;
+
+      svg {
+        fill: var(--color-bg);
+      }
+    }
+
+    .profileLink {
+      display: flex;
+      align-items: center;
+    }
+
+    .messageHeaderContent {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .messagesHeaderWrapperText {
+      font-size: $font-size-lg;
+      font-weight: $font-weight-bold;
+    }
+
+    .messagesHeaderWrapperSubText {
+      text-transform: lowercase;
+      font-size: $font-size-xs;
+      color: var(--message-time);
+    }
+
+    .avatar {
+      object-fit: cover;
+      object-position: center;
+      border-radius: 50%;
+      margin-left: $spacing-md;
+      margin-right: $spacing-ms;
+    }
+  }
+
+  .messagesContainer {
+    flex-grow: 1;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    padding: 0 $spacing-md;
+    scrollbar-width: thin;
+  }
+
+  .loadingIndicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-sm;
+    font-size: $font-size-sm;
+
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid var(--border-color);
+      border-top: 2px solid var(--accent-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+  }
+
+  .chatStart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: $spacing-md;
+
+    .chatStartContent {
+      text-align: center;
+      color: var(--text-muted);
+    }
+
+    .chatStartAvatar {
+      border-radius: 50%;
+      margin-bottom: $spacing-sm;
+    }
+  }
+
+  .errorIndicator {
+    color: var(--danger-color);
+    padding: $spacing-md;
+    text-align: center;
+  }
+
+  .newMessagesIndicator,
+  .scrollToBottomIndicator {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+
+    button {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background-color: var(--message-incoming-bg);
+      color: var(--dark-text-color);
+      border: none;
+      border-radius: 100%;
+      font-size: $font-size-sm;
+      box-shadow: 0 2px 6px var(--scroll-shadow);
+      cursor: pointer;
+
+      transition: opacity 0.3s ease;
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}

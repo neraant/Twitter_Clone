@@ -1,16 +1,14 @@
-import { renderHook } from '@testing-library/react';
-import { act } from 'react';
+import { act, renderHook } from '@testing-library/react';
 
-import { useModalCloseHandler } from '../useModalCloseHandler';
+import { useModal } from '../useModal';
 
-describe('useModalCloseHandler', () => {
-  it('closes modal after delay', () => {
+jest.useFakeTimers();
+
+describe('useModal', () => {
+  it('should set isClosing true and call onClose after delay when handleClose is called', () => {
     const onClose = jest.fn();
-    const ref = { current: document.createElement('div') };
 
-    const { result } = renderHook(() =>
-      useModalCloseHandler(ref, onClose, 100),
-    );
+    const { result } = renderHook(() => useModal({ onClose, delay: 100 }));
 
     act(() => {
       result.current.handleClose();
@@ -18,23 +16,47 @@ describe('useModalCloseHandler', () => {
 
     expect(result.current.isClosing).toBe(true);
 
-    setTimeout(() => {
-      expect(onClose).toHaveBeenCalled();
-    }, 100);
+    act(() => {
+      jest.advanceTimersByTime(100);
+    });
+
+    expect(onClose).toHaveBeenCalled();
   });
 
-  it('closes on outside click', () => {
+  it('should call onClose when click outside happens', () => {
     const onClose = jest.fn();
-    const ref = { current: document.createElement('div') };
 
-    const { result } = renderHook(() => useModalCloseHandler(ref, onClose));
+    const { result } = renderHook(() => useModal({ onClose }));
+
+    const outsideNode = document.createElement('div');
+
+    if (result.current.ref.current === null) {
+      result.current.ref.current = document.createElement('div');
+      document.body.appendChild(result.current.ref.current);
+    }
 
     act(() => {
-      result.current.handleClickOutside({
-        target: document.createElement('div'),
-      } as never);
+      const event = new MouseEvent('mousedown', {
+        bubbles: true,
+        cancelable: true,
+        clientX: 0,
+        clientY: 0,
+      });
+
+      Object.defineProperty(event, 'target', {
+        value: outsideNode,
+        configurable: true,
+      });
+
+      document.dispatchEvent(event);
     });
 
     expect(result.current.isClosing).toBe(true);
+
+    act(() => {
+      jest.runAllTimers();
+    });
+
+    expect(onClose).toHaveBeenCalled();
   });
 });

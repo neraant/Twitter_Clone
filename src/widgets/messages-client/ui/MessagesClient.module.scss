@@ -1,0 +1,23 @@
+@use '@styles/_mixins.scss' as *;
+@use '@styles/_variables.scss' as *;
+
+.messagesClient {
+  .headerTitle {
+    padding: $spacing-lg-plus $spacing-md;
+    font-size: $font-size-lg-plus;
+    font-weight: $font-weight-bold;
+    border-bottom: 1px solid var(--border-color);
+
+    @media (max-width: $breakpoint-md) {
+      padding: $spacing-sm $spacing-md;
+    }
+  }
+
+  .chatsWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    padding: 0 $spacing-md;
+    margin-top: $spacing-lg;
+  }
+}

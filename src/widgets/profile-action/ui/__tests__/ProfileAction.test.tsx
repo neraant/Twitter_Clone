@@ -14,6 +14,10 @@ jest.mock('@/features/follow-button/ui', () => ({
   ),
 }));
 
+jest.mock('@/shared/ui/icon', () => ({
+  MessagesIcon: () => <div />,
+}));
+
 describe('ProfileAction', () => {
   const defaultProps = {
     isOwner: true,

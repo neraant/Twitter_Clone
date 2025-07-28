@@ -42,6 +42,7 @@ module.exports = {
     '/node_modules/',
     '\\.constants\\.ts$',
     '\\.constants\\.tsx$',
+    '/e2e/',
   ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   collectCoverageFrom: [

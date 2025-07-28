@@ -1,0 +1,87 @@
+@use '@styles/_mixins.scss' as *;
+@use '@styles/_variables.scss' as *;
+
+.messageWrapper {
+  padding: $spacing-sm $spacing-ms;
+  display: flex;
+  align-items: flex-end;
+  gap: $spacing-sm;
+  justify-content: flex-end;
+  width: 100%;
+  max-width: 100%;
+  margin-left: auto;
+
+  .messageContent {
+    background: var(--message-bg);
+    border-radius: $radius-lg;
+    padding: $spacing-sm $spacing-ms;
+    max-width: 80%;
+    min-width: 0;
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    .messageText {
+      font-size: $font-size-md;
+      color: var(--light-text-color);
+      line-height: 1.4;
+      width: 100%;
+
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      white-space: pre-wrap;
+      word-break: break-word;
+
+      margin: 0;
+      padding: 0;
+    }
+
+    .messageTime {
+      font-size: $font-size-xxs;
+      color: var(--message-time);
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    .messageFooter {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: $spacing-xs;
+      font-size: $font-size-sm;
+      color: var(--message-time);
+      margin-top: $spacing-xs;
+      flex-shrink: 0;
+    }
+  }
+
+  &.incoming {
+    margin-right: auto;
+    margin-left: 0;
+    justify-content: flex-start;
+
+    .messageContent {
+      background: var(--message-incoming-bg);
+
+      .messageText {
+        color: var(--dark-text-color);
+      }
+
+      .messageTime {
+        color: var(--message-incoming-time);
+        margin-right: auto;
+        margin-left: 0;
+      }
+    }
+  }
+
+  .avatar {
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    flex-shrink: 0;
+    align-self: flex-end;
+    margin-bottom: $spacing-xs;
+  }
+}

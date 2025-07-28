@@ -6,14 +6,13 @@ import Image from 'next/image';
 import { User } from '@/entities/user';
 import { AddTweetButton } from '@/features/add-tweet-button';
 import { PostImageUploader } from '@/features/image-uploader/ui';
+import { DEFAULT_AVATAR } from '@/shared/lib/common';
 import { MAX_VERCEL_SIZE } from '@/shared/lib/image';
 import { MAX_POST_LEN } from '@/shared/lib/validations';
 import { CircleProgressBar } from '@/shared/ui/progress-bar';
 
 import { TEXTAREA_PLACEHOLDER, usePostForm } from '../lib';
 import styles from './AddPostForm.module.scss';
-
-const DefaultAvatar = '/images/user-avatar.webp';
 
 type AddPostFormProps = {
   user: User;
@@ -46,7 +45,7 @@ export const AddPostForm = ({ user }: AddPostFormProps) => {
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
       <Image
-        src={user.avatar_url ?? DefaultAvatar}
+        src={user.avatar_url ?? DEFAULT_AVATAR}
         alt='avatar'
         width={50}
         height={50}

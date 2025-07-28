@@ -18,7 +18,7 @@ export default async function ProtectedLayout({
   return (
     <>
       <Header />
-      <main className={styles.main}>
+      <main className={styles.main} data-layout='default'>
         <LeftSidebar />
 
         <div className={styles.content}>{children}</div>

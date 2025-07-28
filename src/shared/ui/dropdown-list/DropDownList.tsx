@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 import { useClickOutside } from '@/shared/lib/hooks/useClickOutside';
 
@@ -23,7 +23,6 @@ export const DropDownList = ({
   selected,
 }: DropDownListProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
 
   const handleClose = () => setIsOpen(false);
   const handleOpen = () => setIsOpen((prev) => !prev);
@@ -33,7 +32,9 @@ export const DropDownList = ({
     setIsOpen(false);
   };
 
-  useClickOutside(ref, handleClose);
+  const ref = useClickOutside<HTMLDivElement>({
+    handleOnClickOutside: handleClose,
+  });
 
   return (
     <div className={styles.wrapper} ref={ref}>

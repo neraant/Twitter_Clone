@@ -5,6 +5,7 @@ import { forwardRef, InputHTMLAttributes, useState } from 'react';
 import { FieldError } from 'react-hook-form';
 
 import { usePhoneInput } from '@/shared/lib/hooks/usePhoneInput';
+import { MAX_PHONE_LEN } from '@/shared/lib/validations';
 
 import { EyeCrossedIcon } from '../../../shared/ui/icon';
 import styles from './SignInput.module.scss';
@@ -62,7 +63,7 @@ export const SignInput = forwardRef<HTMLInputElement, SignInputProps>(
           onKeyDown: handlePhoneKeyDown,
           onFocus: handlePhoneFocus,
           value: displayValue,
-          maxLength: 19,
+          maxLength: MAX_PHONE_LEN,
         }
       : {
           onChange,

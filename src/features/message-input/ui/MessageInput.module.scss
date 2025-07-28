@@ -1,0 +1,42 @@
+@use '@styles/_mixins.scss' as *;
+@use '@styles/_variables.scss' as *;
+
+.messageInput {
+  display: flex;
+  align-items: center;
+  gap: $spacing-ms;
+  align-items: center;
+  padding: $spacing-ms;
+
+  @media (max-width: $breakpoint-md) {
+    margin-bottom: 56px;
+  }
+
+  .input {
+    width: 100%;
+    font-size: $font-size-md;
+    color: var(--dark-text-color);
+    background: var(--input-message-bg);
+    border-radius: $radius-lg-plus;
+    padding: $spacing-ms $spacing-md;
+    border: none;
+    outline: none;
+    resize: none;
+    font-family: inherit;
+    max-height: 300px;
+    min-height: 40px;
+    scrollbar-width: thin;
+
+    &::placeholder {
+      color: var(--search-placeholder-color);
+    }
+  }
+
+  .sendButton {
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: translateX(2px);
+    }
+  }
+}

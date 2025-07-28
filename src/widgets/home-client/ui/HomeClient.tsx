@@ -1,5 +1,6 @@
 'use client';
 
+import { POSTS_QUERY_KEYS } from '@/entities/post/lib';
 import { User } from '@/entities/user';
 import { AddPostForm } from '@/widgets/add-post-form/ui/AddPostForm';
 import { PostsList } from '@/widgets/posts-list';
@@ -16,7 +17,10 @@ export const HomeClient = ({ currentUser }: { currentUser: User }) => {
       </section>
 
       <section>
-        <PostsList userId='global' currentUserId={currentUser.id} />
+        <PostsList
+          userId={POSTS_QUERY_KEYS.GLOBAL}
+          currentUserId={currentUser.id}
+        />
       </section>
     </>
   );

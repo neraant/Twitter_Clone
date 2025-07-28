@@ -1,7 +1,7 @@
 'use client';
 
 import clsx from 'clsx';
-import { ReactNode, useRef, useState } from 'react';
+import { ReactNode, useState } from 'react';
 
 import { useClickOutside } from '@/shared/lib/hooks';
 
@@ -15,10 +15,11 @@ type BaseModalProps = {
 };
 
 export const BaseModal = ({ children, className, onClose }: BaseModalProps) => {
-  const ref = useRef<HTMLDivElement | null>(null);
   const [isClosing, setIsClosing] = useState(false);
 
-  useClickOutside(ref, handleClose);
+  const ref = useClickOutside<HTMLDivElement>({
+    handleOnClickOutside: handleClose,
+  });
 
   function handleClose() {
     setIsClosing(true);

@@ -2,7 +2,7 @@
 
 import clsx from 'clsx';
 import { usePathname, useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 import { routes } from '@/shared/config/routes';
 import { useClickOutside, useLockBodyScroll } from '@/shared/lib/hooks';
@@ -26,17 +26,11 @@ export const ManagePost = ({
   const router = useRouter();
   const route = usePathname();
 
-  const manageRef = useRef<HTMLDivElement>(null);
-
   const [isManageOpen, setIsManageOpen] = useState(false);
   const [isConfirmDelete, setIsConfirmDelete] = useState(false);
 
-  const handleOpenManage = () => {
-    setIsManageOpen(true);
-  };
-
-  const handleCloseManage = () => {
-    setIsManageOpen(false);
+  const toggleManage = () => {
+    setIsManageOpen((prev) => !prev);
   };
 
   const handleCloseConfirmModal = () => {
@@ -58,7 +52,7 @@ export const ManagePost = ({
   };
 
   const handleDeletePost = useDeletePost(postId, currentUserId, () => {
-    handleCloseManage();
+    toggleManage();
     handleCloseConfirmModal();
 
     if (route.includes(routes.app.post)) {
@@ -66,7 +60,9 @@ export const ManagePost = ({
     }
   });
 
-  useClickOutside(manageRef, handleCloseManage);
+  const manageRef = useClickOutside<HTMLDivElement>({
+    handleOnClickOutside: () => setIsManageOpen(false),
+  });
   useLockBodyScroll(isConfirmDelete);
 
   return (
@@ -83,11 +79,7 @@ export const ManagePost = ({
       )}
 
       <div className={clsx(styles.manageWrapper, className)} ref={manageRef}>
-        <button
-          type='button'
-          aria-label='manage post'
-          onClick={isManageOpen ? handleCloseManage : handleOpenManage}
-        >
+        <button type='button' aria-label='manage post' onClick={toggleManage}>
           <DotsIcon width={20} height={20} className={styles.manageIcon} />
         </button>
 
