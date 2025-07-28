@@ -1,7 +1,7 @@
 'use client';
 
 import clsx from 'clsx';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 import { useClickOutside, useLockBodyScroll } from '@/shared/lib/hooks';
 import { ConfirmModal } from '@/shared/ui/confirm-modal';
@@ -21,17 +21,11 @@ export const ManagePost = ({
   currentUserId,
   className,
 }: ManagePostProps) => {
-  const manageRef = useRef<HTMLDivElement>(null);
-
   const [isManageOpen, setIsManageOpen] = useState(false);
   const [isConfirmDelete, setIsConfirmDelete] = useState(false);
 
-  const handleOpenManage = () => {
-    setIsManageOpen(true);
-  };
-
-  const handleCloseManage = () => {
-    setIsManageOpen(false);
+  const toggleManage = () => {
+    setIsManageOpen((prev) => !prev);
   };
 
   const handleCloseConfirmModal = () => {
@@ -53,11 +47,13 @@ export const ManagePost = ({
   };
 
   const handleDeletePost = useDeletePost(postId, currentUserId, () => {
-    handleCloseManage();
+    toggleManage();
     handleCloseConfirmModal();
   });
 
-  useClickOutside(manageRef, handleCloseManage);
+  const manageRef = useClickOutside({
+    handleOnClickOutside: () => setIsManageOpen(false),
+  });
   useLockBodyScroll(isConfirmDelete);
 
   return (
@@ -74,11 +70,7 @@ export const ManagePost = ({
       )}
 
       <div className={clsx(styles.manageWrapper, className)} ref={manageRef}>
-        <button
-          type='button'
-          aria-label='manage post'
-          onClick={isManageOpen ? handleCloseManage : handleOpenManage}
-        >
+        <button type='button' aria-label='manage post' onClick={toggleManage}>
           <DotsIcon width={20} height={20} className={styles.manageIcon} />
         </button>
 

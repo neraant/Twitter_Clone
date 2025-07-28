@@ -19,6 +19,8 @@ export const MAX_POST_LEN = 500;
 export const DAY_MIN = 1;
 export const DAY_MAX = 31;
 
+export const MAX_PHONE_LEN = 19;
+
 export const MONTHS = [
   'January',
   'February',

@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect } from 'react';
 
 import { DEBOUNCE_MS } from './searchPosts.constants';
