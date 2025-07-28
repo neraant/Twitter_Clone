@@ -1,18 +1,12 @@
 'use server';
 
-import { cookies, headers } from 'next/headers';
-
 import { routes } from '@/shared/config/routes';
+import { getServerRequestMeta } from '@/shared/lib/http';
 
 import { User } from '../model';
 
 export const getUserByIdAction = async (id: string): Promise<User | null> => {
-  const cookieStore = await cookies();
-  const cookieHeader = cookieStore.toString();
-  const headersList = await headers();
-  const host = headersList.get('host');
-  const protocol = headersList.get('x-forwarded-proto') || 'https';
-  const baseUrl = `${protocol}://${host}`;
+  const { baseUrl, cookieHeader } = await getServerRequestMeta();
 
   const res = await fetch(`${baseUrl}${routes.api.getUser}/${id}`, {
     method: 'GET',

@@ -5,6 +5,7 @@ import React from 'react';
 
 import { FollowButton } from '@/features/follow-button/ui';
 import { routes } from '@/shared/config/routes';
+import { DEFAULT_AVATAR } from '@/shared/lib/common';
 
 import { UNNAMED_USER } from '../../lib';
 import { User } from '../../model';
@@ -19,8 +20,6 @@ export type UserSmallCardProps = {
   isFollowed?: boolean;
   currentUserId?: string;
 };
-
-const DefaultAvatar = '/images/user-avatar.webp';
 
 export const UserSmallCard = ({
   user,
@@ -39,7 +38,7 @@ export const UserSmallCard = ({
     <div className={clsx(styles.wrapper, className)}>
       <Link href={url} className={styles.wrapper}>
         <Image
-          src={avatar_url || DefaultAvatar}
+          src={avatar_url || DEFAULT_AVATAR}
           alt='avatar'
           width={50}
           height={50}

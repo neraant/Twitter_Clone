@@ -3,11 +3,19 @@
 import crypto from 'crypto';
 import sharp from 'sharp';
 
+import {
+  IMAGE_HEIGHT,
+  IMAGE_RESIZE_FIT,
+  IMAGE_WIDTH,
+  PERCEPTUAL_HASH_FIT,
+  PERCEPTUAL_HASH_SIZE,
+} from './imageUploader.constants';
+
 export const createImageHash = async (imageBuffer: Buffer): Promise<string> => {
   try {
     const processedImage = await sharp(imageBuffer)
-      .resize(256, 256, {
-        fit: 'fill',
+      .resize(IMAGE_WIDTH, IMAGE_HEIGHT, {
+        fit: IMAGE_RESIZE_FIT,
       })
       .removeAlpha()
       .raw()
@@ -26,7 +34,9 @@ export const createPerceptualHash = async (
 ): Promise<string> => {
   try {
     const smallImage = await sharp(imageBuffer)
-      .resize(8, 8, { fit: 'fill' })
+      .resize(PERCEPTUAL_HASH_SIZE, PERCEPTUAL_HASH_SIZE, {
+        fit: PERCEPTUAL_HASH_FIT,
+      })
       .greyscale()
       .raw()
       .toBuffer();

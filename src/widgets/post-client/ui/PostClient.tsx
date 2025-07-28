@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { usePosts } from '@/entities/post/lib';
+import { POSTS_QUERY_KEYS, usePosts } from '@/entities/post/lib';
 import { Post } from '@/entities/post/model';
 import { PostCard } from '@/entities/post/ui/PostCard/ui/PostCard';
 
@@ -12,7 +12,7 @@ interface PostClientProps {
 }
 
 export const PostClient = ({ post, currentUserId }: PostClientProps) => {
-  const { posts } = usePosts('global');
+  const { posts } = usePosts(POSTS_QUERY_KEYS.GLOBAL);
   const [localPost, setLocalPost] = useState(post);
 
   useEffect(() => {
