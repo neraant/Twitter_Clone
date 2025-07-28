@@ -55,7 +55,7 @@ export const MoreActions = ({ onClose }: MoreActionsProps) => {
   useLockBodyScroll(isModalOpen);
 
   return (
-    <div ref={ref}>
+    <div ref={ref} data-testid='more-actions'>
       {isModalOpen && (
         <ConfirmModal
           title='Confirm logout'

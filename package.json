@@ -9,12 +9,10 @@
     "lint": "next lint --fix",
     "format": "prettier --write .",
     "check-format": "prettier --check .",
-    "stylelint": "stylelint \"**/*.{css,scss}\" --allow-empty-input",
     "prepare": "husky",
-    "analyze": "cross-env ANALYZE=true next build",
-    "build:analyze": "npm run build && npm run analyze",
     "test": "npx jest",
-    "test:cov": "npx jest --config jest.config.js --coverage"
+    "test:cov": "npx jest --config jest.config.js --coverage",
+    "test:e2e": "npx playwright test"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
@@ -39,6 +37,7 @@
     "@babel/preset-typescript": "^7.27.1",
     "@eslint/eslintrc": "^3",
     "@next/bundle-analyzer": "^15.4.1",
+    "@playwright/test": "^1.54.1",
     "@svgr/webpack": "^8.1.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",

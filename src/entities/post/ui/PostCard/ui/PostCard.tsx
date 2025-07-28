@@ -70,7 +70,7 @@ export const PostCard = ({
   const isOwner = currentUserId === author_id;
 
   return (
-    <article className={styles.postCard}>
+    <article className={styles.postCard} data-testid='post-card'>
       <Link href={`${routes.app.profile}/${author_id}`}>
         <Image
           src={author_avatar ?? DEFAULT_AVATAR}

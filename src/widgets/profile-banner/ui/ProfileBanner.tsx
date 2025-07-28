@@ -38,6 +38,7 @@ export const ProfileBanner = ({
         width={650}
         height={300}
         fetchPriority='high'
+        data-testid='user-banner'
         priority
       />
     </div>

@@ -82,7 +82,7 @@ export const RegisterForm = () => {
       showToast('Success!', 'You are sign up successfully!', 'success');
 
       reset();
-      router.replace(routes.app.home);
+      router.replace(routes.auth.login);
     } catch (error) {
       console.error(error);
       if (typeof error === 'object' && error !== null && 'message' in error) {

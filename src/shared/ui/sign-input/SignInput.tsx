@@ -94,6 +94,7 @@ export const SignInput = forwardRef<HTMLInputElement, SignInputProps>(
             tabIndex={-1}
             onClick={handleShowPassword}
             aria-label={showPassword ? HIDE_PASSWROD : SHOW_PASSWROD}
+            data-testid='password-toggle'
           >
             <EyeCrossedIcon width={19} height={19} />
           </button>

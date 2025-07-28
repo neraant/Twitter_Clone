@@ -31,11 +31,12 @@ export const UserBigCard = ({ user, className }: UserBigCardProps) => {
         width={180}
         height={180}
         className={styles.icon}
+        data-testid='user-avatar'
         priority
       />
 
       <div className={styles.userInfo}>
-        <p className={styles.name} title={name!}>
+        <p data-testid='user-name' className={styles.name} title={name!}>
           {name}
         </p>
         {user_telegram && (
@@ -44,13 +45,18 @@ export const UserBigCard = ({ user, className }: UserBigCardProps) => {
             href={`https://t.me/${cleanTelegramUsername}`}
             aria-label={`${name}'s telegram`}
             target='_blank'
+            data-testid='user-telegram'
           >
             {user_telegram}
           </Link>
         )}
       </div>
 
-      {bio && <p className={styles.bio}>{bio}</p>}
+      {bio && (
+        <p data-testid='user-bio' className={styles.bio}>
+          {bio}
+        </p>
+      )}
     </div>
   );
 };

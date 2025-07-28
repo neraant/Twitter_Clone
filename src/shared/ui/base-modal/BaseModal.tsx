@@ -31,6 +31,7 @@ export const BaseModal = ({ children, className, onClose }: BaseModalProps) => {
         ref={ref}
         className={clsx(styles.modal, className, isClosing && styles.closing)}
         onClick={(e) => e.stopPropagation()}
+        data-testid='base-modal'
       >
         {children}
       </div>

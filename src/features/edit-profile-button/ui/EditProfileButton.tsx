@@ -7,7 +7,12 @@ type EditProfileButtonProps = {
 
 export const EditProfileButton = ({ onClick }: EditProfileButtonProps) => {
   return (
-    <button type='button' className={styles.button} onClick={onClick}>
+    <button
+      type='button'
+      className={styles.button}
+      aria-label='edit profile'
+      onClick={onClick}
+    >
       {EDIT_BUTTON}
     </button>
   );
