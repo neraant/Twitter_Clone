@@ -1,12 +1,11 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
 
+import { BASE_URL } from '@/shared/lib/common';
 import { Container } from '@/shared/ui/container';
 import { LoginForm } from '@/widgets/login-form';
 
 import styles from './login.module.scss';
-
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
 export const metadata: Metadata = {
   title: 'Twitter Clone | Login',

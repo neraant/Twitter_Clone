@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import nProgress from 'nprogress';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 nProgress.configure({
   minimum: 0.3,
@@ -15,10 +15,8 @@ nProgress.configure({
 export const TopLoader = () => {
   const pathname = usePathname();
 
-  useEffect(() => {
-    nProgress.done();
-
-    const handleLinkClick = (e: MouseEvent) => {
+  const handleLinkClick = useCallback(
+    (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       const link = target.closest('a[href]') as HTMLAnchorElement;
 
@@ -45,14 +43,18 @@ export const TopLoader = () => {
       if (isInternal) {
         nProgress.start();
       }
-    };
+    },
+    [pathname],
+  );
+
+  const handlePopState = useCallback(() => {
+    nProgress.start();
+  }, []);
+
+  useEffect(() => {
+    nProgress.done();
 
     document.addEventListener('click', handleLinkClick);
-
-    const handlePopState = () => {
-      nProgress.start();
-    };
-
     window.addEventListener('popstate', handlePopState);
 
     return () => {
@@ -60,7 +62,7 @@ export const TopLoader = () => {
       window.removeEventListener('popstate', handlePopState);
       nProgress.done();
     };
-  }, [pathname]);
+  }, [handleLinkClick, handlePopState, pathname]);
 
   return null;
 };

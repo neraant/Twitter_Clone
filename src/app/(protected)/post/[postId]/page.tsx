@@ -2,9 +2,8 @@ import { Metadata } from 'next';
 
 import { getPost } from '@/entities/post/api';
 import { getCurrentUserAction } from '@/entities/user/api';
+import { BASE_URL } from '@/shared/lib/common';
 import { PostClient } from '@/widgets/post-client';
-
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
 type PageProps = {
   params: Promise<{

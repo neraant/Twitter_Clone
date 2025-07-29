@@ -4,10 +4,9 @@ import { Suspense } from 'react';
 
 import { getUserPostsCount } from '@/entities/post/api';
 import { getCurrentUserAction, getUserByIdAction } from '@/entities/user/api';
+import { BASE_URL } from '@/shared/lib/common';
 import { isValidUUID } from '@/shared/lib/isValidUUID';
 import { ProfileClient, ProfileClientSkeleton } from '@/widgets/profile-client';
-
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
 type PageProps = {
   params: Promise<{

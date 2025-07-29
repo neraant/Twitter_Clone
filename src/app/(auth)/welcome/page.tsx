@@ -1,11 +1,10 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
 
+import { BASE_URL } from '@/shared/lib/common';
 import { WelcomeForm } from '@/widgets/welcome-form/ui/WelcomeForm';
 
 import styles from './welcome.module.scss';
-
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
 export const metadata: Metadata = {
   title: 'Twitter Clone | Welcome',

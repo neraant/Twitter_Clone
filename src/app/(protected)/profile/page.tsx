@@ -4,9 +4,8 @@ import { Suspense } from 'react';
 
 import { getUserPostsCount } from '@/entities/post/api';
 import { getCurrentUserAction } from '@/entities/user/api';
+import { BASE_URL } from '@/shared/lib/common';
 import { ProfileClient, ProfileClientSkeleton } from '@/widgets/profile-client';
-
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
 export async function generateMetadata(): Promise<Metadata> {
   const user = await getCurrentUserAction();
