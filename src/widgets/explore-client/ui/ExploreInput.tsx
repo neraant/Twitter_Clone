@@ -1,8 +1,7 @@
 'use client';
 
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
-import { usePostsDebounce } from '@/features/search-posts/lib';
 import { CrossIcon } from '@/shared/ui/icon';
 import { Input } from '@/shared/ui/input/Input';
 
@@ -10,34 +9,30 @@ import { SEARCH_PLACEHOLDER } from '../lib';
 import styles from './ExploreInput.module.scss';
 
 type PostSearchInputIsolatedProps = {
-  onQueryChange: (query: string) => void;
-  onSearch: (query: string) => void;
-  onLoadingChange: (loading: boolean) => void;
+  query: string;
+  onQueryChange: (q: string) => void;
 };
 
 export const ExploreInput = ({
+  query,
   onQueryChange,
-  onSearch,
-  onLoadingChange,
 }: PostSearchInputIsolatedProps) => {
-  const [query, setQuery] = useState('');
+  const [localQuery, setLocalQuery] = useState(query);
+
+  useEffect(() => {
+    setLocalQuery(query);
+  }, [query]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setQuery(value);
+    setLocalQuery(value);
     onQueryChange(value);
   };
 
-  const handleRemoveQuery = () => {
-    setQuery('');
+  const handleClear = () => {
+    setLocalQuery('');
     onQueryChange('');
   };
-
-  usePostsDebounce({
-    fetch: () => onSearch(query),
-    setLoading: onLoadingChange,
-    value: query,
-  });
 
   return (
     <div className={styles.inputWrapper}>
@@ -45,14 +40,14 @@ export const ExploreInput = ({
         className={styles.exploreInput}
         placeholder={SEARCH_PLACEHOLDER}
         onChange={handleChange}
-        value={query}
+        value={localQuery}
       />
 
       {query.trim() && (
         <button
           type='button'
           aria-label='clear query'
-          onClick={handleRemoveQuery}
+          onClick={handleClear}
           className={styles.clearButton}
         >
           <CrossIcon />
