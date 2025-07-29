@@ -18,7 +18,7 @@
     width: calc(100% - $spacing-md * 2);
     max-width: none;
     padding: $spacing-lg;
-    padding-bottom: var(--spacing-4xl);
+    padding-bottom: $spacing-4xl;
   }
 
   .uploadersWrapper {

@@ -1,0 +1,33 @@
+@use '@styles/_mixins.scss' as *;
+@use '@styles/_variables.scss' as *;
+
+.tabsList {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-md;
+  margin-top: $spacing-lg;
+  width: 100%;
+
+  .currentLine {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    border-radius: 3px;
+    width: calc(100% / 2);
+    background: var(--primary-color);
+    transition: transform 0.3s ease;
+  }
+
+  .tubButton {
+    padding: $spacing-md 0;
+    flex: 1;
+    font-size: $font-size-md;
+    font-weight: $font-weight-medium;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+}

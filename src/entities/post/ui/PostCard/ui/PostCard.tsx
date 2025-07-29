@@ -104,7 +104,10 @@ export const PostCard = ({
               data-count={imageCount}
             >
               {image_urls.map((src, index) => (
-                <div key={`${src}-${index}`} className={styles.imageWrapper}>
+                <div
+                  key={`preview-${index}-${src.slice(-10)}`}
+                  className={styles.imageWrapper}
+                >
                   {loadingImages[index] && (
                     <Skeleton
                       className={clsx(

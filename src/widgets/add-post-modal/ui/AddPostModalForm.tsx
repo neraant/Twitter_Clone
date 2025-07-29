@@ -3,6 +3,7 @@
 import clsx from 'clsx';
 import { useEffect } from 'react';
 
+import { ImagePreview } from '@/entities/post/ui/PostCard';
 import { AddTweetButton } from '@/features/add-tweet-button';
 import { PostImageUploader } from '@/features/image-uploader/ui';
 import { MAX_VERCEL_SIZE } from '@/shared/lib/image';
@@ -18,10 +19,10 @@ type AddPostModalFormProps = {
   onSuccess?: () => void;
   onFormDataChange?: ({
     content,
-    previews,
+    previewItems,
   }: {
     content: string;
-    previews: string[];
+    previewItems: ImagePreview[];
   }) => void;
 };
 
@@ -52,8 +53,8 @@ export const AddPostModalForm = ({
   const isOverLimit = contentLength >= MAX_POST_LEN;
 
   useEffect(() => {
-    onFormDataChange?.({ content, previews });
-  }, [content, onFormDataChange, previews]);
+    onFormDataChange?.({ content, previewItems });
+  }, [content, onFormDataChange, previewItems]);
 
   if (!userId) return null;
 

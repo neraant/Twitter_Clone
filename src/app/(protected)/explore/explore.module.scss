@@ -1,0 +1,23 @@
+@use '@styles/_mixins.scss' as *;
+@use '@styles/_variables.scss' as *;
+
+.exploreWrapper {
+  height: 100%;
+  .exploreHeaderWrapper {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    padding: $spacing-lg-plus $spacing-md;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: $spacing-xl-plus;
+
+    @media (max-width: $breakpoint-md) {
+      padding: $spacing-sm $spacing-md;
+    }
+
+    .exploreHeaderWrapperText {
+      font-size: $font-size-lg-plus;
+      font-weight: $font-weight-bold;
+    }
+  }
+}
