@@ -1,8 +1,8 @@
-import * as yup from 'yup';
+import { InferType, object, ref, string, StringSchema } from 'yup';
 
 import { CHANGE_SCHEMA } from './changePasswordModal.constants';
 
-export const basePasswordValidation = (schema: yup.StringSchema) =>
+export const basePasswordValidation = (schema: StringSchema) =>
   schema
     .min(8, CHANGE_SCHEMA.PASSWORD.MIN_LEN)
     .max(15, CHANGE_SCHEMA.PASSWORD.MAX_LEN)
@@ -11,15 +11,14 @@ export const basePasswordValidation = (schema: yup.StringSchema) =>
     .matches(/\d/, CHANGE_SCHEMA.PASSWORD.ONE_NUM)
     .matches(/[^A-Za-z0-9]/, CHANGE_SCHEMA.PASSWORD.ONE_SPECIAL);
 
-export const changePasswordSchema = yup.object({
-  currentPassword: yup.string().when('$isEmailUser', {
+export const changePasswordSchema = object({
+  currentPassword: string().when('$isEmailUser', {
     is: true,
     then: (schema) =>
       basePasswordValidation(schema.required(CHANGE_SCHEMA.PASSWORD.REQUIRED)),
     otherwise: (schema) => schema.default(''),
   }),
-  changePassword: yup
-    .string()
+  changePassword: string()
     .required(CHANGE_SCHEMA.PASSWORD.REQUIRED)
     .test(
       'not-same-as-current',
@@ -34,11 +33,10 @@ export const changePasswordSchema = yup.object({
         return true;
       },
     )
-    .concat(basePasswordValidation(yup.string())),
-  confirmPassword: yup
-    .string()
+    .concat(basePasswordValidation(string())),
+  confirmPassword: string()
     .required(CHANGE_SCHEMA.PASSWORD.REQUIRED)
-    .oneOf([yup.ref('changePassword')], CHANGE_SCHEMA.CONFIRM_PASSWORD.MATCH),
+    .oneOf([ref('changePassword')], CHANGE_SCHEMA.CONFIRM_PASSWORD.MATCH),
 });
 
-export type changePasswordFormData = yup.InferType<typeof changePasswordSchema>;
+export type changePasswordFormData = InferType<typeof changePasswordSchema>;

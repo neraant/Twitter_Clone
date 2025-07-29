@@ -97,9 +97,9 @@ export const EditProfileModal = ({ onClose }: EditProfileModalProps) => {
             <CrossIcon width={18} height={18} className={styles.closeButton} />
           </button>
 
-          <div className={styles.modalContent}>
-            <h2 className={styles.title}>{EDIT_TITLE}</h2>
+          <h2 className={styles.title}>{EDIT_TITLE}</h2>
 
+          <div className={styles.modalContent}>
             <SignInput
               {...register('name')}
               label={LABELS.NAME}

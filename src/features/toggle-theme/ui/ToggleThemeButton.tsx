@@ -1,32 +1,46 @@
 'use client';
 
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
+import { useTheme } from '@/features/toggle-theme/lib';
+import { THEMES } from '@/shared/lib/theme';
 
 import styles from './ToggleThemeButton.module.scss';
 
 export const ToggleThemeButton = () => {
-  const [theme, setTheme] = useState<'dark' | 'light'>('light');
-  const isDark = theme === 'dark';
+  const { theme, resolvedTheme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
-  const handleToggleTheme = () => {
-    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const toggleTheme = () => {
+    setTheme(theme === THEMES.LIGHT ? THEMES.DARK : THEMES.LIGHT);
   };
+
+  if (!mounted) {
+    return (
+      <button
+        className={styles.toggleWrapper}
+        aria-label='Toggle theme'
+        disabled
+      >
+        <div className={styles.circle} />
+      </button>
+    );
+  }
+
+  const isDark = resolvedTheme === 'dark';
 
   return (
     <button
-      aria-label='change theme'
-      data-theme={theme}
-      className={clsx(styles.toggleWrapper, {
-        [styles.toggled]: isDark,
-      })}
-      onClick={handleToggleTheme}
+      onClick={toggleTheme}
+      className={clsx(styles.toggleWrapper, isDark && styles.toggled)}
+      aria-label='Toggle theme'
     >
-      <div
-        className={clsx(styles.circle, {
-          [styles.toggled]: isDark,
-        })}
-      />
+      <div className={clsx(styles.circle, isDark && styles.toggled)} />
     </button>
   );
 };

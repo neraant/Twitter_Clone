@@ -21,7 +21,7 @@ export const BackButton = ({ className }: BackButtonProps) => {
       type='button'
       aria-label='back'
     >
-      <BackIcon width={24} height={24} />
+      <BackIcon width={24} height={24} className={styles.backIcon} />
     </button>
   );
 };

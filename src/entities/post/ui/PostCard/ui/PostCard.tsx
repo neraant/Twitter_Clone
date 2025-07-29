@@ -76,8 +76,8 @@ export const PostCard = ({
       <div className={styles.postContent}>
         <div className={styles.postHeader}>
           <Link
-            className={styles.postHeaderInfo}
             href={`${routes.app.profile}/${author_id}`}
+            className={styles.postHeaderInfo}
           >
             <p className={styles.postAuthorName}>{author_name}</p>
             <p className={styles.postCreatedAt}>{formattedTime}</p>
@@ -104,10 +104,7 @@ export const PostCard = ({
               data-count={imageCount}
             >
               {image_urls.map((src, index) => (
-                <div
-                  key={`preview-${index}-${src.slice(-10)}`}
-                  className={styles.imageWrapper}
-                >
+                <div key={`${src}-${index}`} className={styles.imageWrapper}>
                   {loadingImages[index] && (
                     <Skeleton
                       className={clsx(

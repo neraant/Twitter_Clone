@@ -4,11 +4,10 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import React, { Suspense } from 'react';
 
-import { AuthProvider } from '@/features/auth';
-import { ReactQueryProvider } from '@/shared/lib/providers';
-import { ToastProvider } from '@/shared/lib/toast';
+import { themeScript } from '@/features/toggle-theme/lib';
 import { GlobalLoader } from '@/shared/ui/global-loader';
-import { ToastContainer } from '@/shared/ui/toast';
+
+import { Providers } from './providers';
 
 const inter = Inter({
   subsets: ['latin', 'cyrillic'],
@@ -21,23 +20,26 @@ export const metadata: Metadata = {
   description: 'Twitter Clone Application',
 };
 
+import Script from 'next/script';
+
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang='en'>
+    <html lang='en' suppressHydrationWarning>
       <body className={inter.variable}>
+        <Script
+          id='theme-script'
+          strategy='beforeInteractive'
+          dangerouslySetInnerHTML={{
+            __html: themeScript,
+          }}
+        />
+
         <Suspense fallback={<GlobalLoader />}>
-          <AuthProvider>
-            <ReactQueryProvider>
-              <ToastProvider>
-                <ToastContainer />
-                {children}
-              </ToastProvider>
-            </ReactQueryProvider>
-          </AuthProvider>
+          <Providers>{children}</Providers>
         </Suspense>
       </body>
     </html>

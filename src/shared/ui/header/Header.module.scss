@@ -38,4 +38,10 @@
     align-items: center;
     gap: $spacing-md;
   }
+
+  .linkIcon {
+    path {
+      fill: var(--dark-text-color);
+    }
+  }
 }

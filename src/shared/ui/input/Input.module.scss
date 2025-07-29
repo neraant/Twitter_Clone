@@ -11,6 +11,9 @@
 
   .icon {
     flex-shrink: 0;
+    path {
+      fill: var(--dark-text-color);
+    }
   }
   .input {
     font-size: $font-size-md-plus;

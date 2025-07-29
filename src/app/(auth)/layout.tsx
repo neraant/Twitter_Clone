@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { ReactNode } from 'react';
 
-import { createClient } from '@/shared/api/supabase/server';
+import { getCurrentUserAction } from '@/entities/user/api';
 import { routes } from '@/shared/config/routes';
 import { Footer } from '@/shared/ui/footer/';
 
@@ -12,11 +12,8 @@ export default async function AuthLayout({
 }: {
   children: ReactNode;
 }) {
-  const supabase = await createClient();
+  const user = await getCurrentUserAction();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
   if (user) {
     redirect(routes.app.home);
   }

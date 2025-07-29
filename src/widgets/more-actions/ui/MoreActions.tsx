@@ -2,11 +2,13 @@
 
 import { useState } from 'react';
 
+import { useTheme } from '@/features/toggle-theme/lib';
 import {
   useClickOutside,
   useLockBodyScroll,
   useLogout,
 } from '@/shared/lib/hooks';
+import { THEMES } from '@/shared/lib/theme';
 import { ConfirmModal } from '@/shared/ui/confirm-modal';
 
 import { ACTIONS, LOGOUT_ACTION, THEME_ACTION } from '../lib';
@@ -19,6 +21,7 @@ type MoreActionsProps = {
 export const MoreActions = ({ onClose }: MoreActionsProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const { theme, setTheme } = useTheme();
   const { handleLogout } = useLogout();
 
   const handleCloseModal = () => {
@@ -36,6 +39,7 @@ export const MoreActions = ({ onClose }: MoreActionsProps) => {
         break;
       }
       case THEME_ACTION: {
+        setTheme(theme === THEMES.LIGHT ? THEMES.DARK : THEMES.LIGHT);
         onClose();
         break;
       }

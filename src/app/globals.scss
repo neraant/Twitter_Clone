@@ -36,6 +36,8 @@
   --you-might-like-bg: #f7f9f9bf;
   --empty-text-color: #00000093;
 
+  --more-actions-bg: #f7f9f9;
+
   --post-hover-bg: #73bff220;
 
   --uploader-icon-color: #0000008c;
@@ -49,12 +51,68 @@
   --skeleton-animation-duration: 1.2s;
 }
 
+[data-theme='dark'] {
+  --white-color: #ffffff;
+  --color-bg: #0f0f0f;
+  --dark-text-color: #e4e6ea;
+  --light-text-color: #ffffff;
+  --primary-color: #1d9bf0;
+  --primary-color-hover: #1a8cd8;
+
+  --border-color: #2f3336;
+  --border-color-hover: #3e4144;
+  --border-input-color: #333639;
+  --border-sign-type-color: #2a2d30;
+  --border-sign-type-hover-color: #3d4043;
+
+  --toast-bg: #1c2938;
+  --toast-title-color: #e4e6ea;
+  --toast-description-color: #9ca3af;
+  --border-error-color: #dc2626;
+  --border-success-color: #10b981;
+  --error-color: #ef4444;
+
+  --search-input-bg: #202327;
+  --search-placeholder-color: #6b7280;
+
+  --logout-btn-bg: #374151;
+  --logout-btn-bg-hover: #4b5563;
+
+  --active-like-color: #ef4444;
+  --non-active-like-color: #6b7280;
+
+  --login-form-bg: #16181c;
+  --login-shadow-color: #00000080;
+
+  --you-might-like-bg: #16181c;
+  --empty-text-color: #6b7280;
+
+  --more-actions-bg: #16181c;
+
+  --post-hover-bg: #1d9bf015;
+
+  --uploader-icon-color: #9ca3af;
+  --uploader-border-color: #374151;
+  --uploader-border-color-hover: #4b5563;
+
+  --toggle-color: #6b7280;
+
+  --skeleton-base-color: #374151;
+  --skeleton-shine-color: #4b5563;
+  --skeleton-animation-duration: 1.2s;
+}
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  transition:
+    background-color 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    fill 0.2s ease;
 }
 
 button {

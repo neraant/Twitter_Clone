@@ -47,10 +47,16 @@ export const usePostImages = () => {
     (index: number) => {
       setImageItems((prev) => {
         const itemToRemove = prev[index];
-        if (itemToRemove) {
-          URL.revokeObjectURL(itemToRemove.url);
-        }
-        return prev.filter((_, i) => i !== index);
+
+        const updatedItems = prev.filter((_, i) => i !== index);
+
+        setTimeout(() => {
+          if (itemToRemove) {
+            URL.revokeObjectURL(itemToRemove.url);
+          }
+        }, 0);
+
+        return updatedItems;
       });
       setError('');
       setUploadError('');

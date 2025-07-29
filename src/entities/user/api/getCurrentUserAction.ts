@@ -20,5 +20,9 @@ export const getCurrentUserAction = async () => {
 
   const { user } = await res.json();
 
+  if (!user) {
+    return null;
+  }
+
   return user;
 };
