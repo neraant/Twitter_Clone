@@ -2,8 +2,10 @@
 @use '@styles/_variables.scss' as *;
 
 .wrapper {
-  margin-top: $spacing-lg;
-  margin-bottom: $spacing-5xl;
+  flex: 1;
+  margin-top: $spacing-sm;
+  max-height: 350px;
+  min-height: 350px;
 }
 
 .postsWrapper {
@@ -11,10 +13,14 @@
   display: flex;
   flex-direction: column;
   gap: $spacing-sm;
-  max-height: 190px;
+  max-height: 200px;
   overflow-y: auto;
   padding-right: $spacing-xs;
   scrollbar-width: thin;
+
+  @media (max-width: $breakpoint-3xl) {
+    max-height: 185px;
+  }
 }
 
 .postSkeleton {
@@ -30,7 +36,7 @@
 .gallery {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  margin-top: $spacing-3xl;
+  margin-top: $spacing-xl;
   grid-template-rows: repeat(2, 1fr);
   gap: $spacing-sm;
 

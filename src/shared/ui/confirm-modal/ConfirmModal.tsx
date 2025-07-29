@@ -10,6 +10,7 @@ type ConfirmModalProps = {
   title: string;
   description: string;
   actionButtonLabel: string;
+  className?: string;
   onClose: () => void;
   onConfirm: () => void;
 };
@@ -18,11 +19,12 @@ export const ConfirmModal = ({
   title,
   description,
   actionButtonLabel,
+  className,
   onClose,
   onConfirm,
 }: ConfirmModalProps) => {
   return (
-    <BaseModal onClose={onClose}>
+    <BaseModal onClose={onClose} className={className}>
       <button type='button' className={styles.closeButton} onClick={onClose}>
         <CrossIcon />
       </button>

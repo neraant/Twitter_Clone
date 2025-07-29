@@ -4,9 +4,13 @@
   position: fixed;
   bottom: $spacing-md;
   right: $spacing-md;
-  z-index: 100;
+  z-index: 2000;
   width: 100%;
   max-width: 345px;
+
+  @media (max-width: $breakpoint-md) {
+    bottom: $spacing-3xl;
+  }
 }
 
 .toast {

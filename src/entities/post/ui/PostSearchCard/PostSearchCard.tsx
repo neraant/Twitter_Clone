@@ -1,16 +1,16 @@
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import Link from 'next/link';
+
+import { DEFAULT_AVATAR } from '@/shared/lib/common';
 
 import styles from './PostSearchCard.module.scss';
 
 type PostSearchCardProps = {
-  avatar: string | null;
+  avatar: string | null | StaticImageData;
   name: string;
   content: string;
   href: string;
 };
-
-const DefaultAvatar = '/images/user-avatar.webp';
 
 export const PostSearchCard = ({
   avatar,
@@ -22,7 +22,7 @@ export const PostSearchCard = ({
     <Link href={href} className={styles.postLink}>
       <Image
         className={styles.avatar}
-        src={avatar || DefaultAvatar}
+        src={avatar || DEFAULT_AVATAR}
         alt='avatar'
         width={50}
         height={50}
@@ -31,8 +31,8 @@ export const PostSearchCard = ({
       />
 
       <div className={styles.postInfo}>
-        <span className={styles.name}>{name}</span>
-        <span className={styles.content}>{content}</span>
+        <p className={styles.name}>{name}</p>
+        <p className={styles.content}>{content}</p>
       </div>
     </Link>
   );

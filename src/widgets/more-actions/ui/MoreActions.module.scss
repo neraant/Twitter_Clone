@@ -1,6 +1,9 @@
+@use '@styles/_mixins.scss' as *;
 @use '@styles/_variables.scss' as *;
 
 .actionsWrapper {
+  @include modal-animation;
+
   position: absolute;
   left: 0;
   bottom: calc(100% + 10px);
@@ -24,6 +27,7 @@
   svg {
     path {
       fill: var(--dark-text-color);
+      opacity: 0.7;
     }
   }
   .actionsList {
@@ -49,6 +53,7 @@
     background: transparent;
     border-radius: $radius-md;
     transition: all 0.3s ease-in-out;
+    color: var(--dark-text-color);
 
     &:hover {
       background: var(--post-hover-bg);

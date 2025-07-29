@@ -17,7 +17,7 @@
   }
 
   @media (max-width: $breakpoint-3xl) {
-    max-width: fit-content;
+    max-width: 75px;
   }
 
   @media (max-width: $breakpoint-md) {
@@ -181,45 +181,12 @@
     }
   }
 
-  .newTweetButton {
-    margin-bottom: $spacing-md;
-
-    @media (max-width: $breakpoint-3xl) {
-      height: 100%;
-      width: 100%;
-      max-width: 40px;
-      max-height: 40px;
-      margin: 0 auto;
-      margin-bottom: $spacing-md;
-    }
-
-    @media (max-width: $breakpoint-md) {
-      display: none;
-    }
-
-    .newTweetText {
-      @media (max-width: $breakpoint-3xl) {
-        display: none;
-      }
-    }
-
-    .plusIcon {
-      display: none;
-
-      @media (max-width: $breakpoint-3xl) {
-        display: flex;
-        path {
-          fill: var(--light-text-color);
-        }
-      }
-    }
-  }
-
   .user {
     margin-top: auto;
     margin-bottom: $spacing-lg;
 
-    span {
+    p {
+      max-width: none !important;
       @media (max-width: $breakpoint-3xl) {
         display: none;
       }

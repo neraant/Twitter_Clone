@@ -4,7 +4,7 @@ import { routes } from '@/shared/config/routes';
 import { RegisterCredentials } from '../model/';
 
 const checkEmailExists = async (email: string) => {
-  const res = await fetch(routes.auth.checkEmail, {
+  const res = await fetch(`${routes.api.checkEmail}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email }),

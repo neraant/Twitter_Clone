@@ -1,3 +1,9 @@
+export const enum StorageFolders {
+  posts = 'posts',
+  avatars = 'avatars',
+  banners = 'banners',
+}
+
 export type Json =
   | string
   | number
@@ -7,6 +13,9 @@ export type Json =
   | Json[];
 
 export type Database = {
+  __InternalSupabase: {
+    PostgrestVersion: '12.2.3 (519615d)';
+  };
   graphql_public: {
     Tables: {
       [_ in never]: never;
@@ -62,6 +71,13 @@ export type Database = {
             columns: ['author_id'];
             isOneToOne: false;
             referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'comments_post_id_fkey';
+            columns: ['post_id'];
+            isOneToOne: false;
+            referencedRelation: 'post_with_author_and_likes';
             referencedColumns: ['id'];
           },
           {
@@ -127,6 +143,13 @@ export type Database = {
             foreignKeyName: 'likes_post_id_fkey';
             columns: ['post_id'];
             isOneToOne: false;
+            referencedRelation: 'post_with_author_and_likes';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'likes_post_id_fkey';
+            columns: ['post_id'];
+            isOneToOne: false;
             referencedRelation: 'posts';
             referencedColumns: ['id'];
           },
@@ -141,31 +164,34 @@ export type Database = {
       };
       posts: {
         Row: {
-          author_avatar: string | null;
           author_id: string | null;
-          author_name: string | null;
           content: string | null;
           created_at: string;
           id: string;
-          image_url: string | null;
+          image_hashes: string[] | null;
+          image_urls: string[] | null;
+          is_deleted: boolean | null;
+          perceptual_hashes: string[] | null;
         };
         Insert: {
-          author_avatar?: string | null;
           author_id?: string | null;
-          author_name?: string | null;
           content?: string | null;
           created_at?: string;
           id?: string;
-          image_url?: string | null;
+          image_hashes?: string[] | null;
+          image_urls?: string[] | null;
+          is_deleted?: boolean | null;
+          perceptual_hashes?: string[] | null;
         };
         Update: {
-          author_avatar?: string | null;
           author_id?: string | null;
-          author_name?: string | null;
           content?: string | null;
           created_at?: string;
           id?: string;
-          image_url?: string | null;
+          image_hashes?: string[] | null;
+          image_urls?: string[] | null;
+          is_deleted?: boolean | null;
+          perceptual_hashes?: string[] | null;
         };
         Relationships: [
           {
@@ -180,45 +206,79 @@ export type Database = {
       users: {
         Row: {
           avatar_url: string | null;
+          banner_url: string | null;
+          bio: string | null;
           created_at: string;
           date_of_birth: string | null;
           email: string | null;
           followers_count: number;
           following_count: number;
+          gender: string | null;
           id: string;
           name: string | null;
           phone_number: string | null;
           updated_at: string | null;
+          user_telegram: string | null;
         };
         Insert: {
           avatar_url?: string | null;
+          banner_url?: string | null;
+          bio?: string | null;
           created_at?: string;
           date_of_birth?: string | null;
           email?: string | null;
           followers_count?: number;
           following_count?: number;
+          gender?: string | null;
           id?: string;
           name?: string | null;
           phone_number?: string | null;
           updated_at?: string | null;
+          user_telegram?: string | null;
         };
         Update: {
           avatar_url?: string | null;
+          banner_url?: string | null;
+          bio?: string | null;
           created_at?: string;
           date_of_birth?: string | null;
           email?: string | null;
           followers_count?: number;
           following_count?: number;
+          gender?: string | null;
           id?: string;
           name?: string | null;
           phone_number?: string | null;
           updated_at?: string | null;
+          user_telegram?: string | null;
         };
         Relationships: [];
       };
     };
     Views: {
-      [_ in never]: never;
+      post_with_author_and_likes: {
+        Row: {
+          author_avatar: string | null;
+          author_id: string | null;
+          author_name: string | null;
+          content: string | null;
+          created_at: string | null;
+          id: string | null;
+          image_urls: string[] | null;
+          is_deleted: boolean | null;
+          is_liked: boolean | null;
+          likes_count: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'posts_author_id_fkey';
+            columns: ['author_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
     };
     Functions: {
       decrement_followers_count: {

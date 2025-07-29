@@ -1,0 +1,9 @@
+@use '@styles/_variables.scss' as *;
+@use '@styles/_mixins.scss' as *;
+
+.tweetButton {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  padding: $spacing-ms 0;
+}

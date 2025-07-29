@@ -52,7 +52,7 @@
     @media (max-width: $breakpoint-md-lg) {
       width: 100%;
     }
-    @media (max-width: 480px) {
+    @media (max-width: $breakpoint-xs) {
       margin-bottom: $spacing-xl;
     }
   }
@@ -74,7 +74,7 @@
     }
 
     @media (max-width: $breakpoint-md) {
-      font-size: $font-size-ms;
+      font-size: $font-size-md;
     }
   }
 }

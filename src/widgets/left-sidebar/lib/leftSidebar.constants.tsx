@@ -58,5 +58,3 @@ export const LINKS = [
     action: MORE_ACTION,
   },
 ];
-
-export const NEW_TWEET_BUTTON_TEXT = 'New tweet';

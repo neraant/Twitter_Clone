@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 import { FlatCompat } from '@eslint/eslintrc';
 import pluginImportSort from 'eslint-plugin-simple-import-sort';
 import { dirname } from 'path';

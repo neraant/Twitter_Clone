@@ -1,0 +1,24 @@
+@use '@styles/_variables.scss' as *;
+@use '@styles/_mixins.scss' as *;
+
+.likeButton {
+  margin-top: $spacing-lg;
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  max-width: fit-content;
+
+  &.active {
+    .likeText {
+      color: var(--active-like-color);
+    }
+  }
+  .likeIcon {
+    flex-shrink: 0;
+    width: 25px;
+  }
+  .likeText {
+    color: var(--non-active-like-color);
+    font-size: $font-size-md;
+  }
+}

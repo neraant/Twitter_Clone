@@ -1,8 +1,12 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { useClickOutside, useLogout } from '@/shared/lib/hooks';
+import {
+  useClickOutside,
+  useLockBodyScroll,
+  useLogout,
+} from '@/shared/lib/hooks';
 import { ConfirmModal } from '@/shared/ui/confirm-modal';
 
 import { ACTIONS, LOGOUT_ACTION, THEME_ACTION } from '../lib';
@@ -13,8 +17,8 @@ type MoreActionsProps = {
 };
 
 export const MoreActions = ({ onClose }: MoreActionsProps) => {
-  const ref = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const { handleLogout } = useLogout();
 
   const handleCloseModal = () => {
@@ -41,10 +45,13 @@ export const MoreActions = ({ onClose }: MoreActionsProps) => {
     }
   };
 
-  useClickOutside(ref, onClose);
+  const ref = useClickOutside<HTMLDivElement>({
+    handleOnClickOutside: isModalOpen ? () => {} : onClose,
+  });
+  useLockBodyScroll(isModalOpen);
 
   return (
-    <>
+    <div ref={ref}>
       {isModalOpen && (
         <ConfirmModal
           title='Confirm logout'
@@ -52,10 +59,11 @@ export const MoreActions = ({ onClose }: MoreActionsProps) => {
           actionButtonLabel='Logout'
           onClose={handleCloseModal}
           onConfirm={handleLogout}
+          className='confirmLogout'
         />
       )}
 
-      <div className={styles.actionsWrapper} ref={ref}>
+      <div className={styles.actionsWrapper}>
         <ul className={styles.actionsList}>
           {ACTIONS.map(({ label, action, icon }) => (
             <li key={`action_${action}`} className={styles.actionListItem}>
@@ -72,6 +80,6 @@ export const MoreActions = ({ onClose }: MoreActionsProps) => {
           ))}
         </ul>
       </div>
-    </>
+    </div>
   );
 };

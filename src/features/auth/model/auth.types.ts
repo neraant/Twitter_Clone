@@ -16,17 +16,19 @@ export interface RegisterCredentials {
 export interface UseAuthState {
   user: User | null;
   isAuth: boolean;
+  error: string | null;
+
   isLoadingInitialize: boolean;
   isLoadingLogin: boolean;
   isLoadingGoogle: boolean;
   isLoadingSignUp: boolean;
   isLoadingLogout: boolean;
-  error: string | null;
 
-  initialize: () => void;
+  initialize: () => Promise<void>;
   loginWithPassword: (credentials: LoginCredentials) => Promise<void>;
   loginWithGoogle: () => Promise<void>;
   signUpWithPassword: (credentials: RegisterCredentials) => Promise<void>;
   logout: () => Promise<void>;
   clearError: () => void;
+  updateCurrentUser: (user: User) => void;
 }

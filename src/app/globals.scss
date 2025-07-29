@@ -1,6 +1,7 @@
 @use '@styles/_mixins.scss' as *;
 
 :root {
+  --white-color: #fff;
   --color-bg: #fff;
   --dark-text-color: #000;
   --light-text-color: #fff;
@@ -8,6 +9,7 @@
   --primary-color-hover: #1985c8;
 
   --border-color: #d8d8d8;
+  --border-color-hover: #959595;
   --border-input-color: #0003;
   --border-sign-type-color: #e4eaed;
   --border-sign-type-hover-color: #909090;
@@ -35,6 +37,12 @@
   --empty-text-color: #00000093;
 
   --post-hover-bg: #73bff220;
+
+  --uploader-icon-color: #0000008c;
+  --uploader-border-color: #0004;
+  --uploader-border-color-hover: #0007;
+
+  --toggle-color: #00000074;
 
   --skeleton-base-color: #ddd;
   --skeleton-shine-color: #e8e8e8;
@@ -77,9 +85,7 @@ body {
   color: var(--dark-text-color);
   position: relative;
 
-  .dark-theme {
-    --color-bg: #000;
-    --dark-text-color: #fff;
-    --light-text-color: #000;
+  &.no-scroll {
+    overflow: hidden;
   }
 }

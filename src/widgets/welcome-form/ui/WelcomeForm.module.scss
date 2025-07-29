@@ -71,7 +71,7 @@
     max-width: 370px;
 
     @media (max-width: $breakpoint-3xl) {
-      font-size: $font-size-ms;
+      font-size: $font-size-md;
       margin-bottom: $spacing-sm;
     }
   }
@@ -83,7 +83,7 @@
     font-size: $font-size-md;
 
     @media (max-width: $breakpoint-3xl) {
-      font-size: $font-size-ms;
+      font-size: $font-size-md;
     }
   }
 }

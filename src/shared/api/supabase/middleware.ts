@@ -37,24 +37,53 @@ export async function updateSession(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname;
 
-  const publicRoutes = [
-    routes.auth.signUpMain,
-    routes.auth.signUp,
-    routes.auth.login,
+  const protectedRoutes = [
+    routes.app.bookmarks,
+    routes.app.explore,
+    routes.app.home,
+    routes.app.lists,
+    routes.app.messages,
+    routes.app.more,
+    routes.app.notifications,
+    routes.app.profile,
+    routes.app.post,
   ];
 
-  const isPublicRoute = publicRoutes.some((route) =>
+  const authRoutes = [
+    routes.auth.signUpMain,
+    routes.auth.login,
+    routes.auth.signUp,
+  ];
+
+  const knownRoutes = [
+    routes.root,
+    ...protectedRoutes,
+    ...authRoutes,
+    routes.api.callback,
+    routes.api.checkEmail,
+    routes.api.getUser,
+  ];
+
+  const isProtectedRoute = protectedRoutes.some((route) =>
     pathname.startsWith(route),
   );
 
-  if (!user && !isPublicRoute) {
-    const redirectUrl = new URL(routes.auth.signUpMain, request.url);
-    return NextResponse.redirect(redirectUrl);
+  const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
+
+  const routeExists = knownRoutes.some(
+    (route) => pathname === route || pathname.startsWith(route + '/'),
+  );
+
+  if (!user && isProtectedRoute) {
+    return NextResponse.redirect(new URL(routes.auth.signUpMain, request.url));
   }
 
-  if (user && isPublicRoute) {
-    const redirectUrl = new URL(routes.app.home, request.url);
-    return NextResponse.redirect(redirectUrl);
+  if (user && isAuthRoute) {
+    return NextResponse.redirect(new URL(routes.app.home, request.url));
+  }
+
+  if (!routeExists) {
+    return NextResponse.rewrite(new URL('/404', request.url));
   }
 
   return supabaseResponse;

@@ -9,7 +9,7 @@
   width: 100%;
   background: var(--primary-color);
   padding: $spacing-md 0;
-  border-radius: $radius-lg-plus;
+  border-radius: $radius-xl;
   text-align: center;
   font-size: $font-size-md-plus;
   font-weight: $font-weight-bold;
@@ -27,5 +27,9 @@
 
   @media (max-width: $breakpoint-md) {
     font-size: $font-size-md-plus;
+  }
+  @media (max-width: $breakpoint-md) {
+    font-size: $font-size-sm;
+    padding: $spacing-ms 0;
   }
 }

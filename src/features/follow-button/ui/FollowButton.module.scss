@@ -1,6 +1,11 @@
 @use '@styles/_mixins.scss' as *;
 @use '@styles/_variables.scss' as *;
 
+.loader {
+  height: 100%;
+  max-height: fit-content;
+}
+
 .followButton {
   @include flex-center;
 
@@ -9,6 +14,7 @@
   gap: $spacing-sm;
   width: 100%;
   max-width: 80px;
+  height: fit-content;
   background: var(--primary-color);
   padding: $spacing-sm 0;
   border-radius: $radius-lg-plus;

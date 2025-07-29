@@ -1,0 +1,184 @@
+'use client';
+
+import clsx from 'clsx';
+import { useEffect, useState } from 'react';
+
+import { hasEmailProvider } from '@/entities/user/lib';
+import { ChangePasswordButton } from '@/features/change-password';
+import {
+  changePasswordWithEmailAction,
+  changePasswordWithGoogleAction,
+} from '@/features/change-password/api';
+import { useModal } from '@/shared/lib/hooks';
+import { useToast } from '@/shared/lib/toast';
+import { CrossIcon } from '@/shared/ui/icon';
+import { Loader } from '@/shared/ui/loader';
+import { Overlay } from '@/shared/ui/overlay';
+import { SignInput } from '@/shared/ui/sign-input';
+
+import { CHANGE_TITLE, changePasswordFormData } from '../lib';
+import { usePasswordForm } from '../lib/usePasswordForm';
+import styles from './ChangePasswordModal.module.scss';
+
+type ChangePasswordModalProps = {
+  onClose: () => void;
+};
+
+export const ChangePasswordModal = ({ onClose }: ChangePasswordModalProps) => {
+  const [isEmailUser, setIsEmailUser] = useState<boolean | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    isClosing,
+    handleClose,
+    ref: modalRef,
+  } = useModal<HTMLFormElement>({ onClose });
+
+  const { handleSubmit, register, errors } = usePasswordForm(isEmailUser);
+
+  const { showToast } = useToast();
+
+  useEffect(() => {
+    const checkUserType = async () => {
+      const isEmail = await hasEmailProvider();
+      setIsEmailUser(isEmail);
+    };
+    checkUserType();
+  }, []);
+
+  const validateEmailPassword = (
+    currentPassword: string,
+    changePassword: string,
+  ) => {
+    if (!currentPassword) {
+      showToast('Error', 'Current password is required', 'error');
+      return false;
+    }
+    if (currentPassword === changePassword) {
+      showToast(
+        'Error',
+        'New password must be different from current password',
+        'error',
+      );
+      return false;
+    }
+    return true;
+  };
+
+  const handleEmailPasswordChange = async (
+    currentPassword: string,
+    changePassword: string,
+  ) => {
+    const { success, message } = await changePasswordWithEmailAction(
+      currentPassword,
+      changePassword,
+    );
+    showToast(
+      success ? 'Success' : 'Error',
+      message,
+      success ? 'success' : 'error',
+    );
+    if (success) handleClose();
+  };
+
+  const handleGooglePasswordChange = async (changePassword: string) => {
+    const { success, message } =
+      await changePasswordWithGoogleAction(changePassword);
+    showToast(
+      success ? 'Success' : 'Error',
+      message,
+      success ? 'success' : 'error',
+    );
+    if (success) handleClose();
+  };
+
+  const onSubmit = async ({
+    currentPassword,
+    changePassword,
+  }: changePasswordFormData) => {
+    try {
+      setIsLoading(true);
+      if (isEmailUser) {
+        if (!validateEmailPassword(currentPassword!, changePassword!)) return;
+        await handleEmailPasswordChange(currentPassword!, changePassword!);
+      } else {
+        await handleGooglePasswordChange(changePassword!);
+      }
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'An unexpected error occurred';
+      showToast('Error', errorMessage, 'error');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <Overlay isClosing={isClosing} onClickOutside={handleClose}>
+      <form
+        ref={modalRef}
+        className={clsx(
+          styles.passwordModalWrapper,
+          isClosing && styles.closing,
+        )}
+        onClick={(e) => e.stopPropagation()}
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <button type='button' aria-label='close' onClick={handleClose}>
+          <CrossIcon
+            width={18}
+            height={18}
+            className={styles.passwordCloseButton}
+          />
+        </button>
+
+        <div className={styles.passwordModalContent}>
+          <h2 className={styles.passwordTitle}>{CHANGE_TITLE}</h2>
+
+          {isEmailUser === null ? (
+            <Loader size='40' className={styles.loader} />
+          ) : (
+            <div className={styles.inputsWrapper}>
+              {isEmailUser && (
+                <SignInput
+                  {...register('currentPassword')}
+                  label='Current password'
+                  error={errors.currentPassword}
+                  className={styles.input}
+                  name='currentPassword'
+                  autoComplete='current-password'
+                  isPassword
+                />
+              )}
+
+              <SignInput
+                {...register('changePassword')}
+                label='Change password'
+                error={errors.changePassword}
+                isPassword
+                className={styles.input}
+                name='changePassword'
+                autoComplete='new-password'
+              />
+
+              <SignInput
+                {...register('confirmPassword')}
+                label='Confirm password'
+                error={errors.confirmPassword}
+                isPassword
+                className={styles.input}
+                name='confirmPassword'
+                autoComplete='new-password'
+              />
+            </div>
+          )}
+        </div>
+
+        <ChangePasswordButton
+          className={styles.changeButton}
+          isLoading={isLoading}
+        />
+      </form>
+    </Overlay>
+  );
+};

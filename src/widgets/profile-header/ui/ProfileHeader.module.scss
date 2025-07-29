@@ -1,0 +1,28 @@
+@use '@styles/_variables.scss' as *;
+@use '@styles/_mixins.scss' as *;
+
+.wrapper {
+  padding: 0 $spacing-md;
+
+  .hideUnder768 {
+    display: inline-block;
+    margin-top: $spacing-md;
+
+    @media (max-width: $breakpoint-md) {
+      margin: 0;
+      text-align: center;
+      display: none;
+    }
+  }
+}
+
+.top {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+
+  @media (max-width: $breakpoint-md) {
+    flex-direction: column;
+    justify-content: start;
+  }
+}

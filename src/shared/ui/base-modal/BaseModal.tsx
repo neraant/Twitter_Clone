@@ -1,6 +1,7 @@
 'use client';
 
-import { ReactNode, useRef, useState } from 'react';
+import clsx from 'clsx';
+import { ReactNode, useState } from 'react';
 
 import { useClickOutside } from '@/shared/lib/hooks';
 
@@ -9,14 +10,16 @@ import styles from './BaseModal.module.scss';
 
 type BaseModalProps = {
   children: ReactNode;
+  className?: string;
   onClose: () => void;
 };
 
-export const BaseModal = ({ children, onClose }: BaseModalProps) => {
-  const ref = useRef<HTMLDivElement | null>(null);
+export const BaseModal = ({ children, className, onClose }: BaseModalProps) => {
   const [isClosing, setIsClosing] = useState(false);
 
-  useClickOutside(ref, handleClose);
+  const ref = useClickOutside<HTMLDivElement>({
+    handleOnClickOutside: handleClose,
+  });
 
   function handleClose() {
     setIsClosing(true);
@@ -27,7 +30,7 @@ export const BaseModal = ({ children, onClose }: BaseModalProps) => {
     <Overlay onClickOutside={handleClose} isClosing={isClosing}>
       <div
         ref={ref}
-        className={`${styles.modal} ${isClosing ? styles.closing : ''}`}
+        className={clsx(styles.modal, className, isClosing && styles.closing)}
         onClick={(e) => e.stopPropagation()}
       >
         {children}

@@ -1,1 +1,1 @@
-export { getYouMightLikeUsers } from './getYouMightLikeUsers';
+export { getYouMightLikeUsersAction } from './getYouMightLikeUsersAction';

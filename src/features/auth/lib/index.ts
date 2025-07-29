@@ -1,1 +1,1 @@
-export { buildUserFromAuth } from './buildUserFromAuth.utils';
+export * from './buildUserFromAuth.utils';

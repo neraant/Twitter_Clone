@@ -1,0 +1,49 @@
+@use '@styles/_variables.scss' as *;
+@use '@styles/_mixins.scss' as *;
+
+.manageWrapper {
+  position: relative;
+}
+.manageModal {
+  @include modal-animation;
+
+  position: absolute;
+  right: 0;
+  bottom: calc(-100% - 30px);
+  z-index: 100;
+  background: var(--color-bg);
+  border-radius: $radius-xs;
+  box-shadow: 0px 0px 5px 0px var(--login-shadow-color);
+  min-width: 200px;
+  max-width: 200px;
+  padding: $spacing-xxs;
+
+  @media (max-width: $breakpoint-xs) {
+    bottom: calc(-100% - 15px);
+    min-width: 150px;
+    max-width: 150px;
+  }
+
+  .manageListButton {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+
+    font-size: $font-size-sm;
+    padding: $spacing-md;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border-radius: $radius-xs;
+    transition: all 0.3s ease-in-out;
+    color: var(--dark-text-color);
+
+    &:hover {
+      background: var(--post-hover-bg);
+    }
+
+    @media (max-width: $breakpoint-xs) {
+      padding: $spacing-ms;
+    }
+  }
+}

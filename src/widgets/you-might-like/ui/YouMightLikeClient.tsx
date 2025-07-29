@@ -1,4 +1,3 @@
-// YouMightLikeClient.tsx (клиентский)
 'use client';
 
 import clsx from 'clsx';
@@ -31,43 +30,41 @@ export const YouMightLikeClient = ({
 }: YouMightLikeClientProps) => {
   const [isMore, setIsMore] = useState(false);
 
-  const handleSeeMore = () => {
-    setIsMore((prev) => !prev);
-  };
+  const handleSeeMore = () => setIsMore((prev) => !prev);
 
   return (
     <div className={styles.wrapper}>
-      <p className={styles.title}>{TITLE}</p>
+      <div className={styles.content}>
+        <p className={styles.title}>{TITLE}</p>
 
-      {isError ? (
-        <span className={styles.emptyStateText}>{ERROR_USERS_TEXT}</span>
-      ) : (
-        <div className={clsx(styles.users, isMore ? styles.active : '')}>
-          {initialUsers && initialUsers.length === 0 && (
-            <span className={styles.emptyStateText}>{EMPTY_USERS_TEXT}</span>
-          )}
+        {isError ? (
+          <span className={styles.emptyStateText}>{ERROR_USERS_TEXT}</span>
+        ) : (
+          <div className={clsx(styles.users, isMore && styles.active)}>
+            {(!initialUsers || initialUsers.length === 0) && (
+              <span className={styles.emptyStateText}>{EMPTY_USERS_TEXT}</span>
+            )}
 
-          {initialUsers &&
-            initialUsers.map((user) => (
+            {initialUsers?.map((user) => (
               <UserSmallCard
                 key={user.id}
                 user={user}
-                isFollowed={user.isFollowed}
                 currentUserId={currentUserId}
               />
             ))}
-        </div>
-      )}
+          </div>
+        )}
 
-      {initialUsers && initialUsers.length > 0 && (
-        <button
-          type='button'
-          className={styles.showButton}
-          onClick={handleSeeMore}
-        >
-          {isMore ? SHOW_LESS_BUTTON : SHOW_MORE_BUTTON}
-        </button>
-      )}
+        {initialUsers && initialUsers.length > 0 && (
+          <button
+            type='button'
+            className={styles.showButton}
+            onClick={handleSeeMore}
+          >
+            {isMore ? SHOW_LESS_BUTTON : SHOW_MORE_BUTTON}
+          </button>
+        )}
+      </div>
     </div>
   );
 };

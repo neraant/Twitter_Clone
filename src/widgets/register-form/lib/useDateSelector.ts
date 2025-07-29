@@ -1,11 +1,15 @@
+'use client';
+
 import { useMemo, useState } from 'react';
 
 import { MONTHS } from '@/shared/lib/validations';
 
 import { getDaysInMonth } from '../lib';
 
+export const START_YEAR = 1900;
+
 const currentYear = new Date().getFullYear();
-const YEARS = Array.from({ length: currentYear - 1900 + 1 }, (_, i) =>
+const YEARS = Array.from({ length: currentYear - START_YEAR + 1 }, (_, i) =>
   (currentYear - i).toString(),
 );
 

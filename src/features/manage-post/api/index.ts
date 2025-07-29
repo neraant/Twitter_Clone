@@ -1,0 +1,1 @@
+export { deletePostAction } from './deletePost';

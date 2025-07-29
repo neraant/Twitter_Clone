@@ -1,0 +1,19 @@
+@use '@styles/_variables.scss' as *;
+@use '@styles/_mixins.scss' as *;
+
+.homeHeaderWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-md;
+  padding: $spacing-lg-plus $spacing-md;
+
+  @media (max-width: $breakpoint-md) {
+    padding: $spacing-sm $spacing-md;
+  }
+
+  .homeHeaderWrapperText {
+    font-size: $font-size-lg-plus;
+    font-weight: $font-weight-bold;
+  }
+}

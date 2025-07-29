@@ -1,23 +1,19 @@
-import { isFollowing } from '@/features/follow-button/api/serverFollowApi';
-import { createClient } from '@/shared/api/supabase/server';
+import { User } from '@/entities/user';
+import { getCurrentUserAction } from '@/entities/user/api';
+import { isFollowingAction } from '@/features/follow-button/api/followActions';
 
-import { getYouMightLikeUsers } from '../api';
+import { getYouMightLikeUsersAction } from '../api';
 import { YouMightLikeClient } from './YouMightLikeClient';
 
 export const YouMightLike = async () => {
-  const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return null;
-
   try {
-    const initialUsers = await getYouMightLikeUsers(user.id);
+    const user: User = await getCurrentUserAction();
+    const users = await getYouMightLikeUsersAction(user.id);
+    if (!users) return null;
 
     const usersWithFollowStatus = await Promise.all(
-      initialUsers.map(async (targetUser) => {
-        const isFollowed = await isFollowing(targetUser.id, user.id);
+      users.map(async (targetUser) => {
+        const isFollowed = await isFollowingAction(targetUser.id, user.id);
         return { ...targetUser, isFollowed };
       }),
     );

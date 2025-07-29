@@ -5,11 +5,10 @@ import { Suspense } from 'react';
 import { UserSmallCardSkeleton } from '@/entities/user';
 import { UserSmallCardServer } from '@/entities/user/ui/UserSmallCard/UserSmallCardServer';
 import { LogoutButton } from '@/features/auth';
+import { OpenPostModalButton } from '@/features/open-add-post-modal';
 import { routes } from '@/shared/config/routes';
-import { Button } from '@/shared/ui/button/Button';
-import { LogoutIcon, PlusIcon, TwitterLogoIcon } from '@/shared/ui/icon';
+import { LogoutIcon, TwitterLogoIcon } from '@/shared/ui/icon';
 
-import { NEW_TWEET_BUTTON_TEXT } from '../lib';
 import styles from './LeftSidebar.module.scss';
 import { LeftSidebarNavigation } from './LeftSidebarNavigation';
 
@@ -23,14 +22,7 @@ export const LeftSidebar = () => {
 
         <LeftSidebarNavigation />
 
-        <Button
-          disabled={false}
-          className={styles.newTweetButton}
-          ariaLabel='add tweet'
-        >
-          <span className={styles.newTweetText}>{NEW_TWEET_BUTTON_TEXT}</span>
-          <PlusIcon className={styles.plusIcon} width={14} height={14} />
-        </Button>
+        <OpenPostModalButton />
 
         <Suspense
           fallback={

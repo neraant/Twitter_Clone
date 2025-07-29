@@ -1,5 +1,4 @@
-import { getCurrentUser } from '@/features/auth/api/getCurrentUser';
-
+import { getCurrentUserAction } from '../../api';
 import { UserSmallCard } from './UserSmallCard';
 
 export const UserSmallCardServer = async ({
@@ -8,7 +7,7 @@ export const UserSmallCardServer = async ({
   className?: string;
 }) => {
   try {
-    const user = await getCurrentUser();
+    const user = await getCurrentUserAction();
     if (!user) return null;
 
     return <UserSmallCard user={user} className={className} isOwnProfile />;

@@ -4,9 +4,12 @@ export const routes = {
     signUpMain: '/welcome',
     signUp: '/register',
     login: '/login',
-    error: '/error',
+  },
+  api: {
     callback: '/auth/callback',
     checkEmail: '/auth/check-email',
+    getTweets: '/posts',
+    getUser: '/users',
   },
   app: {
     home: '/home',
@@ -17,5 +20,6 @@ export const routes = {
     lists: '/lists',
     profile: '/profile',
     more: '/more',
+    post: '/post',
   },
 };

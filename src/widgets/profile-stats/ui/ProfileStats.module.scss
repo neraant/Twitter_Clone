@@ -1,0 +1,62 @@
+@use '@styles/_variables.scss' as *;
+@use '@styles/_mixins.scss' as *;
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: $spacing-md;
+
+  button {
+    display: none;
+    margin: 0 auto;
+    max-width: calc(100% - 32px);
+
+    @media (max-width: $breakpoint-md) {
+      display: flex;
+    }
+  }
+
+  .skeletonButton {
+    display: none;
+    @media (max-width: $breakpoint-md) {
+      display: inline-block;
+      margin-left: $spacing-md;
+      width: calc(100% - #{$spacing-md} * 2) !important;
+    }
+  }
+
+  @media (max-width: $breakpoint-md) {
+    padding-bottom: $spacing-xl-plus;
+  }
+}
+
+.statsWrapper {
+  padding: 0 $spacing-md;
+  padding-bottom: $spacing-xl-plus;
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+
+  @media (max-width: $breakpoint-md) {
+    padding: 0 $spacing-md;
+  }
+
+  .statsText {
+    cursor: pointer;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-md-plus;
+
+    span {
+      font-weight: $font-weight-regular;
+      opacity: 0.6;
+      transition: all 0.3s ease-in-out;
+
+      &:hover {
+        text-decoration: underline;
+        text-underline-offset: 5px;
+        text-underline-position: below;
+      }
+    }
+  }
+}

@@ -14,11 +14,15 @@ export const buildUserFromAuth = (
     email: authUser.email!,
     name: profile?.name ?? authUser.email!,
     avatar_url: profile?.avatar_url ?? null,
+    banner_url: profile?.banner_url ?? null,
     phone_number: profile?.phone_number ?? null,
     date_of_birth: profile?.date_of_birth ?? null,
     created_at: profile?.created_at ?? new Date().toISOString(),
     updated_at: profile?.updated_at ?? null,
     followers_count: profile?.followers_count ?? 0,
     following_count: profile?.following_count ?? 0,
+    user_telegram: profile?.user_telegram ?? null,
+    bio: profile?.bio ?? null,
+    gender: profile?.gender ?? '',
   };
 };

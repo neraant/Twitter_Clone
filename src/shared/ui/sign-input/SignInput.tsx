@@ -1,9 +1,11 @@
 'use client';
 
+import clsx from 'clsx';
 import { forwardRef, InputHTMLAttributes, useState } from 'react';
 import { FieldError } from 'react-hook-form';
 
 import { usePhoneInput } from '@/shared/lib/hooks/usePhoneInput';
+import { MAX_PHONE_LEN } from '@/shared/lib/validations';
 
 import { EyeCrossedIcon } from '../../../shared/ui/icon';
 import styles from './SignInput.module.scss';
@@ -14,6 +16,7 @@ type SignInputProps = {
   isPassword?: boolean;
   isPhone?: boolean;
   error?: FieldError;
+  className?: string;
 } & InputHTMLAttributes<HTMLInputElement>;
 
 const SHOW_PASSWROD = 'Show password';
@@ -30,6 +33,7 @@ export const SignInput = forwardRef<HTMLInputElement, SignInputProps>(
       error,
       onChange,
       value,
+      className,
       ...props
     },
     ref,
@@ -59,7 +63,7 @@ export const SignInput = forwardRef<HTMLInputElement, SignInputProps>(
           onKeyDown: handlePhoneKeyDown,
           onFocus: handlePhoneFocus,
           value: displayValue,
-          maxLength: 19,
+          maxLength: MAX_PHONE_LEN,
         }
       : {
           onChange,
@@ -67,7 +71,7 @@ export const SignInput = forwardRef<HTMLInputElement, SignInputProps>(
         };
 
     return (
-      <div className={styles.inputWrapper}>
+      <div className={clsx(styles.inputWrapper, className)}>
         {label && (
           <label htmlFor={label} className={styles.label}>
             {label}
@@ -96,7 +100,7 @@ export const SignInput = forwardRef<HTMLInputElement, SignInputProps>(
           </button>
         )}
 
-        {error && <span className={styles.errorMessage}>{error.message}</span>}
+        {error && <p className={styles.errorMessage}>{error.message}</p>}
       </div>
     );
   },

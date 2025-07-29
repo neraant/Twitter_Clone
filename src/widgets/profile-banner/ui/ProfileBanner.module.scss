@@ -1,0 +1,62 @@
+@use '@styles/_variables.scss' as *;
+@use '@styles/_mixins.scss' as *;
+
+.profileBannerWrapper {
+  width: 100%;
+  overflow-x: hidden;
+
+  .profileHeaderWrapper {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    padding: $spacing-md;
+
+    @media (max-width: $breakpoint-md) {
+      padding: $spacing-sm $spacing-md;
+    }
+
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-xxs;
+
+      @media (max-width: $breakpoint-md) {
+        gap: 2px;
+      }
+
+      .name {
+        font-size: $font-size-lg;
+        font-weight: $font-weight-bold;
+        color: var(--dark-text-color);
+
+        @media (max-width: $breakpoint-md) {
+          font-size: $font-size-md-plus;
+        }
+      }
+      .tweetsQnty {
+        font-size: $font-size-md;
+        color: var(--dark-text-color);
+        opacity: 0.6;
+
+        @media (max-width: $breakpoint-md) {
+          font-size: $font-size-md;
+        }
+      }
+    }
+  }
+
+  .bannerImage {
+    width: 100%;
+    display: block;
+    height: auto;
+    max-height: 280px;
+    min-height: 280px;
+    object-fit: cover;
+    object-position: center;
+
+    @media (max-width: $breakpoint-md) {
+      max-height: 200px;
+      min-height: 200px;
+    }
+  }
+}
