@@ -92,7 +92,6 @@ export const PostCard = ({
           )}
         </div>
 
-        {/* Оставляем ссылку на пост вокруг контента и изображений */}
         <Link href={`${routes.app.post}/${postId}`}>
           <p className={styles.postContentText}>{content}</p>
 
@@ -123,7 +122,7 @@ export const PostCard = ({
                       width: '100%',
                       height: '100%',
                     }}
-                    priority={isFirst && index === 0} // оптимизируем priority только для первого изображения
+                    priority={isFirst}
                     alt={`post image ${index + 1}`}
                     onLoad={() => onImageLoad(index)}
                     className={clsx(
