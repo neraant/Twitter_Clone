@@ -122,7 +122,7 @@ export const PostCard = ({
                       width: '100%',
                       height: '100%',
                     }}
-                    priority={isFirst && index === 0}
+                    priority={isFirst}
                     alt={`post image ${index + 1}`}
                     onLoad={() => onImageLoad(index)}
                     className={clsx(
