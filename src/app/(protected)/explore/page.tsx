@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-import { ExploreClient } from '@/widgets/explore-client';
+import { ExploreClient, searchType } from '@/widgets/explore-client';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
@@ -33,6 +33,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Explore() {
-  return <ExploreClient />;
+export default async function Explore({
+  searchParams,
+}: {
+  searchParams: Promise<{ query?: string; tab?: searchType }>;
+}) {
+  const { tab, query } = await searchParams;
+
+  return <ExploreClient tab={tab} query={query} />;
 }

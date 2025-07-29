@@ -1,8 +1,10 @@
 import { Post } from '@/entities/post';
 
+type PostWithinAuthorId = Omit<Post, 'author_id'>;
+
 export interface SearchState {
   query: string;
-  results: Post[];
+  results: PostWithinAuthorId[];
   isLoading: boolean;
   hasSearched: boolean;
   error: string | null;
