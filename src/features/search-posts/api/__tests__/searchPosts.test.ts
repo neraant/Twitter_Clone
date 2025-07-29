@@ -48,7 +48,19 @@ describe('searchPosts', () => {
     expect(mockSupabaseClient.from).toHaveBeenCalledWith(
       'post_with_author_and_likes',
     );
-    expect(mockSupabaseClient.select).toHaveBeenCalledWith('*');
+    expect(mockSupabaseClient.select).toHaveBeenCalledWith(
+      `
+      id,
+      content,
+      created_at,
+      author_name,
+      author_avatar,
+      image_urls,
+      is_deleted,
+      is_liked,
+      likes_count
+    `,
+    );
     expect(mockSupabaseClient.eq).toHaveBeenCalledWith('is_deleted', false);
     expect(mockSupabaseClient.or).toHaveBeenCalledWith(
       'content.ilike.%test%,author_name.ilike.%test%',

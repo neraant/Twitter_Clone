@@ -1,42 +1,31 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import { useSearchParams } from 'next/navigation';
 
 import { Post } from '@/entities/post';
 import { User } from '@/entities/user';
 
-import { useExploreSearch } from '../../lib';
-import { ExploreClient } from '../ExploreClient';
+import { ExploreClientProvider } from '../ExploreClientProvider';
+
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: jest.fn(),
+  }),
+  useSearchParams: jest.fn(),
+}));
 
 jest.mock('next/cache', () => ({
   revalidateTag: jest.fn(),
 }));
 
-jest.mock('next/server', () => ({
-  headers: jest.fn(),
-  cookies: jest.fn(),
-}));
-
-jest.mock('../../lib', () => ({
-  useExploreSearch: jest.fn(),
-  searchType: { posts: 'posts', users: 'users' },
-  EXPLORE_TITLE: 'Search content',
-  NO_RESULTS_TITLE: 'No results found',
-  SKELETON_COUNT: 3,
-}));
-
 jest.mock('../ExploreInput', () => ({
   ExploreInput: ({
     onQueryChange,
-    onSearch,
   }: {
     onQueryChange: (newVal: string) => void;
-    onSearch: (newVal: string) => void;
   }) => (
     <input
       data-testid='explore-input'
-      onChange={(e) => {
-        onQueryChange(e.target.value);
-        onSearch(e.target.value);
-      }}
+      onChange={(e) => onQueryChange(e.target.value)}
     />
   ),
 }));
@@ -62,90 +51,79 @@ jest.mock('../ExploreUsers', () => ({
   ExploreUsers: () => <div data-testid='explore-users'>Users content</div>,
 }));
 
-const mockUseExploreSearch = useExploreSearch as jest.MockedFunction<
-  typeof useExploreSearch
->;
-
-describe('ExploreClient', () => {
-  const defaultSearchHook = {
-    posts: [],
-    users: [],
-    isLoading: false,
-    hasSearched: false,
-    setIsLoading: jest.fn(),
-    search: jest.fn(),
-  };
+describe('ExploreClientProvider', () => {
+  const mockUseSearchParams = useSearchParams as jest.Mock;
 
   beforeEach(() => {
-    jest.clearAllMocks();
-    mockUseExploreSearch.mockReturnValue(defaultSearchHook);
+    mockUseSearchParams.mockReturnValue({
+      get: jest.fn((key) => {
+        if (key === 'query') return '';
+        if (key === 'tab') return undefined;
+        return null;
+      }),
+      toString: () => '',
+    });
   });
 
   it('shows explore state when query is empty', () => {
-    render(<ExploreClient />);
-    expect(screen.getByText('Search content')).toBeInTheDocument();
+    render(<ExploreClientProvider initialPosts={[]} initialUsers={[]} />);
+    expect(
+      screen.getByText('Search here anything you want 😃'),
+    ).toBeInTheDocument();
   });
 
-  it('shows no results when search has no results', () => {
-    mockUseExploreSearch.mockReturnValue({
-      ...defaultSearchHook,
-      hasSearched: true,
+  it('shows no results when query is present but there are no results', () => {
+    mockUseSearchParams.mockReturnValue({
+      get: jest.fn((key) => {
+        if (key === 'query') return 'test';
+        if (key === 'tab') return 'posts';
+        return null;
+      }),
+      toString: () => 'query=test&tab=posts',
     });
 
-    render(<ExploreClient />);
+    render(<ExploreClientProvider initialPosts={[]} initialUsers={[]} />);
 
-    const input = screen.getByTestId('explore-input');
-    fireEvent.change(input, { target: { value: 'test' } });
-
-    expect(screen.getByText('No results found')).toBeInTheDocument();
+    expect(screen.getByText('No results were found 😕')).toBeInTheDocument();
   });
 
-  it('shows posts when posts tab is active and has results', () => {
-    mockUseExploreSearch.mockReturnValue({
-      ...defaultSearchHook,
-      posts: [{ id: '1', content: 'Test post' }] as Post[],
+  it('shows posts when posts are available', () => {
+    mockUseSearchParams.mockReturnValue({
+      get: jest.fn((key) => {
+        if (key === 'query') return 'test';
+        if (key === 'tab') return 'posts';
+        return null;
+      }),
+      toString: () => 'query=test&tab=posts',
     });
 
-    render(<ExploreClient />);
-
-    const input = screen.getByTestId('explore-input');
-    fireEvent.change(input, { target: { value: 'test' } });
+    render(
+      <ExploreClientProvider
+        initialPosts={[{ id: '1', content: 'Test post' }] as Post[]}
+        initialUsers={[]}
+      />,
+    );
 
     expect(screen.getByTestId('explore-posts')).toBeInTheDocument();
   });
 
-  it('shows users when users tab is active and has results', () => {
-    mockUseExploreSearch.mockReturnValue({
-      ...defaultSearchHook,
-      users: [{ id: '1', name: 'Test user' }] as User[],
+  it('shows users when users are available and the users tab is active', () => {
+    mockUseSearchParams.mockReturnValue({
+      get: jest.fn((key) => {
+        if (key === 'query') return 'test';
+        if (key === 'tab') return 'users';
+        return null;
+      }),
+      toString: () => 'query=test&tab=users',
     });
 
-    render(<ExploreClient />);
-
-    const usersTab = screen.getByTestId('users-tab');
-    fireEvent.click(usersTab);
-
-    const input = screen.getByTestId('explore-input');
-    fireEvent.change(input, { target: { value: 'test' } });
+    render(
+      <ExploreClientProvider
+        initialPosts={[]}
+        initialUsers={[{ id: '1', name: 'Test user' }] as User[]}
+      />,
+    );
 
     expect(screen.getByTestId('explore-users')).toBeInTheDocument();
-  });
-
-  it('calls search when tab changes with existing query', () => {
-    const mockSearch = jest.fn();
-    mockUseExploreSearch.mockReturnValue({
-      ...defaultSearchHook,
-      search: mockSearch,
-    });
-
-    render(<ExploreClient />);
-
-    const input = screen.getByTestId('explore-input');
-    fireEvent.change(input, { target: { value: 'test' } });
-
-    const usersTab = screen.getByTestId('users-tab');
-    fireEvent.click(usersTab);
-
-    expect(mockSearch).toHaveBeenCalledWith('users', 'test');
   });
 });

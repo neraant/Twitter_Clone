@@ -1,92 +1,74 @@
-import { act, fireEvent, render, screen } from '@testing-library/react';
-
-import { usePostsDebounce } from '@/features/search-posts/lib';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 import { ExploreInput } from '../ExploreInput';
 
-jest.mock('@/features/search-posts/lib', () => ({
-  usePostsDebounce: jest.fn(),
+jest.mock('../../lib', () => ({
+  SEARCH_PLACEHOLDER: 'Search...',
 }));
 
 jest.mock('@/shared/ui/input/Input', () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  Input: (props: any) => <input data-testid='input' {...props} />,
+  Input: (props: any) => <input {...props} />,
 }));
 
 jest.mock('@/shared/ui/icon', () => ({
-  CrossIcon: () => <span data-testid='cross-icon'>×</span>,
+  CrossIcon: () => <div />,
 }));
 
-const mockUsePostsDebounce = usePostsDebounce as jest.MockedFunction<
-  typeof usePostsDebounce
->;
-
 describe('ExploreInput', () => {
-  const mockProps = {
-    onQueryChange: jest.fn(),
-    onSearch: jest.fn(),
-    onLoadingChange: jest.fn(),
-  };
+  const mockOnQueryChange = jest.fn();
+
+  const renderComponent = (query = '') =>
+    render(<ExploreInput query={query} onQueryChange={mockOnQueryChange} />);
 
   beforeEach(() => {
     jest.clearAllMocks();
-    mockUsePostsDebounce.mockImplementation(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ({ fetch, value, setLoading }: any) => {
-        if (value.trim()) {
-          setLoading(true);
-          setTimeout(() => fetch(), 300);
-        }
-      },
-    );
-    jest.useFakeTimers();
   });
 
-  afterEach(() => {
-    jest.useRealTimers();
+  it('renders input with placeholder', () => {
+    renderComponent();
+
+    const input = screen.getByPlaceholderText('Search...');
+    expect(input).toBeInTheDocument();
+  });
+
+  it('sets input value from props', () => {
+    renderComponent('initial query');
+
+    const input = screen.getByPlaceholderText('Search...') as HTMLInputElement;
+    expect(input.value).toBe('initial query');
   });
 
   it('calls onQueryChange when input changes', () => {
-    render(<ExploreInput {...mockProps} />);
+    renderComponent();
 
-    const input = screen.getByTestId('input');
-    fireEvent.change(input, { target: { value: 'test' } });
+    const input = screen.getByPlaceholderText('Search...');
+    fireEvent.change(input, { target: { value: 'new value' } });
 
-    expect(mockProps.onQueryChange).toHaveBeenCalledWith('test');
+    expect(mockOnQueryChange).toHaveBeenCalledWith('new value');
+    expect(input).toHaveValue('new value');
   });
 
-  it('shows clear button when query is not empty', () => {
-    render(<ExploreInput {...mockProps} />);
+  it('renders clear button when query is not empty', () => {
+    renderComponent('something');
 
-    const input = screen.getByTestId('input');
-    fireEvent.change(input, { target: { value: 'test' } });
-
-    expect(screen.getByTestId('cross-icon')).toBeInTheDocument();
+    const clearButton = screen.getByRole('button', { name: 'clear query' });
+    expect(clearButton).toBeInTheDocument();
   });
 
-  it('clears query when clear button is clicked', () => {
-    render(<ExploreInput {...mockProps} />);
+  it('does not render clear button when query is empty', () => {
+    renderComponent('');
 
-    const input = screen.getByTestId('input');
-    fireEvent.change(input, { target: { value: 'test' } });
+    const clearButton = screen.queryByRole('button', { name: 'clear query' });
+    expect(clearButton).not.toBeInTheDocument();
+  });
 
-    const clearButton = screen.getByRole('button');
+  it('clears input and calls onQueryChange when clear button is clicked', () => {
+    renderComponent('abc');
+
+    const clearButton = screen.getByRole('button', { name: 'clear query' });
     fireEvent.click(clearButton);
 
-    expect(mockProps.onQueryChange).toHaveBeenCalledWith('');
-    expect(input).toHaveValue('');
-  });
-
-  it('triggers debounced search', () => {
-    render(<ExploreInput {...mockProps} />);
-
-    const input = screen.getByTestId('input');
-    fireEvent.change(input, { target: { value: 'test' } });
-
-    act(() => {
-      jest.advanceTimersByTime(300);
-    });
-
-    expect(mockProps.onSearch).toHaveBeenCalledWith('test');
+    expect(mockOnQueryChange).toHaveBeenCalledWith('');
   });
 });
