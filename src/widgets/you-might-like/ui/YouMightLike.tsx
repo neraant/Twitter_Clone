@@ -7,7 +7,9 @@ import { YouMightLikeClient } from './YouMightLikeClient';
 
 export const YouMightLike = async () => {
   try {
-    const user: User = await getCurrentUserAction();
+    const user: User | null = await getCurrentUserAction();
+    if (!user) return null;
+
     const users = await getYouMightLikeUsersAction(user.id);
     if (!users) return null;
 

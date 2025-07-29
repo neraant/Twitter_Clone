@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 
 import { BackIcon } from '../icon';
+import styles from './BackButton.module.scss';
 
 type BackButtonProps = {
   className?: string;
@@ -16,7 +17,7 @@ export const BackButton = ({ className }: BackButtonProps) => {
   return (
     <button
       onClick={back}
-      className={clsx(className)}
+      className={clsx(styles.backButton, className)}
       type='button'
       aria-label='back'
     >

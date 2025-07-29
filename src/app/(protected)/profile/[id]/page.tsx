@@ -7,8 +7,6 @@ import { getCurrentUserAction, getUserByIdAction } from '@/entities/user/api';
 import { isValidUUID } from '@/shared/lib/isValidUUID';
 import { ProfileClient, ProfileClientSkeleton } from '@/widgets/profile-client';
 
-import styles from '../profile.module.scss';
-
 export const metadata: Metadata = {
   title: 'Twitter Clone | Profile',
   description: 'This is the profile page',
@@ -50,7 +48,7 @@ export default async function Profile({
   if (!isValidUUID(id)) return notFound();
 
   return (
-    <div className={styles.page}>
+    <div>
       <Suspense fallback={<ProfileClientSkeleton />}>
         <ProfileData userId={id} />
       </Suspense>

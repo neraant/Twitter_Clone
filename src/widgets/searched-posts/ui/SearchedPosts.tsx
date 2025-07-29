@@ -51,7 +51,7 @@ export const SearchedPosts = () => {
                 content={content!}
                 name={author_name!}
                 avatar={author_avatar ?? DEFAULT_AVATAR}
-                href={`post/${id}`}
+                postId={id!}
               />
             ))}
         </div>

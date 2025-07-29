@@ -1,8 +1,10 @@
 'use client';
 
 import clsx from 'clsx';
+import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 
+import { routes } from '@/shared/config/routes';
 import { useClickOutside, useLockBodyScroll } from '@/shared/lib/hooks';
 import { ConfirmModal } from '@/shared/ui/confirm-modal';
 import { DotsIcon } from '@/shared/ui/icon';
@@ -21,6 +23,9 @@ export const ManagePost = ({
   currentUserId,
   className,
 }: ManagePostProps) => {
+  const router = useRouter();
+  const route = usePathname();
+
   const [isManageOpen, setIsManageOpen] = useState(false);
   const [isConfirmDelete, setIsConfirmDelete] = useState(false);
 
@@ -49,6 +54,10 @@ export const ManagePost = ({
   const handleDeletePost = useDeletePost(postId, currentUserId, () => {
     toggleManage();
     handleCloseConfirmModal();
+
+    if (route.includes(routes.app.post)) {
+      router.back();
+    }
   });
 
   const manageRef = useClickOutside<HTMLDivElement>({
