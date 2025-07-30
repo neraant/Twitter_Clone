@@ -8,7 +8,7 @@ import styles from './RightSidebar.module.scss';
 
 export const RightSidebar = () => {
   return (
-    <div className={styles.sidebar}>
+    <div className={styles.sidebar} data-testid='right-sidebar'>
       <div className={styles.content}>
         <SearchedPosts />
 

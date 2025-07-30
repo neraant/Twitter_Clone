@@ -43,7 +43,11 @@ export const AddPostForm = ({ user }: AddPostFormProps) => {
   if (!user) return null;
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className={styles.form}
+      onSubmit={handleSubmit(onSubmit)}
+      data-testid='post-form'
+    >
       <Image
         src={user.avatar_url ?? DEFAULT_AVATAR}
         alt='avatar'
@@ -60,6 +64,7 @@ export const AddPostForm = ({ user }: AddPostFormProps) => {
             className={styles.textarea}
             maxLength={MAX_POST_LEN}
             rows={3}
+            data-testid='post-textarea'
           />
 
           <p

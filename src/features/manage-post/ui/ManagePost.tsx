@@ -78,7 +78,11 @@ export const ManagePost = ({
         />
       )}
 
-      <div className={clsx(styles.manageWrapper, className)} ref={manageRef}>
+      <div
+        className={clsx(styles.manageWrapper, className)}
+        ref={manageRef}
+        data-testid='manage-post'
+      >
         <button type='button' aria-label='manage post' onClick={toggleManage}>
           <DotsIcon width={20} height={20} className={styles.manageIcon} />
         </button>

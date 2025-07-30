@@ -35,7 +35,10 @@ export const UserSmallCard = ({
     !isOwnProfile && currentUserId && currentUserId !== user.id;
 
   return (
-    <div className={clsx(styles.wrapper, className)}>
+    <div
+      className={clsx(styles.wrapper, className)}
+      data-testid='user-small-card'
+    >
       <Link href={url} className={styles.wrapper}>
         <Image
           src={avatar_url || DEFAULT_AVATAR}

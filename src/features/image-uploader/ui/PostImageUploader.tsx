@@ -68,6 +68,7 @@ export const PostImageUploader = ({
                   height={70}
                   alt='Preview'
                   className={styles.previewImage}
+                  data-testid='image-preview'
                 />
               </div>
             );

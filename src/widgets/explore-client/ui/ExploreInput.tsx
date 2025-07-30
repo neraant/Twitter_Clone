@@ -35,12 +35,13 @@ export const ExploreInput = ({
   };
 
   return (
-    <div className={styles.inputWrapper}>
+    <div className={styles.inputWrapper} data-testid='explore-input-wrapper'>
       <Input
         className={styles.exploreInput}
         placeholder={SEARCH_PLACEHOLDER}
         onChange={handleChange}
         value={localQuery}
+        dataTestId='explore-input'
       />
 
       {localQuery.trim() && (

@@ -10,7 +10,12 @@ type AddTweetButtonProps = {
 
 export const AddTweetButton = ({ isLoading }: AddTweetButtonProps) => {
   return (
-    <Button ariaLabel='add tweet' type='submit' className={styles.tweetButton}>
+    <Button
+      ariaLabel='add tweet'
+      type='submit'
+      className={styles.tweetButton}
+      data-testid='add-post-button'
+    >
       {TWEET_BUTTON}
       {isLoading && <Loader size='16px' />}
     </Button>

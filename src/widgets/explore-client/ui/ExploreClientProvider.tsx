@@ -131,7 +131,7 @@ export const ExploreClientProvider = ({
         </div>
       )}
 
-      <div className={styles.postsWrapper}>
+      <div className={styles.postsWrapper} data-testid='search-results'>
         {loading &&
           Array.from({ length: SKELETON_COUNT }, (_, i) => (
             <UserSmallCardSkeleton key={i} className={styles.postSkeleton} />

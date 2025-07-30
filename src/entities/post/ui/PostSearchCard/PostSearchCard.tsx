@@ -20,7 +20,11 @@ export const PostSearchCard = ({
   postId,
 }: PostSearchCardProps) => {
   return (
-    <Link href={`${routes.app.post}/${postId}`} className={styles.postLink}>
+    <Link
+      href={`${routes.app.post}/${postId}`}
+      className={styles.postLink}
+      data-testid='post-search-card'
+    >
       <Image
         className={styles.avatar}
         src={avatar || DEFAULT_AVATAR}
