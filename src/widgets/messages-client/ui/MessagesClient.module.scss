@@ -2,15 +2,26 @@
 @use '@styles/_variables.scss' as *;
 
 .messagesClient {
-  .headerTitle {
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding: $spacing-lg-plus $spacing-md;
-    font-size: $font-size-lg-plus;
-    font-weight: $font-weight-bold;
     border-bottom: 1px solid var(--border-color);
 
     @media (max-width: $breakpoint-md) {
       padding: $spacing-sm $spacing-md;
     }
+  }
+
+  .headerTitle {
+    font-size: $font-size-lg-plus;
+    font-weight: $font-weight-bold;
+  }
+
+  .connectionStatus {
+    font-size: var(--font-size-sm);
+    color: var(--dark-text-color);
   }
 
   .chatsWrapper {
