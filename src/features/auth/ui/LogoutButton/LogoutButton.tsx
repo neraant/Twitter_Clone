@@ -39,6 +39,7 @@ export const LogoutButton = ({ className, children }: LogoutButtonProps) => {
           actionButtonLabel='Logout'
           onClose={handleCloseModal}
           onConfirm={handleLogout}
+          isLoading={isLoading}
         />
       )}
 

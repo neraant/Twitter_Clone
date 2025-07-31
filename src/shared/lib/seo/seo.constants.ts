@@ -1,0 +1,15 @@
+export const CRAWLER_AGENTS = [
+  'Googlebot',
+  'Bingbot',
+  'Slurp',
+  'DuckDuckBot',
+  'Baiduspider',
+  'YandexBot',
+  'facebookexternalhit',
+  'Twitterbot',
+  'TelegramBot',
+  'LinkedInBot',
+  'WhatsApp',
+  'Discordbot',
+  'Applebot',
+];

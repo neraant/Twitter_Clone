@@ -2,6 +2,7 @@ import { createServerClient } from '@supabase/ssr';
 import { type NextRequest, NextResponse } from 'next/server';
 
 import { routes } from '@/shared/config/routes';
+import { isCrawler } from '@/shared/lib/seo';
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -62,6 +63,8 @@ export async function updateSession(request: NextRequest) {
     routes.api.callback,
     routes.api.checkEmail,
     routes.api.getUser,
+    routes.seo.sitemap,
+    routes.seo.robots,
   ];
 
   const isProtectedRoute = protectedRoutes.some((route) =>
@@ -74,7 +77,7 @@ export async function updateSession(request: NextRequest) {
     (route) => pathname === route || pathname.startsWith(route + '/'),
   );
 
-  if (!user && isProtectedRoute) {
+  if (!user && isProtectedRoute && !isCrawler(request)) {
     return NextResponse.redirect(new URL(routes.auth.signUpMain, request.url));
   }
 

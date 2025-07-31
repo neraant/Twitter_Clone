@@ -23,7 +23,7 @@ export async function POST(request: Request) {
       .select()
       .eq('email', email)
       .limit(1)
-      .single();
+      .maybeSingle();
 
     if (error && error.code !== NO_ROW_FOUND) {
       return NextResponse.json({ error: error.message }, { status: 500 });

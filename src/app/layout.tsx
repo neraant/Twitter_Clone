@@ -1,4 +1,5 @@
 import './globals.scss';
+import '@/styles/nprogress-custom.scss';
 
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
@@ -22,6 +23,8 @@ export const metadata: Metadata = {
 
 import Script from 'next/script';
 
+import { TopLoader } from '@/shared/ui/top-loader';
+
 export default function RootLayout({
   children,
 }: {
@@ -38,9 +41,11 @@ export default function RootLayout({
           }}
         />
 
-        <Suspense fallback={<GlobalLoader />}>
-          <Providers>{children}</Providers>
-        </Suspense>
+        <TopLoader />
+
+        <Providers>
+          <Suspense fallback={<GlobalLoader />}>{children}</Suspense>
+        </Providers>
       </body>
     </html>
   );

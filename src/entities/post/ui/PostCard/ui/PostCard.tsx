@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 
+import { POSTS_QUERY_KEYS } from '@/entities/post/lib';
 import { Post } from '@/entities/post/model';
 import { LikeButton } from '@/features/like-buton';
 import { ManagePost } from '@/features/manage-post';
@@ -140,9 +141,11 @@ export const PostCard = ({
         <LikeButton
           isActive={!!is_liked}
           likeQuantity={likes_count?.toString() ?? '0'}
-          userId={currentUserId}
+          userId={author_id || currentUserId}
+          currentUserId={currentUserId}
           postId={postId}
           isDisabled={isPreview}
+          isGlobal={isPreview || currentUserId === POSTS_QUERY_KEYS.GLOBAL}
         />
       </div>
     </article>

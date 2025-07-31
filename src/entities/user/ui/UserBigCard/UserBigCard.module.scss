@@ -48,5 +48,10 @@
 
   .bio {
     font-size: $font-size-md-plus;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+    line-height: 1.4;
   }
 }
