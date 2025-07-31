@@ -64,7 +64,7 @@
 
   .actionButton {
     @include flex-center;
-    gap: var(--spacing-xs);
+    gap: $spacing-xs;
     color: var(--dark-text-color);
     outline: 1px solid var(--border-sign-type-color);
 

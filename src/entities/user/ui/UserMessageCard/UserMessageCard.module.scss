@@ -1,0 +1,73 @@
+@use '@styles/_mixins.scss' as *;
+@use '@styles/_variables.scss' as *;
+
+.userMessageCard {
+  display: flex;
+  align-items: center;
+  gap: $spacing-ms;
+  padding: $spacing-sm;
+  border-radius: $radius-md;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background: var(--user-message-hover-bg);
+  }
+
+  .currentUserChatAvatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    flex-shrink: 0;
+
+    svg {
+      fill: var(--color-bg);
+    }
+  }
+
+  .avatar {
+    object-fit: cover;
+    object-position: center;
+    flex-shrink: 0;
+    border-radius: 50%;
+  }
+
+  .userMessageCardInfo {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .userName {
+      font-weight: $font-weight-semibold;
+      font-size: $font-size-md;
+      color: var(--dark-text-color);
+      line-height: 1.2;
+    }
+
+    .messageInfo {
+      display: flex;
+      align-items: center;
+      gap: $spacing-xxs;
+
+      .lastMessage {
+        color: var(--last-message-color);
+        font-size: $font-size-sm;
+        max-width: calc(100% - 100px);
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      .divider {
+        color: var(--last-message-color);
+        font-size: $font-size-sm;
+      }
+      .lastMessageTime {
+        color: var(--last-message-color);
+        font-size: $font-size-sm;
+      }
+    }
+  }
+}
