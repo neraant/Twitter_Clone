@@ -15,14 +15,18 @@ import styles from './MessageInput.module.scss';
 
 type MessageInputProps = {
   value: string;
-  setValue: (newVal: string) => void;
+  setValue: (value: string) => void;
   onSend: (e: FormEvent) => void;
+  disabled?: boolean;
+  isConnecting?: boolean;
 };
 
 export const MessageInput = ({
   value,
   setValue,
   onSend,
+  disabled = false,
+  isConnecting = false,
 }: MessageInputProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -35,6 +39,12 @@ export const MessageInput = ({
 
   const handleMessageChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value);
+  };
+
+  const getPlaceholder = () => {
+    if (isConnecting) return 'Connecting to chat...';
+    if (disabled) return 'Chat is offline';
+    return PLACEHOLDER;
   };
 
   useEffect(() => {
@@ -64,7 +74,8 @@ export const MessageInput = ({
     <form className={styles.messageInput} onSubmit={onSend}>
       <textarea
         ref={textareaRef}
-        placeholder={PLACEHOLDER}
+        disabled={disabled || isConnecting}
+        placeholder={getPlaceholder()}
         aria-label='Enter your message'
         className={styles.input}
         value={value}
@@ -73,7 +84,10 @@ export const MessageInput = ({
         rows={1}
       />
 
-      <button className={styles.sendButton}>
+      <button
+        disabled={disabled || isConnecting || !value.trim()}
+        className={styles.sendButton}
+      >
         <SendIcon width={24} height={24} />
       </button>
     </form>

@@ -2,6 +2,7 @@
 
 import { ChangeEvent, useEffect, useState } from 'react';
 
+import { DEBOUNCE_MS } from '@/features/search-posts/lib';
 import { CrossIcon } from '@/shared/ui/icon';
 import { Input } from '@/shared/ui/input/Input';
 
@@ -20,13 +21,17 @@ export const ExploreInput = ({
   const [localQuery, setLocalQuery] = useState(query);
 
   useEffect(() => {
-    setLocalQuery(query);
-  }, [query]);
+    const handler = setTimeout(() => {
+      onQueryChange(localQuery.trim());
+    }, DEBOUNCE_MS);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [localQuery, onQueryChange]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setLocalQuery(value);
-    onQueryChange(value);
+    setLocalQuery(e.target.value);
   };
 
   const handleClear = () => {

@@ -21,14 +21,26 @@ export const useRealTimeChat = ({
   const supabase = createClient();
   const [messages, setMessages] = useState<Message[]>([]);
   const [isConnected, setIsConnected] = useState(false);
+  const [isConnecting, setIsConnecting] = useState(false);
 
   const channelRef = useRef<ReturnType<typeof supabase.channel> | null>(null);
+  const globalChannelRef = useRef<ReturnType<typeof supabase.channel> | null>(
+    null,
+  );
+
   const { showToast } = useToast();
 
   const roomName = [otherUserId, currentUserId].sort().join('/');
 
   useEffect(() => {
-    const newChannel = supabase.channel(roomName);
+    setMessages([]);
+  }, [otherUserId]);
+
+  useEffect(() => {
+    setIsConnected(false);
+    setIsConnecting(true);
+
+    const newChannel = supabase.channel(`chat_${roomName}`);
     channelRef.current = newChannel;
 
     newChannel
@@ -44,20 +56,60 @@ export const useRealTimeChat = ({
       })
       .subscribe((status) => {
         setIsConnected(status === 'SUBSCRIBED');
+        setIsConnecting(
+          status === 'CHANNEL_ERROR' ? false : status !== 'SUBSCRIBED',
+        );
+
+        if (status === 'CHANNEL_ERROR') {
+          showToast('Error', 'Failed to connect to chat', 'error');
+        }
       });
 
     return () => {
+      setIsConnecting(false);
       if (channelRef.current) {
         supabase.removeChannel(channelRef.current);
         channelRef.current = null;
       }
     };
-  }, [roomName, otherUserId, currentUserId, supabase]);
+  }, [roomName, otherUserId, currentUserId, supabase, showToast]);
+
+  useEffect(() => {
+    const globalChannel = supabase.channel(`user_${currentUserId}_messages`);
+    globalChannelRef.current = globalChannel;
+
+    globalChannel
+      .on('broadcast', { event: EVENT_MESSAGE_TYPE }, (payload) => {
+        const message = payload.payload as Message;
+
+        if (
+          message &&
+          (message.sender_id === currentUserId ||
+            message.receiver_id === currentUserId)
+        ) {
+          globalChannel.send({
+            type: 'broadcast',
+            event: 'chat_list_update',
+            payload: message,
+          });
+        }
+      })
+      .subscribe();
+
+    return () => {
+      if (globalChannelRef.current) {
+        supabase.removeChannel(globalChannelRef.current);
+        globalChannelRef.current = null;
+      }
+    };
+  }, [currentUserId, supabase]);
 
   const sendMessage = useCallback(
     async (content: string) => {
       const channel = channelRef.current;
-      if (!channel || !isConnected || !content.trim()) return;
+      const globalChannel = globalChannelRef.current;
+
+      if (!channel || !globalChannel || !isConnected || !content.trim()) return;
 
       const message: Message = {
         id: crypto.randomUUID(),
@@ -77,9 +129,16 @@ export const useRealTimeChat = ({
           payload: message,
         });
 
+        await globalChannel.send({
+          type: 'broadcast',
+          event: EVENT_MESSAGE_TYPE,
+          payload: message,
+        });
+
         await sendMessageToDb(message);
       } catch (error) {
         console.error('Failed to send message:', error);
+
         setMessages((prev) => prev.filter((m) => m.id !== message.id));
         showToast('Error', 'Failed to send message', 'error');
       }
@@ -88,12 +147,15 @@ export const useRealTimeChat = ({
   );
 
   useEffect(() => {
-    setMessages([]);
-  }, [otherUserId]);
+    return () => {
+      setMessages([]);
+    };
+  }, []);
 
   return {
     messages,
     isConnected,
+    isConnecting,
     sendMessage,
   };
 };

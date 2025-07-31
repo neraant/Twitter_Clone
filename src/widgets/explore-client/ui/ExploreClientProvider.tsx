@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Post } from '@/entities/post';
 import { User, UserSmallCardSkeleton } from '@/entities/user';
@@ -54,9 +54,17 @@ export const ExploreClientProvider = ({
   );
 
   useEffect(() => {
-    setLoading(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams.toString()]);
+    const q = searchParams.get('query') ?? '';
+    if (!q) {
+      setLoading(false);
+    } else {
+      const dataLoaded =
+        (tab === searchType.posts && initialPosts.length > 0) ||
+        (tab === searchType.users && initialUsers.length > 0);
+
+      setLoading(!dataLoaded);
+    }
+  }, [tab, initialPosts, initialUsers, searchParams]);
 
   const handleTabSelect = (index: number) => {
     const nextTab = index === 0 ? searchType.posts : searchType.users;
@@ -71,20 +79,26 @@ export const ExploreClientProvider = ({
     router.push(`/explore?${params.toString()}`);
   };
 
-  const handleQueryChange = (q: string) => {
-    const params = new URLSearchParams();
-    if (q) params.set('query', q);
-    params.set('tab', tab);
+  const handleQueryChange = useCallback(
+    (q: string) => {
+      const params = new URLSearchParams();
+      if (q) params.set('query', q);
+      params.set('tab', tab);
 
-    setLoading(true);
-    router.push(`/explore?${params.toString()}`);
-  };
+      setLoading(true);
+      router.push(`/explore?${params.toString()}`);
+    },
+    [router, tab],
+  );
 
   const isQueryEmpty = query.trim() === '';
-  const currentItemsCount =
-    tab === searchType.posts ? posts.length : users.length;
-  const showNoResults = !isQueryEmpty && currentItemsCount === 0;
-  const showResults = !isQueryEmpty && !loading && currentItemsCount > 0;
+
+  const data = tab === searchType.posts ? initialPosts : initialUsers;
+  const hasData = Array.isArray(data) && data.length > 0;
+
+  const showSkeletons = loading;
+  const showNoResults = !isQueryEmpty && !loading && !hasData;
+  const showResults = !isQueryEmpty && !loading && hasData;
 
   const tabContent = [
     <ExplorePosts posts={posts} key={searchType.posts} />,
@@ -94,15 +108,14 @@ export const ExploreClientProvider = ({
   return (
     <>
       <ExploreInput query={query} onQueryChange={handleQueryChange} />
-
       <ExploreTabs
         activeTab={tab === searchType.posts ? 0 : 1}
         onTabSelect={handleTabSelect}
       />
 
-      {!loading && (isQueryEmpty || showNoResults) && (
+      {(isQueryEmpty || showNoResults) && !loading && (
         <div className={styles.statesWrapper}>
-          {isQueryEmpty && (
+          {isQueryEmpty ? (
             <div className={styles.emptyWrapper}>
               <Image
                 src={ExploreStateImage}
@@ -114,9 +127,7 @@ export const ExploreClientProvider = ({
               />
               <span className={styles.noResults}>{EXPLORE_TITLE}</span>
             </div>
-          )}
-
-          {showNoResults && (
+          ) : (
             <div className={styles.emptyWrapper}>
               <Image
                 src={EmptyStateImage}
@@ -132,8 +143,8 @@ export const ExploreClientProvider = ({
       )}
 
       <div className={styles.postsWrapper} data-testid='search-results'>
-        {loading &&
-          Array.from({ length: SKELETON_COUNT }, (_, i) => (
+        {showSkeletons &&
+          Array.from({ length: SKELETON_COUNT }).map((_, i) => (
             <UserSmallCardSkeleton key={i} className={styles.postSkeleton} />
           ))}
 

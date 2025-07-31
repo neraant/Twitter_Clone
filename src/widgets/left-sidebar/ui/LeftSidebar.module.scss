@@ -11,13 +11,15 @@
   height: 100dvh;
   z-index: 100;
   background: var(--color-bg);
+  overflow-y: auto;
+  scrollbar-width: thin;
 
   @media (max-width: $breakpoint-4xl) {
     max-width: 300px;
   }
 
   @media (max-width: $breakpoint-3xl) {
-    max-width: 75px;
+    max-width: 85px;
   }
 
   @media (max-width: $breakpoint-md) {
@@ -34,6 +36,7 @@
     border-top: 1px solid var(--border-color);
     background: var(--color-bg);
     z-index: 900;
+    overflow-y: visible;
   }
 
   .content {
@@ -189,6 +192,12 @@
     margin-top: auto;
     margin-bottom: $spacing-lg;
 
+    @media (max-width: $breakpoint-3xl) {
+      margin: 0 auto;
+      margin-top: auto;
+      margin-bottom: $spacing-lg;
+    }
+
     p {
       max-width: none !important;
       @media (max-width: $breakpoint-3xl) {
@@ -262,6 +271,12 @@
   .hideBelow768 {
     @media (max-width: $breakpoint-md) {
       display: none !important;
+    }
+  }
+  .hideOver768 {
+    display: none !important;
+    @media (max-width: $breakpoint-md) {
+      display: flex !important;
     }
   }
 }

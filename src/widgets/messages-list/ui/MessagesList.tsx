@@ -54,10 +54,15 @@ export const MessagesList = ({
     messages: realtimeMessages,
     sendMessage,
     isConnected,
+    isConnecting,
   } = useRealTimeChat({
     otherUserId: selectedUserId,
     currentUserId,
   });
+
+  useEffect(() => {
+    setHistoricalMessages(initialMessages);
+  }, [selectedUserId, initialMessages]);
 
   const loadOlderMessages = useCallback(
     async (oldestMessageDate: string) => {
@@ -129,6 +134,20 @@ export const MessagesList = ({
       return () => main.setAttribute('data-layout', 'default');
     }
   }, []);
+
+  useEffect(() => {
+    const fetchLatestMessages = async () => {
+      const result = await getChatMessages(
+        selectedUserId,
+        INITIAL_MESSAGES_LIMIT,
+      );
+      if (result?.messages) {
+        setHistoricalMessages(result.messages);
+      }
+    };
+
+    fetchLatestMessages();
+  }, [selectedUserId]);
 
   const handleSendMessage = useCallback(
     (e: FormEvent) => {
@@ -227,6 +246,8 @@ export const MessagesList = ({
         value={newMessage}
         setValue={setNewMessage}
         onSend={handleSendMessage}
+        disabled={!isConnected}
+        isConnecting={isConnecting}
       />
     </div>
   );

@@ -1,9 +1,12 @@
+'use client';
+
 import { useMemo } from 'react';
 
 import { ChatRoom } from '@/entities/message';
 import { UserMessageCard } from '@/entities/user';
 
 import { MESSAGES_TITLE } from '../lib';
+import { useRealtimeChats } from '../lib/useRealtimeChats';
 import styles from './MessagesClient.module.scss';
 
 type MessagesClientProps = {
@@ -12,22 +15,41 @@ type MessagesClientProps = {
 };
 
 export const MessagesClient = ({
-  chats,
+  chats: initialChats,
   currentUserId,
 }: MessagesClientProps) => {
+  const { chats, isConnected } = useRealtimeChats({
+    initialChats,
+    currentUserId,
+  });
+
   const sortedChats =
     useMemo(
       () =>
-        chats?.sort((chat) => {
-          if (chat.other_user_id === currentUserId) return -1;
-          else return 1;
+        chats?.sort((a, b) => {
+          const timeA = new Date(a.last_message_time || 0).getTime();
+          const timeB = new Date(b.last_message_time || 0).getTime();
+          if (timeB !== timeA) return timeB - timeA;
+
+          if (a.other_user_id === currentUserId) return -1;
+          if (b.other_user_id === currentUserId) return 1;
+
+          return 0;
         }),
       [chats, currentUserId],
     ) || [];
 
   return (
     <div className={styles.messagesClient}>
-      <p className={styles.headerTitle}>{MESSAGES_TITLE}</p>
+      <div className={styles.header}>
+        <p className={styles.headerTitle}>{MESSAGES_TITLE}</p>
+
+        {!isConnected && (
+          <div className={styles.connectionStatus}>
+            <span>Connecting...</span>
+          </div>
+        )}
+      </div>
 
       <div className={styles.chatsWrapper}>
         {sortedChats.map(

@@ -56,5 +56,6 @@ export const LINKS = [
     label: 'More',
     icon: <MoreIcon width={28} height={28} />,
     action: MORE_ACTION,
+    className: styles.hideOver768,
   },
 ];

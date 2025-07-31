@@ -1,7 +1,8 @@
 import { MetadataRoute } from 'next';
 
+import { BASE_URL } from '@/shared/lib/common';
+
 export default function sitemap(): MetadataRoute.Sitemap {
-  const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
   const now = new Date();
 
   return [

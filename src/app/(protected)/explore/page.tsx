@@ -1,8 +1,7 @@
 import { Metadata } from 'next';
 
+import { BASE_URL } from '@/shared/lib/common';
 import { ExploreClient, searchType } from '@/widgets/explore-client';
-
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
 export const metadata: Metadata = {
   title: 'Twitter Clone | Search',

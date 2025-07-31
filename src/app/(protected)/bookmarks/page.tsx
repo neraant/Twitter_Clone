@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+import { BASE_URL } from '@/shared/lib/common';
 
 export const metadata: Metadata = {
   title: 'Twitter Clone | Bookmarks',

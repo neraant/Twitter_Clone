@@ -13,6 +13,7 @@
     max-width: 50px !important;
     min-height: 50px !important;
     min-width: 50px !important;
+    object-fit: cover;
 
     @media (max-width: $breakpoint-3xl) {
       max-width: 40px !important;

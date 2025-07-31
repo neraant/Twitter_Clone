@@ -11,6 +11,7 @@
   z-index: 100;
   background: var(--color-bg);
   overflow-y: auto;
+  scrollbar-width: thin;
 
   @media (max-width: $breakpoint-4xl) {
     max-width: 350px;
