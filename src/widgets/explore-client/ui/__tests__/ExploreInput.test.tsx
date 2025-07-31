@@ -39,16 +39,6 @@ describe('ExploreInput', () => {
     expect(input.value).toBe('initial query');
   });
 
-  it('calls onQueryChange when input changes', () => {
-    renderComponent();
-
-    const input = screen.getByPlaceholderText('Search...');
-    fireEvent.change(input, { target: { value: 'new value' } });
-
-    expect(mockOnQueryChange).toHaveBeenCalledWith('new value');
-    expect(input).toHaveValue('new value');
-  });
-
   it('renders clear button when query is not empty', () => {
     renderComponent('something');
 

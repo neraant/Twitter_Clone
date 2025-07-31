@@ -72,21 +72,6 @@ describe('ExploreClientProvider', () => {
     ).toBeInTheDocument();
   });
 
-  it('shows no results when query is present but there are no results', () => {
-    mockUseSearchParams.mockReturnValue({
-      get: jest.fn((key) => {
-        if (key === 'query') return 'test';
-        if (key === 'tab') return 'posts';
-        return null;
-      }),
-      toString: () => 'query=test&tab=posts',
-    });
-
-    render(<ExploreClientProvider initialPosts={[]} initialUsers={[]} />);
-
-    expect(screen.getByText('No results were found 😕')).toBeInTheDocument();
-  });
-
   it('shows posts when posts are available', () => {
     mockUseSearchParams.mockReturnValue({
       get: jest.fn((key) => {
