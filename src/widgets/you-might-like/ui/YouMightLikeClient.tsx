@@ -50,6 +50,7 @@ export const YouMightLikeClient = ({
                 key={user.id}
                 user={user}
                 currentUserId={currentUserId}
+                isRecommendation={true}
               />
             ))}
           </div>

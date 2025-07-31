@@ -1,6 +1,5 @@
 import { User } from '@/entities/user';
 import { getCurrentUserAction } from '@/entities/user/api';
-import { isFollowingAction } from '@/features/follow-button/api/followActions';
 
 import { getYouMightLikeUsersAction } from '../api';
 import { YouMightLikeClient } from './YouMightLikeClient';
@@ -13,12 +12,10 @@ export const YouMightLike = async () => {
     const users = await getYouMightLikeUsersAction(user.id);
     if (!users) return null;
 
-    const usersWithFollowStatus = await Promise.all(
-      users.map(async (targetUser) => {
-        const isFollowed = await isFollowingAction(targetUser.id, user.id);
-        return { ...targetUser, isFollowed };
-      }),
-    );
+    const usersWithFollowStatus = users.map((targetUser) => ({
+      ...targetUser,
+      isFollowed: false,
+    }));
 
     return (
       <YouMightLikeClient

@@ -8,18 +8,24 @@ import styles from './FollowButton.module.scss';
 type FollowButtonProps = {
   targetUserId: string;
   currentUserId: string;
+  initialFollowState?: boolean;
+  skipFollowCheck?: boolean;
 };
 
 export const FollowButton = ({
   targetUserId,
   currentUserId,
+  initialFollowState,
+  skipFollowCheck = false,
 }: FollowButtonProps) => {
   const { handleClick, loading, isFollowed } = useFollow({
     targetUserId,
     currentUserId,
+    initialFollowState,
+    skipFollowCheck,
   });
 
-  if (isFollowed === undefined) {
+  if (!skipFollowCheck && isFollowed === undefined) {
     return null;
   }
 

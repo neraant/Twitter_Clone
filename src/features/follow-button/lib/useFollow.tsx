@@ -17,9 +17,16 @@ import { FOLLOW_QUERY_KEYS } from './followButton.constants';
 type UseFollowProps = {
   targetUserId: string;
   currentUserId: string;
+  initialFollowState?: boolean;
+  skipFollowCheck?: boolean;
 };
 
-export const useFollow = ({ targetUserId, currentUserId }: UseFollowProps) => {
+export const useFollow = ({
+  targetUserId,
+  currentUserId,
+  initialFollowState,
+  skipFollowCheck = false,
+}: UseFollowProps) => {
   const queryClient = useQueryClient();
   const { showToast } = useToast();
   const { setUserLoading, isUserLoading } = useFollowStore();
@@ -31,6 +38,7 @@ export const useFollow = ({ targetUserId, currentUserId }: UseFollowProps) => {
     queryFn: () => isFollowingAction(targetUserId, currentUserId),
     enabled: !!targetUserId && !!currentUserId,
     staleTime: FIVE_MINUTES_IN_MS,
+    initialData: skipFollowCheck ? initialFollowState : undefined,
   });
 
   const followMutation = useMutation<MutationResult, Error, void>({

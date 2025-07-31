@@ -19,6 +19,7 @@ export type UserSmallCardProps = {
   isOwnProfile?: boolean;
   isFollowed?: boolean;
   currentUserId?: string;
+  isRecommendation?: boolean;
 };
 
 export const UserSmallCard = ({
@@ -26,6 +27,8 @@ export const UserSmallCard = ({
   className,
   isOwnProfile = false,
   currentUserId,
+  isFollowed,
+  isRecommendation = false,
 }: UserSmallCardProps) => {
   if (!user) return null;
 
@@ -58,7 +61,12 @@ export const UserSmallCard = ({
       </Link>
 
       {showFollowButton && (
-        <FollowButton targetUserId={user.id} currentUserId={currentUserId!} />
+        <FollowButton
+          targetUserId={user.id}
+          currentUserId={currentUserId!}
+          initialFollowState={isRecommendation ? false : isFollowed}
+          skipFollowCheck={isRecommendation}
+        />
       )}
     </div>
   );

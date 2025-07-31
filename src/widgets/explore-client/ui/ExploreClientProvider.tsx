@@ -59,10 +59,17 @@ export const ExploreClientProvider = ({
       setLoading(false);
     } else {
       const dataLoaded =
-        (tab === searchType.posts && initialPosts.length > 0) ||
-        (tab === searchType.users && initialUsers.length > 0);
+        (tab === searchType.posts &&
+          Array.isArray(initialPosts) &&
+          initialPosts.length > 0) ||
+        (tab === searchType.users &&
+          Array.isArray(initialUsers) &&
+          initialUsers.length > 0);
 
       setLoading(!dataLoaded);
+
+      const timer = setTimeout(() => setLoading(false), 500);
+      return () => clearTimeout(timer);
     }
   }, [tab, initialPosts, initialUsers, searchParams]);
 
@@ -82,10 +89,13 @@ export const ExploreClientProvider = ({
   const handleQueryChange = useCallback(
     (q: string) => {
       const params = new URLSearchParams();
-      if (q) params.set('query', q);
       params.set('tab', tab);
-
-      setLoading(true);
+      if (q) {
+        params.set('query', q);
+        setLoading(true);
+      } else {
+        setLoading(false);
+      }
       router.push(`/explore?${params.toString()}`);
     },
     [router, tab],
